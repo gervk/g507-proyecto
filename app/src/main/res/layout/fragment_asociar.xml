@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    tools:context="g507.controldeconsumo.AsociarFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Escaneé el código QR que se encuentra junto al dispositivo Arduino"
+        android:id="@+id/textView13"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center" />
+
+    <SurfaceView
+        android:layout_width="640px"
+        android:layout_height="480px"
+        android:id="@+id/camera_view"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtResultado"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="20dp"
+        android:hint="Sin resultado" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Asociar"
+        android:id="@+id/btnAsociarArduino"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="#00b95a" />
+</LinearLayout>

@@ -1,0 +1,166 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="g507.controldeconsumo.EstadistFragment">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText4"
+        android:text="Elegir servicio:"
+        android:editable="false"
+        android:layout_alignParentTop="true" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText4"
+        android:layout_alignLeft="@+id/editText4"
+        android:layout_alignStart="@+id/editText4"
+        android:layout_marginTop="33dp"
+        android:id="@+id/radioGroup">
+
+    </RadioGroup>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Electricidad"
+        android:id="@+id/radioElec"
+        android:layout_alignBottom="@+id/radioGroup"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText10"
+        android:text="Tipo:"
+        android:editable="false"
+        android:layout_below="@+id/radioGroup"
+        android:layout_alignLeft="@+id/radioGroup"
+        android:layout_alignStart="@+id/radioGroup"
+        android:layout_marginTop="25dp" />
+
+    <Spinner
+        android:id="@+id/spinnerEstadist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:layout_alignTop="@+id/editText10"
+        android:layout_toEndOf="@+id/editText4"
+        android:layout_alignBottom="@+id/editText10"
+        android:layout_toRightOf="@+id/editText4" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Consultar"
+        android:id="@+id/button3"
+        android:layout_marginTop="26dp"
+        android:background="#00b95a"
+        android:layout_below="@+id/spinnerEstadist"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText11"
+        android:text="Consumo promedio:"
+        android:editable="false"
+        android:layout_below="@+id/button3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText12"
+        android:text="Consumo máximo:"
+        android:editable="false"
+        android:layout_below="@+id/editText14"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText13"
+        android:text="Consumo mínimo:"
+        android:editable="false"
+        android:layout_below="@+id/editText16"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Agua"
+        android:id="@+id/radioAgua"
+        android:layout_alignBottom="@+id/radioGroup"
+        android:layout_alignLeft="@+id/radioGroup"
+        android:layout_alignStart="@+id/radioGroup" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText14"
+        android:hint="//Valor//"
+        android:layout_below="@+id/editText11"
+        android:layout_toRightOf="@+id/radioGroup"
+        android:layout_toEndOf="@+id/radioGroup"
+        android:textSize="14dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText15"
+        android:hint="//Fecha//"
+        android:layout_above="@+id/editText12"
+        android:layout_toRightOf="@+id/editText11"
+        android:layout_toEndOf="@+id/editText11"
+        android:textSize="14dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText16"
+        android:hint="//Valor//"
+        android:layout_below="@+id/editText12"
+        android:layout_alignLeft="@+id/editText14"
+        android:layout_alignStart="@+id/editText14"
+        android:textSize="14dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText17"
+        android:hint="//Fecha//"
+        android:layout_below="@+id/editText12"
+        android:layout_alignLeft="@+id/editText15"
+        android:layout_alignStart="@+id/editText15"
+        android:textSize="14dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText18"
+        android:hint="//Valor//"
+        android:layout_below="@+id/editText13"
+        android:layout_alignLeft="@+id/editText16"
+        android:layout_alignStart="@+id/editText16"
+        android:textSize="14dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText19"
+        android:hint="//Fecha//"
+        android:layout_alignTop="@+id/editText18"
+        android:layout_alignLeft="@+id/editText17"
+        android:layout_alignStart="@+id/editText17"
+        android:textSize="14dp" />
+
+
+</RelativeLayout>

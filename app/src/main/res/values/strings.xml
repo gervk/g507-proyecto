@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Control de Consumo</string>
+
+    <!-- Items nav -->
+    <string name="nav_asoc_arduino">Asociar Arduino</string>
+    <string name="nav_configuración">Configuración</string>
+    <string name="nav_consumo">Consumo</string>
+    <string name="nav_cons_actual">Actual</string>
+    <string name="nav_cons_acum">Acumulado</string>
+    <string name="nav_prox_factura">Próxima factura</string>
+    <string name="nav_estadisticas">Estadísticas</string>
+    <string name="nav_cerrar_sesion">Cerrar Sesión</string>
+
+    <!-- Msjs error -->
+    <string name="error_selecc_servicio">Seleccione servicio</string>
+    <string name="error_selecc_periodo">Seleccione período</string>
+    <string name="error_qr_arduino">Código no válido</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
