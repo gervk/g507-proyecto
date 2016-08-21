@@ -1,14 +1,11 @@
 package g507.controldeconsumo;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -25,6 +22,8 @@ import android.widget.Toast;
 
 public class LoginFragment extends Fragment {
 
+    private static final String ARG_USERNAME = "arg_username";
+
     private static final String USUARIO_TEST = "admin";
     private static final String PASS_TEST = "admin123";
 
@@ -32,13 +31,13 @@ public class LoginFragment extends Fragment {
 
     // UI references.
     private View viewPrincipal;
-    private View viewCargando;
-    private View formLogin;
     private EditText txtUsuario;
     private EditText txtPassword;
     private Button btnIngresar;
     private Button btnRegistrarse;
     private TextView linkRecupContr;
+
+    private ProgressDialog progressDialog;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -95,9 +94,6 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        formLogin = viewPrincipal.findViewById(R.id.login_form);
-        viewCargando = viewPrincipal.findViewById(R.id.login_progress);
-
         return viewPrincipal;
     }
 
@@ -138,8 +134,7 @@ public class LoginFragment extends Fragment {
             //En caso de error, no loguea y hace foco en el primer campo con error
             focusView.requestFocus();
         } else {
-            //Muestra circulo de "cargando" y ejecuta la task de login
-            showProgress(true);
+            progressDialog = ProgressDialog.show(getActivity(), "Espere", "Autenticando", true);
             taskLogin = new UserLoginTask(usuario, password);
             taskLogin.execute((Void) null);
         }
@@ -151,48 +146,25 @@ public class LoginFragment extends Fragment {
     }
 
     private void abrirRecuperarPass() {
-        //TODO
-        Toast.makeText(getActivity(), "Recuperar contraseña", Toast.LENGTH_SHORT).show();
+        String usuario = txtUsuario.getText().toString();
+
+        if (TextUtils.isEmpty(usuario)) {
+            txtUsuario.setError(getString(R.string.error_campo_requerido));
+            txtUsuario.requestFocus();
+            return;
+        }
+
+        //TODO validar que exista el usuario
+
+        Intent intent = new Intent(getActivity(), CambiarPassActivity.class);
+        Bundle args = new Bundle();
+        args.putString(ARG_USERNAME, usuario);
+        intent.putExtras(args);
+        startActivity(intent);
     }
 
     private boolean passwordValida(String password) {
         return password.length() >= 8;
-    }
-
-    /**
-     * Oculta el formulario de logueo y muestra un circulo tipo cargando
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            formLogin.setVisibility(show ? View.GONE : View.VISIBLE);
-            formLogin.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    formLogin.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            viewCargando.setVisibility(show ? View.VISIBLE : View.GONE);
-            viewCargando.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    viewCargando.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            viewCargando.setVisibility(show ? View.VISIBLE : View.GONE);
-            formLogin.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
     }
 
     public void guardarUsuarioLogueado(String user) {
@@ -232,7 +204,7 @@ public class LoginFragment extends Fragment {
         @Override
         protected void onPostExecute(final Boolean success) {
             taskLogin = null;
-            showProgress(false);
+            progressDialog.dismiss();
 
             if (success) {
                 guardarUsuarioLogueado(usuario);
@@ -247,7 +219,7 @@ public class LoginFragment extends Fragment {
         @Override
         protected void onCancelled() {
             taskLogin = null;
-            showProgress(false);
+            progressDialog.dismiss();
         }
     }
 }

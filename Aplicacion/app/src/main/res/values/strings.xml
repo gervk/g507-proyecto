@@ -3,6 +3,7 @@
 
     <!-- Titulos ventanas -->
     <string name="title_activity_login">Iniciar sesión</string>
+    <string name="title_activity_cambiar_pass">Cambiar contraseña</string>
 
     <!-- Items nav -->
     <string name="nav_asoc_arduino">Asociar Arduino</string>
@@ -21,6 +22,8 @@
     <string name="error_campo_requerido">Campo requerido</string>
     <string name="error_pass_invalida">Mínimo 8 caracteres</string>
     <string name="error_pass_incorrecta">Contraseña incorrecta</string>
+    <string name="error_resp_incorrecta">Respuesta incorrecta</string>
+    <string name="error_no_coinciden">La contraseña no coincide</string>
 
     <!-- Claves para las SharedPrefferences -->
     <string name="pref_sesion_inic">SesionIniciada</string>
