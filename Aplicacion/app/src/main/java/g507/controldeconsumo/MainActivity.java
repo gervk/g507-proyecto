@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.setDrawerListener(toggle);
+            drawer.addDrawerListener(toggle);
             toggle.syncState();
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        item.setChecked(true);
+
         // Handle navigation view item clicks here.
         int idItemSelecc = item.getItemId();
 
@@ -130,11 +132,7 @@ public class MainActivity extends AppCompatActivity
 
         String usuarioLogueado = prefs.getString(getString(R.string.pref_sesion_inic), "");
 
-        if(!usuarioLogueado.isEmpty()){
-            return true;
-        } else{
-            return false;
-        }
+        return !usuarioLogueado.isEmpty();
     }
 
     private void cargarFragment(Fragment fragment){

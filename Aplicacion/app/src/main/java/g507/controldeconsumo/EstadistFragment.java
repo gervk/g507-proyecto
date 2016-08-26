@@ -7,40 +7,70 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class EstadistFragment extends Fragment {
+
+    private View view;
+    private RadioGroup rgrpServicio;
+    private Spinner spinnerEstadist;
+    private Button btnConsEstadist;
+    private TextView txtVValorProm;
+    private TextView txtVFechaProm;
+    private TextView txtVValorMax;
+    private TextView txtVFechaMax;
+    private TextView txtVValorMin;
+    private TextView txtVFechaMin;
 
     public EstadistFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_estadist, container, false);
-        View v = inflater.inflate(R.layout.fragment_estadist, container, false);
 
-        Spinner dropdown = (Spinner)v.findViewById(R.id.spinnerEstadist);
+        view = inflater.inflate(R.layout.fragment_estadist, container, false);
+        rgrpServicio = (RadioGroup) view.findViewById(R.id.rgrpServicio);
+        spinnerEstadist = (Spinner) view.findViewById(R.id.spinnerEstadist);
+        btnConsEstadist = (Button) view.findViewById(R.id.btnConsEstadist);
+        txtVValorProm = (TextView) view.findViewById(R.id.txtVValorProm);
+        txtVFechaProm = (TextView) view.findViewById(R.id.txtVFechaProm);
+        txtVValorMax = (TextView) view.findViewById(R.id.txtVValorMax);
+        txtVFechaMax = (TextView) view.findViewById(R.id.txtVFechaMax);
+        txtVValorMin = (TextView) view.findViewById(R.id.txtVValorMin);
+        txtVFechaMin = (TextView) view.findViewById(R.id.txtVFechaMin);
+
         String[] items = new String[]{"Por hora", "Por día", "Por mes"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),R.layout.support_simple_spinner_dropdown_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(),R.layout.support_simple_spinner_dropdown_item, items);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        dropdown.setAdapter(adapter);
-        return v;
-        /*
-        View v = inflater.inflate(R.layout.fragment_cons_acum, container, false);
+        spinnerEstadist.setAdapter(adapter);
 
-        Spinner dropdown = (Spinner)v.findViewById(R.id.spinnerConsAcum);
-        String[] items = new String[]{"Día", "Semana", "Mes", "Bimestre"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.support_simple_spinner_dropdown_item, items);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        dropdown.setAdapter(adapter);
-        return v;
+        btnConsEstadist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                consultarEstadisticas();
+            }
+        });
 
-         */
+        return view;
+    }
 
+    private void consultarEstadisticas() {
+        if(rgrpServicio.getCheckedRadioButtonId() == -1){
+            Toast.makeText(getActivity(), R.string.error_selecc_servicio, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(spinnerEstadist.getSelectedItem() == null){
+            Toast.makeText(getActivity(), R.string.error_selecc_tipo_est, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //TODO consultar
     }
 
 }

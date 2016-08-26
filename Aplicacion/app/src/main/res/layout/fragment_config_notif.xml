@@ -10,76 +10,62 @@
     tools:context="g507.controldeconsumo.ConfigNotifFragment">
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Habilitar notificaciones de exceso de consumo eléctrico"
-            android:id="@+id/swiNotifElec"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:singleLine="false"
-            android:splitTrack="false" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Límite de consumo:"
-            android:id="@+id/textView2"
-            android:layout_marginTop="20dp" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/txtLimiteElec"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+    <Switch
+        android:id="@+id/swiNotifElec"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
+        android:singleLine="false"
+        android:text="Habilitar notificaciones de exceso de consumo eléctrico"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Habilitar notificaciones de exceso de consumo de agua"
-            android:id="@+id/swiNotifAgua"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:singleLine="false"
-            android:splitTrack="false" />
+    <TextView
+        android:id="@+id/txtVLimiteElec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Límite de consumo:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Límite de consumo:"
-            android:id="@+id/textView3"
-            android:layout_marginTop="20dp" />
+    <EditText
+        android:id="@+id/txtLimiteElec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:inputType="number" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/txtLimiteAgua"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp" />
-    </LinearLayout>
+    <Switch
+        android:id="@+id/swiNotifAgua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:singleLine="false"
+        android:text="Habilitar notificaciones de exceso de consumo de agua"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/txtVLimiteAgua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Límite de consumo:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/txtLimiteAgua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:inputType="number" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Guardar"
-        android:id="@+id/button"
+        android:id="@+id/btnGuardarNotif"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"

@@ -92,6 +92,10 @@ public class CambiarPassFragment extends Fragment {
         super.onStart();
     }
 
+    /**
+     * Valida que la respuesta ingresada coincida con la registrada,
+     * marca el error en caso contrario
+     */
     private void validarResp(){
         String respIngresada = txtRespuesta.getText().toString();
 
@@ -110,36 +114,36 @@ public class CambiarPassFragment extends Fragment {
      */
     private void guardarNuevaPass(){
         boolean cancelar = false;
-        View focusView = null;
+        View campoConError = null;
+
         String pass = txtNuevaPass.getText().toString();
         String passConf = txtConfNuevaPass.getText().toString();
 
         if(TextUtils.isEmpty(passConf)){
             txtConfNuevaPass.setError(getString(R.string.error_campo_requerido));
-            focusView = txtConfNuevaPass;
+            campoConError = txtConfNuevaPass;
             cancelar = true;
         } else if(!passConf.equals(pass)){
             txtConfNuevaPass.setError(getString(R.string.error_no_coinciden));
-            focusView = txtConfNuevaPass;
+            campoConError = txtConfNuevaPass;
             cancelar = true;
         }
 
         if(TextUtils.isEmpty(pass)){
             txtNuevaPass.setError(getString(R.string.error_campo_requerido));
-            focusView = txtNuevaPass;
+            campoConError = txtNuevaPass;
             cancelar = true;
         } else if(!passwordValida(pass)){
             txtNuevaPass.setError(getString(R.string.error_pass_invalida));
-            focusView = txtNuevaPass;
+            campoConError = txtNuevaPass;
             cancelar = true;
         }
 
         if(cancelar){
-            focusView.requestFocus();
-            return;
+            campoConError.requestFocus();
         } else{
             //TODO guardar en BD
-            Toast.makeText(getActivity(), "Servidor no disponible", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.error_servidor_no_disp), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -157,6 +161,8 @@ public class CambiarPassFragment extends Fragment {
         pregunta = PreguntaSeguridad.getPreguntaById(idPreg);
         respuesta = RESP_TEST;
 
-        txtVPreg.setText(pregunta.toString());
+        if(pregunta != null){
+            txtVPreg.setText(pregunta.toString());
+        }
     }
 }

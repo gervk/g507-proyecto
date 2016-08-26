@@ -38,7 +38,7 @@ public class ConsAcumFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_cons_acum, container, false);
         rgrpServicio = (RadioGroup) view.findViewById(R.id.rgrpServicio);
         spinPeriodo = (Spinner) view.findViewById(R.id.spinPeriodo);
-        btnConsultar = (Button) view.findViewById(R.id.btnConsultarAcum);
+        btnConsultar = (Button) view.findViewById(R.id.btnConsEstadist);
 
         //Set de opciones en el spinner de periodo
         ArrayAdapter<Periodo> periodosAdapter = new ArrayAdapter<>(getActivity(),

@@ -61,6 +61,20 @@ public class ConfigFragment extends Fragment {
                     return null;
             }
         }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position){
+                case 0:
+                    return getString(R.string.title_frag_config_cuenta);
+                case 1:
+                    return getString(R.string.title_frag_config_notif);
+                case 2:
+                    return getString(R.string.title_frag_config_serv_agua);
+                default:
+                    return null;
+            }
+        }
     }
 
 }

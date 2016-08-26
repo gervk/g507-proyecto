@@ -20,8 +20,8 @@
         android:textAlignment="center" />
 
     <SurfaceView
-        android:layout_width="640px"
-        android:layout_height="480px"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:id="@+id/camera_view"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp" />

@@ -3,7 +3,11 @@
 
     <!-- Titulos ventanas -->
     <string name="title_activity_login">Iniciar sesión</string>
+    <string name="title_activity_registro">Registro</string>
     <string name="title_activity_cambiar_pass">Cambiar contraseña</string>
+    <string name="title_frag_config_cuenta">Cuenta</string>
+    <string name="title_frag_config_notif">Notificaciones</string>
+    <string name="title_frag_config_serv_agua">Servicio de agua</string>
 
     <!-- Items nav -->
     <string name="nav_asoc_arduino">Asociar Arduino</string>
@@ -18,15 +22,26 @@
     <!-- Msjs error -->
     <string name="error_selecc_servicio">Seleccione servicio</string>
     <string name="error_selecc_periodo">Seleccione período</string>
+    <string name="error_selecc_tipo_est">Seleccione tipo de estadística</string>
     <string name="error_qr_arduino">Código no válido</string>
     <string name="error_campo_requerido">Campo requerido</string>
     <string name="error_pass_invalida">Mínimo 8 caracteres</string>
     <string name="error_pass_incorrecta">Contraseña incorrecta</string>
     <string name="error_resp_incorrecta">Respuesta incorrecta</string>
     <string name="error_no_coinciden">La contraseña no coincide</string>
+    <string name="error_servidor_no_disp">Servidor no disponible</string>
+
+    <!-- Msjs -->
+    <string name="msj_espere">Espere</string>
+    <string name="msj_cargando">Cargando</string>
+    <string name="msj_autenticando">Autenticando</string>
 
     <!-- Claves para las SharedPrefferences -->
-    <string name="pref_sesion_inic">SesionIniciada</string>
+    <string name="pref_sesion_inic">sesionIniciada</string>
+    <string name="pref_limitar_elect">limitarElect</string>
+    <string name="pref_limitar_agua">limitarAgua</string>
+    <string name="pref_limite_elect">limiteElect</string>
+    <string name="pref_limite_agua">limiteAgua</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

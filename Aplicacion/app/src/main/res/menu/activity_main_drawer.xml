@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/asoc_arduino"
-        android:title="@string/nav_asoc_arduino" />
-    <item
-        android:id="@+id/config"
-        android:title="@string/nav_configuración" />
-    <item android:title="@string/nav_consumo">
-        <menu>
-            <item
-                android:id="@+id/consumo_actual"
-                android:title="@string/nav_cons_actual" />
-            <item
-                android:id="@+id/consumo_acumulado"
-                android:title="@string/nav_cons_acum" />
-            <item
-                android:id="@+id/prox_factura"
-                android:title="@string/nav_prox_factura" />
-        </menu>
-    </item>
-    <item
-        android:id="@+id/estadisticas"
-        android:title="@string/nav_estadisticas" />
-    <item
-        android:id="@+id/cerrar_sesion"
-        android:title="@string/nav_cerrar_sesion" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/asoc_arduino"
+            android:title="@string/nav_asoc_arduino" />
+        <item
+            android:id="@+id/config"
+            android:title="@string/nav_configuración" />
+        <item android:title="@string/nav_consumo">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/consumo_actual"
+                        android:title="@string/nav_cons_actual" />
+                    <item
+                        android:id="@+id/consumo_acumulado"
+                        android:title="@string/nav_cons_acum" />
+                    <item
+                        android:id="@+id/prox_factura"
+                        android:title="@string/nav_prox_factura" />
+                </group>
+            </menu>
+        </item>
+        <item
+            android:id="@+id/estadisticas"
+            android:title="@string/nav_estadisticas" />
+        <item
+            android:id="@+id/cerrar_sesion"
+            android:title="@string/nav_cerrar_sesion" />
+    </group>
 
 </menu>

@@ -2,165 +2,169 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="g507.controldeconsumo.EstadistFragment">
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText4"
+        android:id="@+id/txtVElegirServ"
         android:text="Elegir servicio:"
-        android:editable="false"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_alignParentTop="true" />
 
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText4"
-        android:layout_alignLeft="@+id/editText4"
-        android:layout_alignStart="@+id/editText4"
-        android:layout_marginTop="33dp"
-        android:id="@+id/radioGroup">
+        android:layout_below="@+id/txtVElegirServ"
+        android:layout_marginTop="20dp"
+        android:id="@+id/rgrpServicio"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal">
 
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Electricidad"
+            android:id="@+id/rbtnElect"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agua"
+            android:id="@+id/rbtnAgua"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginLeft="20dp" />
     </RadioGroup>
 
-    <RadioButton
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Electricidad"
-        android:id="@+id/radioElec"
-        android:layout_alignBottom="@+id/radioGroup"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText10"
-        android:text="Tipo:"
-        android:editable="false"
-        android:layout_below="@+id/radioGroup"
-        android:layout_alignLeft="@+id/radioGroup"
-        android:layout_alignStart="@+id/radioGroup"
-        android:layout_marginTop="25dp" />
+        android:text="Tipo"
+        android:id="@+id/textView20"
+        android:layout_below="@+id/rgrpServicio"
+        android:layout_marginTop="20dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignParentStart="true" />
 
     <Spinner
-        android:id="@+id/spinnerEstadist"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:id="@+id/spinnerEstadist"
+        android:layout_alignTop="@+id/textView20"
+        android:layout_toEndOf="@+id/txtVElegirServ"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
-        android:layout_alignTop="@+id/editText10"
-        android:layout_toEndOf="@+id/editText4"
-        android:layout_alignBottom="@+id/editText10"
-        android:layout_toRightOf="@+id/editText4" />
+        android:layout_alignParentEnd="false" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_below="@+id/spinnerEstadist"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Consultar"
-        android:id="@+id/button3"
-        android:layout_marginTop="26dp"
-        android:background="#00b95a"
-        android:layout_below="@+id/spinnerEstadist"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/btnConsEstadist"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="#00b95a" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText11"
         android:text="Consumo promedio:"
-        android:editable="false"
-        android:layout_below="@+id/button3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/textView21"
+        android:layout_below="@+id/btnConsEstadist"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText12"
+        android:id="@+id/txtVValorProm"
+        android:layout_below="@+id/textView21"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginLeft="20dp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtVFechaProm"
+        android:layout_alignTop="@+id/txtVValorProm"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="italic"
+        android:layout_marginRight="60dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Consumo máximo:"
-        android:editable="false"
-        android:layout_below="@+id/editText14"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/textView22"
+        android:layout_below="@+id/txtVValorProm"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText13"
+        android:id="@+id/txtVValorMax"
+        android:layout_below="@+id/textView22"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginLeft="20dp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtVFechaMax"
+        android:layout_alignTop="@+id/txtVValorMax"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="italic"
+        android:layout_marginRight="60dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Consumo mínimo:"
-        android:editable="false"
-        android:layout_below="@+id/editText16"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/textView23"
+        android:layout_below="@+id/txtVValorMax"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <RadioButton
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Agua"
-        android:id="@+id/radioAgua"
-        android:layout_alignBottom="@+id/radioGroup"
-        android:layout_alignLeft="@+id/radioGroup"
-        android:layout_alignStart="@+id/radioGroup" />
+        android:id="@+id/txtVValorMin"
+        android:layout_below="@+id/textView23"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginLeft="20dp"
+        android:textStyle="italic" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText14"
-        android:hint="//Valor//"
-        android:layout_below="@+id/editText11"
-        android:layout_toRightOf="@+id/radioGroup"
-        android:layout_toEndOf="@+id/radioGroup"
-        android:textSize="14dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText15"
-        android:hint="//Fecha//"
-        android:layout_above="@+id/editText12"
-        android:layout_toRightOf="@+id/editText11"
-        android:layout_toEndOf="@+id/editText11"
-        android:textSize="14dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText16"
-        android:hint="//Valor//"
-        android:layout_below="@+id/editText12"
-        android:layout_alignLeft="@+id/editText14"
-        android:layout_alignStart="@+id/editText14"
-        android:textSize="14dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText17"
-        android:hint="//Fecha//"
-        android:layout_below="@+id/editText12"
-        android:layout_alignLeft="@+id/editText15"
-        android:layout_alignStart="@+id/editText15"
-        android:textSize="14dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText18"
-        android:hint="//Valor//"
-        android:layout_below="@+id/editText13"
-        android:layout_alignLeft="@+id/editText16"
-        android:layout_alignStart="@+id/editText16"
-        android:textSize="14dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText19"
-        android:hint="//Fecha//"
-        android:layout_alignTop="@+id/editText18"
-        android:layout_alignLeft="@+id/editText17"
-        android:layout_alignStart="@+id/editText17"
-        android:textSize="14dp" />
+        android:id="@+id/txtVFechaMin"
+        android:layout_alignTop="@+id/txtVValorMin"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="italic"
+        android:layout_marginRight="60dp" />
 
 
 </RelativeLayout>

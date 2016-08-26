@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="g507.controldeconsumo">
 
-    <meta-data
-        android:name="com.google.android.gms.vision.DEPENDENCIES"
-        android:value="barcode" />
-
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -30,6 +26,13 @@
         <activity
             android:name=".CambiarPassActivity"
             android:label="@string/title_activity_cambiar_pass" />
+        <activity android:name=".RegistroActivity"
+            android:label="@string/title_activity_registro"/>
+
+        <!--<meta-data
+        android:name="com.google.android.gms.vision.DEPENDENCIES"
+        android:value="barcode" />-->
+
     </application>
 
 </manifest>

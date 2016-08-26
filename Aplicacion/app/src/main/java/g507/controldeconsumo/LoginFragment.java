@@ -18,7 +18,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LoginFragment extends Fragment {
 
@@ -99,7 +98,7 @@ public class LoginFragment extends Fragment {
 
     private void ingresar() {
         boolean cancelar = false;
-        View focusView = null;
+        View campoConError = null;
 
         if (taskLogin != null) {
             return;
@@ -114,35 +113,35 @@ public class LoginFragment extends Fragment {
         String password = txtPassword.getText().toString();
 
         //Validacion de campos no vacios y pass de 8 caracteres minimo
+        //Valido de abajo a arriba para que marque el error del de mas arriba
         if (TextUtils.isEmpty(password)) {
             txtPassword.setError(getString(R.string.error_campo_requerido));
-            focusView = txtPassword;
+            campoConError = txtPassword;
             cancelar = true;
         } else if (!passwordValida(password)) {
             txtPassword.setError(getString(R.string.error_pass_invalida));
-            focusView = txtPassword;
+            campoConError = txtPassword;
             cancelar = true;
         }
 
         if (TextUtils.isEmpty(usuario)) {
             txtUsuario.setError(getString(R.string.error_campo_requerido));
-            focusView = txtUsuario;
+            campoConError = txtUsuario;
             cancelar = true;
         }
 
         if (cancelar) {
             //En caso de error, no loguea y hace foco en el primer campo con error
-            focusView.requestFocus();
+            campoConError.requestFocus();
         } else {
-            progressDialog = ProgressDialog.show(getActivity(), "Espere", "Autenticando", true);
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_autenticando), true);
             taskLogin = new UserLoginTask(usuario, password);
             taskLogin.execute((Void) null);
         }
     }
 
     private void abrirRegistro() {
-        //TODO
-        Toast.makeText(getActivity(), "Nueva cuenta", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getActivity(), RegistroActivity.class));
     }
 
     private void abrirRecuperarPass() {

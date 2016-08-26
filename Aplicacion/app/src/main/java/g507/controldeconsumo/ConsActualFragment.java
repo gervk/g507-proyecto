@@ -45,9 +45,8 @@ public class ConsActualFragment extends Fragment {
     private void consultar(){
         if(rgrpServicio.getCheckedRadioButtonId() == -1){
             Toast.makeText(getActivity(), R.string.error_selecc_servicio, Toast.LENGTH_SHORT).show();
-            return;
+        } else{
+            //TODO consultar
         }
-
-        //TODO consultar
     }
 }

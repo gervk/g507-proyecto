@@ -27,7 +27,7 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Luz"
+            android:text="Electricidad"
             android:id="@+id/rbtnLuz"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:focusable="false"
@@ -51,7 +51,7 @@
 
     <Spinner
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/spinPeriodo"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Consultar"
-        android:id="@+id/btnConsultarAcum"
+        android:id="@+id/btnConsEstadist"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
