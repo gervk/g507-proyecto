@@ -10,7 +10,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never" >
 
         <ViewFlipper
             android:layout_width="match_parent"
@@ -24,8 +25,7 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:layout_height="wrap_content">
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginTop="20dp"
-                    android:background="#00b95a" />
+                    android:background="@drawable/boton" />
 
             </LinearLayout>
 
@@ -189,7 +189,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
-                    android:background="#00b95a"
+                    android:background="@drawable/boton"
                     android:layout_marginTop="130dp" />
 
             </LinearLayout>

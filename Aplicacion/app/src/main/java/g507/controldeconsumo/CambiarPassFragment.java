@@ -15,6 +15,7 @@ import android.widget.ViewFlipper;
 import g507.controldeconsumo.modelo.PreguntaSeguridad;
 
 public class CambiarPassFragment extends Fragment {
+    private static final String ARG_FORM = "num_form";
     private static final String ARG_USERNAME = "arg_username";
     private static final int ID_PREG_TEST = 1;
     private static final String RESP_TEST = "abcd";
@@ -51,6 +52,13 @@ public class CambiarPassFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             username = getArguments().getString(ARG_USERNAME);
+        }
+
+        //Con esto carga el formulario del paso en que estaba al rotar la pantalla
+        //sin esto, si roto la pantalla vuelve siempre al paso 1
+        if(savedInstanceState != null){
+            int numForm = savedInstanceState.getInt(ARG_FORM);
+            viewFlipper.setDisplayedChild(numForm);
         }
     }
 
@@ -164,5 +172,12 @@ public class CambiarPassFragment extends Fragment {
         if(pregunta != null){
             txtVPreg.setText(pregunta.toString());
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //Guarda el numero del paso en que esta al rotar la pantalla
+        int numForm = viewFlipper.getDisplayedChild();
+        outState.putInt(ARG_FORM, numForm);
     }
 }

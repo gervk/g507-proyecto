@@ -12,7 +12,8 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView" >
+        android:id="@+id/scrollView"
+        android:overScrollMode="never" >
 
         <LinearLayout
             android:orientation="vertical"
@@ -39,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="K (coeficiente de modificación"
+                    android:text="K (coeficiente de modificación)"
                     android:id="@+id/textView4" />
 
                 <EditText
@@ -172,7 +173,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:background="#00b95a" />
+                android:background="@drawable/boton" />
         </LinearLayout>
     </ScrollView>
 

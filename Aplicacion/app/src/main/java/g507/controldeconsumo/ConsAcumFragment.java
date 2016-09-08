@@ -38,12 +38,11 @@ public class ConsAcumFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_cons_acum, container, false);
         rgrpServicio = (RadioGroup) view.findViewById(R.id.rgrpServicio);
         spinPeriodo = (Spinner) view.findViewById(R.id.spinPeriodo);
-        btnConsultar = (Button) view.findViewById(R.id.btnConsEstadist);
+        btnConsultar = (Button) view.findViewById(R.id.btnConsAcum);
 
         //Set de opciones en el spinner de periodo
         ArrayAdapter<Periodo> periodosAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item, Periodo.values());
-
         spinPeriodo.setAdapter(periodosAdapter);
 
         //Listener para el boton consultar
@@ -68,6 +67,7 @@ public class ConsAcumFragment extends Fragment {
         }
 
         //TODO consultar
+        Toast.makeText(getActivity(), R.string.error_servidor_no_disp, Toast.LENGTH_SHORT).show();
     }
 
 }

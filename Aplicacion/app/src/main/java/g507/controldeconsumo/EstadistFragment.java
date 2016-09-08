@@ -71,6 +71,7 @@ public class EstadistFragment extends Fragment {
         }
 
         //TODO consultar
+        Toast.makeText(getActivity(), R.string.error_servidor_no_disp, Toast.LENGTH_SHORT).show();
     }
 
 }

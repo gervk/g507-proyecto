@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -17,12 +17,13 @@
         android:id="@+id/textView2" />
 
     <RadioGroup
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/rgrpServicio"
-        android:layout_marginRight="20dp">
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -46,10 +47,11 @@
         android:text="Calcular"
         android:id="@+id/btnCalcular"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="@drawable/boton" />
+        android:background="@drawable/boton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,13 +59,17 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Consumo del mes:"
         android:id="@+id/textView3"
-        android:layout_marginTop="50dp" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="250dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/txtVConsumoMes"
+        android:layout_below="@+id/textView3"
+        android:layout_alignStart="@+id/textView3"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp" />
 
@@ -73,6 +79,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Costo aproximado próxima factura:"
         android:id="@+id/textView19"
+        android:layout_below="@+id/txtVConsumoMes"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="250dp"
         android:layout_marginTop="20dp" />
 
     <TextView
@@ -80,7 +89,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/txtVCostoProxFac"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp" />
+        android:layout_below="@+id/textView19"
+        android:layout_alignStart="@+id/textView19"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp" />
 
-</LinearLayout>
+</RelativeLayout>

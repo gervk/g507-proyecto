@@ -3,6 +3,7 @@ package g507.controldeconsumo;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -13,17 +14,20 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ImageView imagen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(!sesionIniciada()){
+        if (!sesionIniciada()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         } else {
@@ -39,6 +43,8 @@ public class MainActivity extends AppCompatActivity
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
+
+            imagen = (ImageView) this.findViewById(R.id.imgFondo);
         }
     }
 
@@ -52,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+/* Lo dejo comentado asi no se crea en la barra el boton de settings
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -73,32 +80,33 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+*/
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        item.setChecked(true);
+        imagen.setVisibility(View.GONE);
 
-        // Handle navigation view item clicks here.
+        item.setChecked(true);
         int idItemSelecc = item.getItemId();
 
-        switch(idItemSelecc){
+        switch (idItemSelecc) {
             case R.id.asoc_arduino:
-                cargarFragment(new AsociarFragment());
+                cargarFragment(new AsociarFragment(), getString(R.string.title_frag_asoc_arduino),false);
                 break;
             case R.id.config:
-                cargarFragment(new ConfigFragment());
+                cargarFragment(new ConfigFragment(), getString(R.string.title_frag_config), true);
                 break;
             case R.id.consumo_actual:
-                cargarFragment(new ConsActualFragment());
+                cargarFragment(new ConsActualFragment(), getString(R.string.title_frag_cons_actual), true);
                 break;
             case R.id.consumo_acumulado:
-                cargarFragment(new ConsAcumFragment());
+                cargarFragment(new ConsAcumFragment(), getString(R.string.title_frag_cons_acum), true);
                 break;
             case R.id.prox_factura:
-                cargarFragment(new ProxFacFragment());
+                cargarFragment(new ProxFacFragment(), getString(R.string.title_frag_prox_factura), true);
                 break;
             case R.id.estadisticas:
-                cargarFragment(new EstadistFragment());
+                cargarFragment(new EstadistFragment(), getString(R.string.title_frag_estadisticas), true);
                 break;
             case R.id.cerrar_sesion:
                 new AlertDialog.Builder(this)
@@ -111,7 +119,8 @@ public class MainActivity extends AppCompatActivity
                                 prefs.edit().putString(getString(R.string.pref_sesion_inic), "").apply();
                                 startActivity(new Intent(getBaseContext(), LoginActivity.class));
                                 finish();
-                            }})
+                            }
+                        })
 
                         .setNegativeButton("No", null).show();
                 break;
@@ -127,7 +136,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * True o false segun si hay una sesion iniciada
      */
-    private boolean sesionIniciada(){
+    private boolean sesionIniciada() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         String usuarioLogueado = prefs.getString(getString(R.string.pref_sesion_inic), "");
@@ -135,7 +144,13 @@ public class MainActivity extends AppCompatActivity
         return !usuarioLogueado.isEmpty();
     }
 
-    private void cargarFragment(Fragment fragment){
+    private void cargarFragment(Fragment fragment, String titulo, boolean rotable) {
+        setTitle(titulo);
+        if (rotable) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment,
                 fragment).commit();
     }

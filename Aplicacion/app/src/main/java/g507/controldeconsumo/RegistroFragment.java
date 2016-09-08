@@ -17,6 +17,8 @@ import g507.controldeconsumo.modelo.PreguntaSeguridad;
 
 public class RegistroFragment extends Fragment {
 
+    private static final String ARG_FORM = "num_form";
+
     private View view;
     private ViewFlipper viewFlipper;
     private EditText txtUsername;
@@ -40,6 +42,13 @@ public class RegistroFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Con esto carga el formulario del paso en que estaba al rotar la pantalla
+        //sin esto, si roto la pantalla vuelve siempre al paso 1
+        if(savedInstanceState != null){
+            int numForm = savedInstanceState.getInt(ARG_FORM);
+            viewFlipper.setDisplayedChild(numForm);
+        }
     }
 
     @Override
@@ -198,4 +207,13 @@ public class RegistroFragment extends Fragment {
     private boolean passwordValida(String password){
         return password.length() >= 8;
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //Guarda el numero del paso en que esta al rotar la pantalla
+        int numForm = viewFlipper.getDisplayedChild();
+        outState.putInt(ARG_FORM, numForm);
+    }
+
+
 }

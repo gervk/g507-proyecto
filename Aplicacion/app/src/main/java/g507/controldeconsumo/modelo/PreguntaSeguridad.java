@@ -4,8 +4,7 @@ public enum PreguntaSeguridad {
     //Los id tienen que coincidir en la bd
     PELICULA(1, "Nombre de película favorita?"),
     MASCOTA(2, "Nombre de tu primer mascota?"),
-    LIBRO(3, "Nombre de tu libro favorito?"),
-    PROFESOR(4, "Apellido de tu profesor/a favorito/a?");
+    LIBRO(3, "Nombre de tu libro favorito?");
 
 
     private int id;

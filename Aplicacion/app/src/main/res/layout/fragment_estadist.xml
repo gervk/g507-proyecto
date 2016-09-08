@@ -71,7 +71,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="#00b95a" />
+        android:background="@drawable/boton" />
 
     <TextView
         android:layout_width="wrap_content"

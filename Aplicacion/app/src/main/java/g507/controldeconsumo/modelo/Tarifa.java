@@ -3,7 +3,7 @@ package g507.controldeconsumo.modelo;
 public class Tarifa {
     private int id;
     private String descripcion;
-    private Empresa empresa;
+    private EmpresaElec empresa;
     private double cargoFijo;
     private double cargoVariable;
 
@@ -23,11 +23,11 @@ public class Tarifa {
         this.descripcion = descripcion;
     }
 
-    public Empresa getEmpresa() {
+    public EmpresaElec getEmpresa() {
         return empresa;
     }
 
-    public void setEmpresa(Empresa empresa) {
+    public void setEmpresa(EmpresaElec empresa) {
         this.empresa = empresa;
     }
 

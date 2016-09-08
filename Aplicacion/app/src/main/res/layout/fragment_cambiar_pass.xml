@@ -61,8 +61,8 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="30dp"
-                android:background="#00b95a"
-                android:text="Validar" />
+                android:text="Validar"
+                android:background="@drawable/boton" />
 
         </LinearLayout>
 
@@ -112,7 +112,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="30dp"
-                android:background="#00b95a"
+                android:background="@drawable/boton"
                 android:text="Guardar" />
 
         </LinearLayout>

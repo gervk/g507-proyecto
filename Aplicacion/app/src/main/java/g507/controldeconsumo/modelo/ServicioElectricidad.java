@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ServicioElectricidad {
     private int id;
-    private Empresa empresa;
+    private EmpresaElec empresa;
     private Tarifa tarifa;
 
     private double calcularCosto(List<Consumo> consumos){
@@ -21,11 +21,11 @@ public class ServicioElectricidad {
         this.id = id;
     }
 
-    public Empresa getEmpresa() {
+    public EmpresaElec getEmpresa() {
         return empresa;
     }
 
-    public void setEmpresa(Empresa empresa) {
+    public void setEmpresa(EmpresaElec empresa) {
         this.empresa = empresa;
     }
 

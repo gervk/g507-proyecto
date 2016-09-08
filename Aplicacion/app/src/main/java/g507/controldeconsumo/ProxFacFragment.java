@@ -48,7 +48,7 @@ public class ProxFacFragment extends Fragment {
             case -1:
                 Toast.makeText(getActivity(), R.string.error_selecc_servicio, Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.rbtnLuz:
+            case R.id.rbtnElect:
                 //TODO calcular factura electricidad
                 break;
             case R.id.rbtnAgua:

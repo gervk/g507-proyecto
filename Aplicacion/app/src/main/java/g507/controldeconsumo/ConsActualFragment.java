@@ -47,6 +47,7 @@ public class ConsActualFragment extends Fragment {
             Toast.makeText(getActivity(), R.string.error_selecc_servicio, Toast.LENGTH_SHORT).show();
         } else{
             //TODO consultar
+            Toast.makeText(getActivity(), R.string.error_servidor_no_disp, Toast.LENGTH_SHORT).show();
         }
     }
 }
