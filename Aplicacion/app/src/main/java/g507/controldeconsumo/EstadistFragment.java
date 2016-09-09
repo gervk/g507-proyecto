@@ -13,6 +13,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 public class EstadistFragment extends Fragment {
 
     private View view;
@@ -25,6 +30,7 @@ public class EstadistFragment extends Fragment {
     private TextView txtVFechaMax;
     private TextView txtVValorMin;
     private TextView txtVFechaMin;
+    private GraphView grafico;
 
     public EstadistFragment() {
         // Required empty public constructor
@@ -44,6 +50,7 @@ public class EstadistFragment extends Fragment {
         txtVFechaMax = (TextView) view.findViewById(R.id.txtVFechaMax);
         txtVValorMin = (TextView) view.findViewById(R.id.txtVValorMin);
         txtVFechaMin = (TextView) view.findViewById(R.id.txtVFechaMin);
+        grafico = (GraphView) view.findViewById(R.id.graph);
 
         String[] items = new String[]{"Por hora", "Por día", "Por mes"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(),R.layout.support_simple_spinner_dropdown_item, items);
@@ -72,6 +79,25 @@ public class EstadistFragment extends Fragment {
 
         //TODO consultar
         Toast.makeText(getActivity(), R.string.error_servidor_no_disp, Toast.LENGTH_SHORT).show();
+
+        mockGrafico();
+    }
+
+    private void mockGrafico() {
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                new DataPoint(0, 170),
+                new DataPoint(1, 156),
+                new DataPoint(2, 137),
+                new DataPoint(3, 180),
+                new DataPoint(4, 164),
+                new DataPoint(5, 220),
+                new DataPoint(6, 205)
+        });
+
+        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(grafico);
+        staticLabelsFormatter.setHorizontalLabels(new String[] {"lun", "mar", "mie", "jue", "vie", "sab", "dom"});
+        grafico.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+        grafico.addSeries(series);
     }
 
 }

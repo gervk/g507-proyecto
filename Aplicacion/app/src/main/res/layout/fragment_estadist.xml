@@ -1,170 +1,196 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
     tools:context="g507.controldeconsumo.EstadistFragment">
 
-    <TextView
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtVElegirServ"
-        android:text="Elegir servicio:"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_alignParentTop="true" />
+        android:overScrollMode="never">
 
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtVElegirServ"
-        android:layout_marginTop="20dp"
-        android:id="@+id/rgrpServicio"
-        android:layout_marginLeft="20dp"
-        android:orientation="horizontal">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context="g507.controldeconsumo.EstadistFragment">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Electricidad"
-            android:id="@+id/rbtnElect"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:id="@+id/txtVElegirServ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="Elegir servicio:"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Agua"
-            android:id="@+id/rbtnAgua"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginLeft="20dp" />
-    </RadioGroup>
+            <RadioGroup
+                android:id="@+id/rgrpServicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtVElegirServ"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tipo"
-        android:id="@+id/textView20"
-        android:layout_below="@+id/rgrpServicio"
-        android:layout_marginTop="20dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_alignParentStart="true" />
+                <RadioButton
+                    android:id="@+id/rbtnElect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Electricidad"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:id="@+id/spinnerEstadist"
-        android:layout_alignTop="@+id/textView20"
-        android:layout_toEndOf="@+id/txtVElegirServ"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:layout_alignParentEnd="false" />
+                <RadioButton
+                    android:id="@+id/rbtnAgua"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Agua"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </RadioGroup>
 
-    <Button
-        android:layout_below="@+id/spinnerEstadist"
-        android:layout_centerHorizontal="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Consultar"
-        android:id="@+id/btnConsEstadist"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/boton" />
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/rgrpServicio"
+                android:layout_marginTop="20dp"
+                android:text="Tipo"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Consumo promedio:"
-        android:id="@+id/textView21"
-        android:layout_below="@+id/btnConsEstadist"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="25dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <Spinner
+                android:id="@+id/spinnerEstadist"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="false"
+                android:layout_alignTop="@+id/textView20"
+                android:layout_toEndOf="@+id/txtVElegirServ"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtVValorProm"
-        android:layout_below="@+id/textView21"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginLeft="20dp"
-        android:textStyle="italic" />
+            <Button
+                android:id="@+id/btnConsEstadist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinnerEstadist"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/boton"
+                android:text="Consultar" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtVFechaProm"
-        android:layout_alignTop="@+id/txtVValorProm"
-        android:layout_alignParentEnd="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="italic"
-        android:layout_marginRight="60dp" />
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graph"
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:layout_below="@+id/btnConsEstadist"
+                android:layout_marginTop="25dp"
+                android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Consumo máximo:"
-        android:id="@+id/textView22"
-        android:layout_below="@+id/txtVValorProm"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/graph"
+                android:layout_marginTop="25dp"
+                android:text="Consumo promedio:"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtVValorMax"
-        android:layout_below="@+id/textView22"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginLeft="20dp"
-        android:textStyle="italic" />
+            <TextView
+                android:id="@+id/txtVValorProm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView21"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="italic" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtVFechaMax"
-        android:layout_alignTop="@+id/txtVValorMax"
-        android:layout_alignParentEnd="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="italic"
-        android:layout_marginRight="60dp" />
+            <TextView
+                android:id="@+id/txtVFechaProm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/txtVValorProm"
+                android:layout_marginRight="60dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="italic" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Consumo mínimo:"
-        android:id="@+id/textView23"
-        android:layout_below="@+id/txtVValorMax"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtVValorProm"
+                android:layout_marginTop="15dp"
+                android:text="Consumo máximo:"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtVValorMin"
-        android:layout_below="@+id/textView23"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginLeft="20dp"
-        android:textStyle="italic" />
+            <TextView
+                android:id="@+id/txtVValorMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView22"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="italic" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtVFechaMin"
-        android:layout_alignTop="@+id/txtVValorMin"
-        android:layout_alignParentEnd="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="italic"
-        android:layout_marginRight="60dp" />
+            <TextView
+                android:id="@+id/txtVFechaMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/txtVValorMax"
+                android:layout_marginRight="60dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="italic" />
 
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtVValorMax"
+                android:layout_marginTop="15dp"
+                android:text="Consumo mínimo:"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/txtVValorMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView23"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/txtVFechaMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/txtVValorMin"
+                android:layout_marginRight="60dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="italic" />
+
+        </RelativeLayout>
+    </ScrollView>
+</FrameLayout>
