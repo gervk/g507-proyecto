@@ -21,7 +21,10 @@ import android.widget.ImageView;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String ARG_FONDO = "arg_fondo";
+
     private ImageView imagen;
+    private boolean mostrarFondo = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,14 @@ public class MainActivity extends AppCompatActivity
             navigationView.setNavigationItemSelectedListener(this);
 
             imagen = (ImageView) this.findViewById(R.id.imgFondo);
+
+            //Si habia una instancia anterior, carga la variable para mostrar o no el fondo
+            if(savedInstanceState != null){
+                mostrarFondo = savedInstanceState.getBoolean(ARG_FONDO);
+            }
+            if(!mostrarFondo){
+                imagen.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -85,6 +96,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         imagen.setVisibility(View.GONE);
+        mostrarFondo = false;
 
         item.setChecked(true);
         int idItemSelecc = item.getItemId();
@@ -153,5 +165,12 @@ public class MainActivity extends AppCompatActivity
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment,
                 fragment).commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //Guarda temporalmente la variable mostrarFondo para la prox que se cree la vista, ej cuando se rota
+        outState.putBoolean(ARG_FONDO, mostrarFondo);
+        super.onSaveInstanceState(outState);
     }
 }
