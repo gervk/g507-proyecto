@@ -1,5 +1,3 @@
-USE enersaving;
-
 DROP TABLE pregunta_seguridad;
 
 DROP TABLE tipo_consumo;
@@ -14,4 +12,4 @@ DROP TABLE tarifa_luz;
 
 DROP TABLE servicio_luz;
 
-DROP TABLE usuarios;
+DROP TABLE usuario;
