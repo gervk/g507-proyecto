@@ -11,7 +11,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,7 +74,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="30dp"
-                android:background="#00b95a"
+                android:background="@drawable/boton"
                 android:text="Ingresar" />
 
             <Button
@@ -84,7 +85,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="30dp"
-                android:background="#00b95a"
+                android:background="@drawable/boton"
                 android:text="Sin cuenta? Regístrese" />
 
         </LinearLayout>

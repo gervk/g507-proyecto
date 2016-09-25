@@ -8,6 +8,12 @@
     <string name="title_frag_config_cuenta">Cuenta</string>
     <string name="title_frag_config_notif">Notificaciones</string>
     <string name="title_frag_config_serv_agua">Servicio de agua</string>
+    <string name="title_frag_asoc_arduino">Asociar Arduino</string>
+    <string name="title_frag_config">Configuracion</string>
+    <string name="title_frag_cons_actual">Consumo Actual</string>
+    <string name="title_frag_cons_acum">Consumo Acumulado</string>
+    <string name="title_frag_prox_factura">Próxima Factura</string>
+    <string name="title_frag_estadisticas">Estadísticas</string>
 
     <!-- Items nav -->
     <string name="nav_asoc_arduino">Asociar Arduino</string>
@@ -42,6 +48,10 @@
     <string name="pref_limitar_agua">limitarAgua</string>
     <string name="pref_limite_elect">limiteElect</string>
     <string name="pref_limite_agua">limiteAgua</string>
+    <string name="pref_medir_elect">medirElect</string>
+    <string name="pref_medir_agua">medirAgua</string>
+    <string name="pref_empresa_elect">empresaElect</string>
+    <string name="pref_empresa_agua">empresaAgua</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

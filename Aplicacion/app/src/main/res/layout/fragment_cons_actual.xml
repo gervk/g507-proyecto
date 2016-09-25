@@ -27,9 +27,10 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Luz"
-            android:id="@+id/rbtnLuz"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:text="Electricidad"
+            android:id="@+id/rbtnElect"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:checked="false" />
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -48,7 +49,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="#00b95a" />
+        android:background="@drawable/boton" />
 
     <TextView
         android:layout_width="wrap_content"

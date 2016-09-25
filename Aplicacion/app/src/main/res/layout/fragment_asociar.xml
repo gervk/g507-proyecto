@@ -20,7 +20,7 @@
         android:textAlignment="center" />
 
     <SurfaceView
-        android:layout_width="300dp"
+        android:layout_width="230dp"
         android:layout_height="300dp"
         android:id="@+id/camera_view"
         android:layout_gravity="center_horizontal"
@@ -44,5 +44,5 @@
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="#00b95a" />
+        android:background="@drawable/boton" />
 </LinearLayout>

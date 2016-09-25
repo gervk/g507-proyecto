@@ -121,5 +121,4 @@ public class AsociarFragment extends Fragment {
 
         //TODO asociar
     }
-
 }
