@@ -19,6 +19,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class EstadistFragment extends Fragment {
+    //Libreria para los graficos http://www.android-graphview.org/
 
     private View view;
     private RadioGroup rgrpServicio;

@@ -36,6 +36,8 @@
     <string name="error_resp_incorrecta">Respuesta incorrecta</string>
     <string name="error_no_coinciden">La contraseña no coincide</string>
     <string name="error_servidor_no_disp">Servidor no disponible</string>
+    <string name="error_internet_no_disp">Conexion a internet no disponible</string>
+    <string name="error_consulta_serv">Error en la consulta</string>
 
     <!-- Msjs -->
     <string name="msj_espere">Espere</string>
