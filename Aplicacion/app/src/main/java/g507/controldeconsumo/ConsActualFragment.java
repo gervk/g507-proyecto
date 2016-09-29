@@ -1,13 +1,16 @@
 package g507.controldeconsumo;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,9 +27,12 @@ public class ConsActualFragment extends Fragment implements TaskListener{
 
     private View view;
     private RadioGroup rgrpServicio;
+    private RadioButton rbtnElect;
+    private RadioButton rbtnAgua;
     private Button btnConsultar;
     private TextView txtVResulActual;
-
+    private Integer tipoServicio;
+    private Integer idArduino;
     private ProgressDialog progressDialog;
     private boolean descargandoDatos = false;
 
@@ -55,6 +61,8 @@ public class ConsActualFragment extends Fragment implements TaskListener{
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_cons_actual, container, false);
         rgrpServicio = (RadioGroup) view.findViewById(R.id.rgrpServicio);
+        rbtnElect = (RadioButton) view.findViewById(R.id.rbtnElect);
+        rbtnAgua = (RadioButton) view.findViewById(R.id.rbtnAgua);
         btnConsultar = (Button) view.findViewById(R.id.btnConsultarActual);
         txtVResulActual = (TextView) view.findViewById(R.id.txtVResulActual);
 
@@ -79,7 +87,16 @@ public class ConsActualFragment extends Fragment implements TaskListener{
             if(!Utils.conexionAInternetOk(getActivity())){
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
             } else{
-                new TaskGetUrl(this).execute(ConstructorUrls.consumoActual(1723000001, 1));
+                if(rbtnElect.isChecked()) {
+                    tipoServicio = 1;
+                }
+                else {
+                    tipoServicio = 2;
+                }
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                //había que ponerle un valor default, puse que sea -1
+                idArduino = Integer.parseInt(prefs.getString(getString(R.string.pref_id_arduino), "-1"));
+                new TaskGetUrl(this).execute(ConstructorUrls.consumoActual(idArduino, tipoServicio));
             }
         }
     }

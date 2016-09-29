@@ -54,6 +54,7 @@
     <string name="pref_medir_agua">medirAgua</string>
     <string name="pref_empresa_elect">empresaElect</string>
     <string name="pref_empresa_agua">empresaAgua</string>
+    <string name="pref_id_arduino">idArduino</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
