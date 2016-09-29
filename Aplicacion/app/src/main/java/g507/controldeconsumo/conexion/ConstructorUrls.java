@@ -12,14 +12,15 @@ public class ConstructorUrls {
     private static final String PATH_API = "api";
     private static final String PATH_VERSION = "v1";
 
-    public static String consumoActual(Integer codArduino){
+    public static String consumoActual(Integer codArduino, Integer tipoConsumo){
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(PROTOCOLO)
                 .authority(URL_BASE)
                 .appendPath(PATH_API)
                 .appendPath(PATH_VERSION)
                 .appendPath("consumo")
-                .appendQueryParameter("id", String.valueOf(codArduino));
+                .appendPath(String.valueOf(codArduino))
+                .appendQueryParameter("tipo", String.valueOf(tipoConsumo));
 
         return builder.build().toString();
     }

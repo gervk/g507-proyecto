@@ -79,7 +79,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
             if(!Utils.conexionAInternetOk(getActivity())){
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
             } else{
-                new TaskGetUrl(this).execute(ConstructorUrls.consumoActual(1000020009));
+                new TaskGetUrl(this).execute(ConstructorUrls.consumoActual(1723000001, 1));
             }
         }
     }
@@ -105,7 +105,8 @@ public class ConsActualFragment extends Fragment implements TaskListener{
 
         if(json != null){
             try {
-                txtVResulActual.setText(String.valueOf(json.getJSONArray("data").getJSONObject(0).getDouble("consumo")));
+                txtVResulActual.setText(String.valueOf(json.getJSONObject("data").getDouble("consumo")));
+                //txtVResulActual.setText(String.valueOf(json.getJSONArray("data").getJSONObject(0).getDouble("consumo")));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
