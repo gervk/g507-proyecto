@@ -7,19 +7,14 @@ import org.json.JSONObject;
  */
 public interface TaskListener {
     /**
-     * Define que hace cuando se inicia la task
+     * Define que hace cuando se inicia la request
      */
-    void inicioTask();
+    void inicioRequest();
 
     /**
-     * Procesamiento del json obtenido en la consulta
+     * Procesamiento del json obtenido en el request
      * @param json
      */
-    void finTaskGetUrl(JSONObject json);
+    void finRequest(JSONObject json);
 
-    /**
-     * Define que hace cuando termina el guardado de datos
-     * @param postOk true o false segun si hubo errores
-     */
-    void finTaskPost(boolean postOk);
 }

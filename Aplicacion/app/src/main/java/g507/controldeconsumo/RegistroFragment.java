@@ -1,6 +1,10 @@
 package g507.controldeconsumo;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,9 +17,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import g507.controldeconsumo.conexion.ConstructorUrls;
+import g507.controldeconsumo.conexion.TaskRequestUrl;
+import g507.controldeconsumo.conexion.TaskListener;
 import g507.controldeconsumo.modelo.PreguntaSeguridad;
 
-public class RegistroFragment extends Fragment {
+public class RegistroFragment extends Fragment implements TaskListener {
 
     private static final String ARG_FORM = "num_form";
 
@@ -34,6 +44,8 @@ public class RegistroFragment extends Fragment {
     private Spinner spinBarrio;
     private Button btnRegistrar;
 
+    private boolean guardandoDatos = false;
+    private ProgressDialog progressDialog;
 
     public RegistroFragment() {
         // Required empty public constructor
@@ -93,6 +105,9 @@ public class RegistroFragment extends Fragment {
     }
 
     private void pasarASegundoPaso(){
+        if(guardandoDatos)
+            return;
+
         boolean cancelar = false;
         View campoConError = null;
 
@@ -159,7 +174,9 @@ public class RegistroFragment extends Fragment {
         if(cancelar){
             campoConError.requestFocus();
         } else{
-            viewFlipper.showNext();
+            //viewFlipper.showNext(); por ahora los datos del segundo paso no se graban en bd
+            //esto en realidad va en el boton del paso 2
+            new TaskRequestUrl(this).execute(ConstructorUrls.registro(username, password, email, pregunta, 1), "POST");
         }
     }
 
@@ -215,5 +232,45 @@ public class RegistroFragment extends Fragment {
         outState.putInt(ARG_FORM, numForm);
     }
 
+    public void guardarUsuarioLogueado(Integer idUsuario) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.edit().putInt(getString(R.string.pref_sesion_inic), idUsuario).apply();
+    }
 
+    private void cargarMainActivity() {
+        startActivity(new Intent(getActivity(), MainActivity.class));
+        getActivity().finish();
+    }
+
+    @Override
+    public void inicioRequest() {
+        guardandoDatos = true;
+        progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
+    }
+
+    @Override
+    public void finRequest(JSONObject json) {
+        guardandoDatos = false;
+
+        if(progressDialog != null)
+            progressDialog.dismiss();
+
+        if(json != null){
+            try {
+                if(json.getString("status").equals("ok")){
+                    Integer idUsuario = json.getJSONObject("data").getInt("id");
+
+                    guardarUsuarioLogueado(idUsuario);
+                    cargarMainActivity();
+                } else if(json.getString("status").equals("error")) {
+                    Toast.makeText(getActivity(), "Error en el registro" , Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
+        }
+    }
 }

@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -18,17 +17,19 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class LoginFragment extends Fragment {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import g507.controldeconsumo.conexion.ConstructorUrls;
+import g507.controldeconsumo.conexion.TaskListener;
+import g507.controldeconsumo.conexion.TaskRequestUrl;
+
+public class LoginFragment extends Fragment implements TaskListener{
 
     private static final String ARG_USERNAME = "arg_username";
 
-    private static final String USUARIO_TEST = "admin";
-    private static final String PASS_TEST = "admin123";
-
-    private UserLoginTask taskLogin = null;
-
-    // UI references.
     private View viewPrincipal;
     private EditText txtUsuario;
     private EditText txtPassword;
@@ -37,6 +38,7 @@ public class LoginFragment extends Fragment {
     private TextView linkRecupContr;
 
     private ProgressDialog progressDialog;
+    private boolean autenticando = false;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -97,12 +99,11 @@ public class LoginFragment extends Fragment {
     }
 
     private void ingresar() {
+        if(autenticando)
+            return;
+
         boolean cancelar = false;
         View campoConError = null;
-
-        if (taskLogin != null) {
-            return;
-        }
 
         // Resetea msjs de error
         txtUsuario.setError(null);
@@ -134,9 +135,7 @@ public class LoginFragment extends Fragment {
             //En caso de error, no loguea y hace foco en el primer campo con error
             campoConError.requestFocus();
         } else {
-            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_autenticando), true);
-            taskLogin = new UserLoginTask(usuario, password);
-            taskLogin.execute((Void) null);
+            new TaskRequestUrl(this).execute(ConstructorUrls.login(usuario, password), "GET");
         }
     }
 
@@ -166,9 +165,9 @@ public class LoginFragment extends Fragment {
         return password.length() >= 8;
     }
 
-    public void guardarUsuarioLogueado(String user) {
+    public void guardarUsuarioLogueado(Integer idUsuario) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        prefs.edit().putString(getString(R.string.pref_sesion_inic), user).apply();
+        prefs.edit().putInt(getString(R.string.pref_sesion_inic), idUsuario).apply();
     }
 
     private void cargarMainActivity() {
@@ -176,49 +175,36 @@ public class LoginFragment extends Fragment {
         getActivity().finish();
     }
 
-    //Se usa un AsyncTask para crear un thread nuevo y no conectarse con la BD en el thread UI
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    @Override
+    public void inicioRequest() {
+        autenticando = true;
+        progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_autenticando), true);
+    }
 
-        private final String usuario;
-        private final String password;
+    @Override
+    public void finRequest(JSONObject json) {
+        autenticando = false;
 
-        UserLoginTask(String usuario, String password) {
-            this.usuario = usuario;
-            this.password = password;
-        }
+        if(progressDialog != null)
+            progressDialog.dismiss();
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: conectar con la bd
-
+        if(json != null){
             try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
+                if(json.getString("status").equals("ok")){
+                    Integer idUsuario = json.getJSONObject("data").getInt("id");
+
+                    guardarUsuarioLogueado(idUsuario);
+                    cargarMainActivity();
+                } else if(json.getString("status").equals("error")){
+                    Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             }
-
-            return (usuario.equals(USUARIO_TEST) && password.equals(PASS_TEST));
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            taskLogin = null;
-            progressDialog.dismiss();
-
-            if (success) {
-                guardarUsuarioLogueado(usuario);
-
-                cargarMainActivity();
-            } else {
-                txtPassword.setError(getString(R.string.error_pass_incorrecta));
-                txtPassword.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            taskLogin = null;
-            progressDialog.dismiss();
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
         }
     }
+
 }

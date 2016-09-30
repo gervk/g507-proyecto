@@ -20,7 +20,7 @@ import org.json.JSONObject;
 
 import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.Utils;
-import g507.controldeconsumo.conexion.TaskGetUrl;
+import g507.controldeconsumo.conexion.TaskRequestUrl;
 import g507.controldeconsumo.conexion.TaskListener;
 
 public class ConsActualFragment extends Fragment implements TaskListener{
@@ -96,7 +96,11 @@ public class ConsActualFragment extends Fragment implements TaskListener{
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 //había que ponerle un valor default, puse que sea -1
                 idArduino = Integer.parseInt(prefs.getString(getString(R.string.pref_id_arduino), "-1"));
-                new TaskGetUrl(this).execute(ConstructorUrls.consumoActual(idArduino, tipoServicio));
+
+                if(idArduino != -1)
+                    new TaskRequestUrl(this).execute(ConstructorUrls.consumoActual(idArduino, tipoServicio), "GET");
+                else
+                    Toast.makeText(getActivity(), "No hay un arduino asociado", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -111,33 +115,33 @@ public class ConsActualFragment extends Fragment implements TaskListener{
     }
 
     @Override
-    public void inicioTask() {
+    public void inicioRequest() {
         descargandoDatos = true;
         progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
 
     @Override
-    public void finTaskGetUrl(JSONObject json) {
+    public void finRequest(JSONObject json) {
         descargandoDatos = false;
-
-        if(json != null){
-            try {
-                txtVResulActual.setText(String.valueOf(json.getJSONObject("data").getDouble("consumo")));
-                //txtVResulActual.setText(String.valueOf(json.getJSONArray("data").getJSONObject(0).getDouble("consumo")));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.error_consulta_serv) , Toast.LENGTH_SHORT).show();
-        }
 
         if(progressDialog != null)
             progressDialog.dismiss();
-    }
 
-    @Override
-    public void finTaskPost(boolean postOk) {
-
+        if(json != null){
+            try {
+                if(json.getString("status").equals("ok")){
+                    txtVResulActual.setText(String.valueOf(json.getJSONObject("data").getDouble("consumo")));
+                    //txtVResulActual.setText(String.valueOf(json.getJSONArray("data").getJSONObject(0).getDouble("consumo")));
+                } else if(json.getString("status").equals("error")){
+                    Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

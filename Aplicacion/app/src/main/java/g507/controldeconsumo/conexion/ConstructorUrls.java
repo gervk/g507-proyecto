@@ -2,6 +2,8 @@ package g507.controldeconsumo.conexion;
 
 import android.net.Uri;
 
+import g507.controldeconsumo.modelo.PreguntaSeguridad;
+
 /**
  * Genera las URL necesarias para las consultas/guardado de datos
  * Al estar todas aca es mas facil corregirlas
@@ -35,6 +37,36 @@ public class ConstructorUrls {
                 .appendPath("autenticar")
                 .appendQueryParameter("username", usuario)
                 .appendQueryParameter("pass", password);
+
+        return builder.build().toString();
+    }
+
+    public static String registro(String usuario, String pass, String mail, PreguntaSeguridad pregSeg, int respPreg){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .authority(URL_BASE)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("usuario")
+                .appendQueryParameter("username", usuario)
+                .appendQueryParameter("pass", pass)
+                .appendQueryParameter("mail", mail)
+                .appendQueryParameter("idPregSeg", String.valueOf(pregSeg.getId()))
+                .appendQueryParameter("respPreg", String.valueOf(respPreg));
+
+        return builder.build().toString();
+    }
+
+    public static String asociarArduino(Integer idUsuario, Integer idArduino){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .authority(URL_BASE)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("usuario")
+                .appendPath("regArduino")
+                .appendQueryParameter("id", String.valueOf(idUsuario))
+                .appendQueryParameter("arduino", String.valueOf(idArduino));
 
         return builder.build().toString();
     }

@@ -1,5 +1,6 @@
 package g507.controldeconsumo;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -20,9 +21,16 @@ import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
-public class AsociarFragment extends Fragment {
+import g507.controldeconsumo.conexion.ConstructorUrls;
+import g507.controldeconsumo.conexion.TaskListener;
+import g507.controldeconsumo.conexion.TaskRequestUrl;
+
+public class AsociarFragment extends Fragment implements TaskListener{
 
     //Tutorial lectura codigo QR
     //http://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680
@@ -34,6 +42,11 @@ public class AsociarFragment extends Fragment {
 
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
+
+    private String resultado;
+
+    private ProgressDialog progressDialog;
+    private boolean guardandoDatos = false;
 
     public AsociarFragment() {
         // Required empty public constructor
@@ -115,15 +128,50 @@ public class AsociarFragment extends Fragment {
     }
 
     private void asociarArduino(){
-        String resultado = txtResultado.getText().toString();
+        if(guardandoDatos)
+            return;
+
+        resultado = txtResultado.getText().toString();
         if(resultado.equals("") /* || !validarCodigoQr() */){
             Toast.makeText(getActivity(), R.string.error_qr_arduino, Toast.LENGTH_SHORT).show();
             return;
         }
-        //Guardo el id del Arduino en SharedPreferences
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        prefs.edit().putString(getString(R.string.pref_id_arduino), resultado).apply();
 
-        //TODO asociar
+        //Leo el id de usuario logeado para guardarle el arduino
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int idUsuario = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
+
+        new TaskRequestUrl(this).execute(ConstructorUrls.asociarArduino(idUsuario, Integer.parseInt(resultado)), "POST");
+    }
+
+    @Override
+    public void inicioRequest() {
+        guardandoDatos = true;
+        progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
+    }
+
+    @Override
+    public void finRequest(JSONObject json) {
+        guardandoDatos = false;
+
+        if(progressDialog != null)
+            progressDialog.dismiss();
+
+        if(json != null){
+            try {
+                if(json.getString("status").equals("ok")){
+                    //Guardo el id del Arduino en SharedPreferences
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    prefs.edit().putString(getString(R.string.pref_id_arduino), resultado).apply();
+
+                    Toast.makeText(getActivity(), "Arduino asociado correctamente" , Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
+        }
     }
 }

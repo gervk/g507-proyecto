@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity
                         .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                                prefs.edit().putString(getString(R.string.pref_sesion_inic), "").apply();
+                                prefs.edit().putInt(getString(R.string.pref_sesion_inic), -1).apply();
                                 startActivity(new Intent(getBaseContext(), LoginActivity.class));
                                 finish();
                             }
@@ -151,9 +151,9 @@ public class MainActivity extends AppCompatActivity
     private boolean sesionIniciada() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String usuarioLogueado = prefs.getString(getString(R.string.pref_sesion_inic), "");
+        Integer idusuarioLogueado = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
 
-        return !usuarioLogueado.isEmpty();
+        return idusuarioLogueado != -1;
     }
 
     private void cargarFragment(Fragment fragment, String titulo, boolean rotable) {

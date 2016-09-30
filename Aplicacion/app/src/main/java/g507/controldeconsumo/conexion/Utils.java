@@ -35,9 +35,12 @@ public class Utils {
     }
 
     /**
-     * Hace un GET sobre la url y devuelve un string
+     * Hace un request sobre la url dada
+     * @param direccUrl
+     * @param metodo "GET" / "POST"
+     * @return
      */
-    public static String getUrl(String direccUrl) {
+    public static String requestUrl(String direccUrl, String metodo) {
         String respuesta;
         URL url;
         HttpURLConnection conexionUrl = null;
@@ -52,7 +55,7 @@ public class Utils {
 
         try {
             conexionUrl = (HttpURLConnection) url.openConnection();
-            conexionUrl.setRequestMethod("GET");
+            conexionUrl.setRequestMethod(metodo);
             conexionUrl.connect();
 
             InputStream inputStream = conexionUrl.getInputStream();
