@@ -70,4 +70,17 @@ public class ConstructorUrls {
 
         return builder.build().toString();
     }
+
+    public static String cambiarContraseña(Integer idUsuario, String pass) {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .authority(URL_BASE)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("usuario")
+                .appendPath(String.valueOf(idUsuario))
+                .appendQueryParameter("newPassword", pass);
+
+        return builder.build().toString();
+    }
 }

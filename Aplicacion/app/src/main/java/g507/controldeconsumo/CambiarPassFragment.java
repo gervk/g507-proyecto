@@ -1,7 +1,10 @@
 package g507.controldeconsumo;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.BoolRes;
 import android.support.v4.app.Fragment;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +14,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+import android.preference.PreferenceManager;
+import android.app.ProgressDialog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import g507.controldeconsumo.conexion.ConstructorUrls;
+import g507.controldeconsumo.conexion.Utils;
+import g507.controldeconsumo.conexion.TaskRequestUrl;
+import g507.controldeconsumo.conexion.TaskListener;
 
 import g507.controldeconsumo.modelo.PreguntaSeguridad;
 
-public class CambiarPassFragment extends Fragment {
+public class CambiarPassFragment extends Fragment implements TaskListener {
     private static final String ARG_FORM = "num_form";
     private static final String ARG_USERNAME = "arg_username";
     private static final int ID_PREG_TEST = 1;
@@ -34,6 +47,9 @@ public class CambiarPassFragment extends Fragment {
     private EditText txtNuevaPass;
     private EditText txtConfNuevaPass;
     private Button btnNuevaPass;
+    private Integer idUsuario;
+    private boolean conectando = false;
+    private ProgressDialog progressDialog;
 
     public CambiarPassFragment() {
         // Required empty public constructor
@@ -151,10 +167,20 @@ public class CambiarPassFragment extends Fragment {
             campoConError.requestFocus();
         } else{
             //TODO guardar en BD
-            Toast.makeText(getActivity(), getString(R.string.error_servidor_no_disp), Toast.LENGTH_SHORT).show();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            //había que ponerle un valor default, puse que sea -1
+            idUsuario = Integer.parseInt(prefs.getString(getString(R.string.pref_sesion_inic), "-1"));
+
+            if(idUsuario != -1)
+                new TaskRequestUrl(this).execute(ConstructorUrls.cambiarContraseña(idUsuario, pass), "PUT");
+            else
+                Toast.makeText(getActivity(), "No hay un id de usuario asociado", Toast.LENGTH_SHORT).show();
+        }
+            //Toast.makeText(getActivity(), getString(R.string.error_servidor_no_disp), Toast.LENGTH_SHORT).show();
         }
 
-    }
+
+
 
     private boolean passwordValida(String password){
         return password.length() >= 8;
@@ -174,10 +200,45 @@ public class CambiarPassFragment extends Fragment {
         }
     }
 
+    private void cargarMainActivity() {
+        startActivity(new Intent(getActivity(), MainActivity.class));
+        getActivity().finish();
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         //Guarda el numero del paso en que esta al rotar la pantalla
         int numForm = viewFlipper.getDisplayedChild();
         outState.putInt(ARG_FORM, numForm);
+    }
+
+    @Override
+    public void inicioRequest() {
+        conectando = true;
+        progressDialog = ProgressDialog.show(getActivity(), "Espere", getString(R.string.msj_cargando), true);
+    }
+
+    @Override
+    public void finRequest(JSONObject json) {
+        conectando = false;
+
+        if(progressDialog != null)
+            progressDialog.dismiss();
+
+        if(json != null){
+            try {
+                if(json.getString("status").equals("ok")){
+
+                    cargarMainActivity();
+                } else if(json.getString("status").equals("error")){
+                    Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
+        }
     }
 }
