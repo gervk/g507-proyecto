@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 public class CambiarPassActivity extends AppCompatActivity {
+    public static final String ARG_ID_USUARIO = "arg_id_usuario";
+    public static final String ARG_ID_PREG = "arg_id_preg";
+    public static final String ARG_RESP_PREG = "arg_resp_preg";
 
-    private static final String ARG_USERNAME = "arg_username";
-
-    private String username;
+    private Integer idUsuario;
+    private Integer idPregSeguridad;
+    private String respPregSeguridad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,10 +19,13 @@ public class CambiarPassActivity extends AppCompatActivity {
 
         if(savedInstanceState == null){
             Bundle args = getIntent().getExtras();
-            if(args != null)
-                username = args.getString(ARG_USERNAME);
+            if(args != null) {
+                idUsuario = args.getInt(ARG_ID_USUARIO);
+                idPregSeguridad = args.getInt(ARG_ID_PREG);
+                respPregSeguridad = args.getString(ARG_RESP_PREG);
+            }
 
-            CambiarPassFragment fragment = CambiarPassFragment.newInstance(username);
+            CambiarPassFragment fragment = CambiarPassFragment.newInstance(idUsuario, idPregSeguridad, respPregSeguridad);
             getSupportFragmentManager().beginTransaction().add(
                     R.id.container_cambiar_pass, fragment).commit();
         }

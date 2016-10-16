@@ -95,7 +95,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
                 }
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 //había que ponerle un valor default, puse que sea -1
-                idArduino = Integer.parseInt(prefs.getString(getString(R.string.pref_id_arduino), "-1"));
+                idArduino = prefs.getInt(getString(R.string.pref_id_arduino), -1);
 
                 if(idArduino != -1)
                     new TaskRequestUrl(this).execute(ConstructorUrls.consumoActual(idArduino, tipoServicio), "GET");
@@ -130,7 +130,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
-                    txtVResulActual.setText(String.valueOf(json.getJSONObject("data")));
+                    txtVResulActual.setText(String.valueOf(json.getInt("data")));
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }

@@ -169,8 +169,6 @@ public class RegistroFragment extends Fragment implements TaskListener {
             cancelar = true;
         }
 
-        //TODO validar con BD que no se repita el nombre de usuario ni el mail
-
         if(cancelar){
             campoConError.requestFocus();
         } else{

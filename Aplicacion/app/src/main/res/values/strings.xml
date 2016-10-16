@@ -43,7 +43,6 @@
     <!-- Msjs -->
     <string name="msj_espere">Espere</string>
     <string name="msj_cargando">Cargando</string>
-    <string name="msj_autenticando">Autenticando</string>
 
     <!-- Claves para las SharedPrefferences -->
     <string name="pref_sesion_inic">sesionIniciada</string>

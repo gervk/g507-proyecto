@@ -83,4 +83,29 @@ public class ConstructorUrls {
 
         return builder.build().toString();
     }
+
+    public static String getUsuario(String username){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .authority(URL_BASE)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("usuario")
+                .appendPath(username)
+                .appendQueryParameter("username", "1");
+
+        return builder.build().toString();
+    }
+
+    public static String getUsuario(Integer idUsuario){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .authority(URL_BASE)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("usuario")
+                .appendPath(String.valueOf(idUsuario));
+
+        return builder.build().toString();
+    }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -28,8 +29,6 @@ import g507.controldeconsumo.conexion.TaskRequestUrl;
 
 public class LoginFragment extends Fragment implements TaskListener{
 
-    private static final String ARG_USERNAME = "arg_username";
-
     private View viewPrincipal;
     private EditText txtUsuario;
     private EditText txtPassword;
@@ -39,6 +38,7 @@ public class LoginFragment extends Fragment implements TaskListener{
 
     private ProgressDialog progressDialog;
     private boolean autenticando = false;
+    private boolean cargandoDatosCambioPass = false;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -135,6 +135,7 @@ public class LoginFragment extends Fragment implements TaskListener{
             //En caso de error, no loguea y hace foco en el primer campo con error
             campoConError.requestFocus();
         } else {
+            autenticando = true;
             new TaskRequestUrl(this).execute(ConstructorUrls.login(usuario, password), "GET");
         }
     }
@@ -144,6 +145,9 @@ public class LoginFragment extends Fragment implements TaskListener{
     }
 
     private void abrirRecuperarPass() {
+        if(cargandoDatosCambioPass)
+            return;
+
         String usuario = txtUsuario.getText().toString();
 
         if (TextUtils.isEmpty(usuario)) {
@@ -152,26 +156,24 @@ public class LoginFragment extends Fragment implements TaskListener{
             return;
         }
 
-        //TODO validar que exista el usuario
-
-        Intent intent = new Intent(getActivity(), CambiarPassActivity.class);
-        Bundle args = new Bundle();
-        args.putString(ARG_USERNAME, usuario);
-        intent.putExtras(args);
-        startActivity(intent);
+        cargandoDatosCambioPass = true;
+        new TaskRequestUrl(this).execute(ConstructorUrls.getUsuario(usuario), "GET");
     }
 
     private boolean passwordValida(String password) {
         return password.length() >= 8;
     }
 
-    private void guardarUsuarioLogueado(Integer idUsuario) {
+    /**
+     * Guarda en la config local los datos del usuario
+     * @param idUsuario
+     * @param codigoArduino
+     */
+    private void guardarDatosUsuario(Integer idUsuario, Integer codigoArduino) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        prefs.edit().putInt(getString(R.string.pref_sesion_inic), idUsuario).apply();
-    }
 
-    private void guardarCodigoArduino(Integer codigoArduino){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        // Lo que se vaya agregando aca hay que ponerlo en el borrarDatosUsuario() de MainActivity
+        prefs.edit().putInt(getString(R.string.pref_sesion_inic), idUsuario).apply();
         prefs.edit().putInt(getString(R.string.pref_id_arduino), codigoArduino).apply();
     }
 
@@ -180,39 +182,83 @@ public class LoginFragment extends Fragment implements TaskListener{
         getActivity().finish();
     }
 
+    private void cargarCambiarPassActivity(Integer idUsuario, Integer idPregSeguridad, String respPregSeguridad){
+        Intent intent = new Intent(getActivity(), CambiarPassActivity.class);
+        Bundle args = new Bundle();
+        // Parametros con id de usuario, pregunta y respuesta de seguridad
+        args.putInt(CambiarPassActivity.ARG_ID_USUARIO, idUsuario);
+        args.putInt(CambiarPassActivity.ARG_ID_PREG, idPregSeguridad);
+        args.putString(CambiarPassActivity.ARG_RESP_PREG, respPregSeguridad);
+        intent.putExtras(args);
+        startActivity(intent);
+    }
+
     @Override
     public void inicioRequest() {
-        autenticando = true;
-        progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_autenticando), true);
+        progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
 
     @Override
     public void finRequest(JSONObject json) {
-        autenticando = false;
+        // Fin autenticacion
+        if(autenticando){
+            autenticando = false;
 
-        if(progressDialog != null)
-            progressDialog.dismiss();
+            if(progressDialog != null)
+                progressDialog.dismiss();
 
-        if(json != null){
-            try {
-                if(json.getString("status").equals("ok")){
-                    JSONObject data = json.getJSONObject("data");
-                    Integer idUsuario = data.getInt("id");
-                    //Integer codArduino = data.getInt("codigo_arduino");
+            if(json != null){
+                try {
+                    if(json.getString("status").equals("ok")){
+                        JSONObject data = json.getJSONObject("data").getJSONObject("user");
+                        Integer idUsuario = data.getInt("id");
+                        // Devuelve -1 en caso que sea null (no tiene arduino)
+                        Integer codArduino = data.optInt("codigo_arduino", -1);
 
-                    guardarUsuarioLogueado(idUsuario);
-                    //guardarCodigoArduino(codArduino);
+                        guardarDatosUsuario(idUsuario, codArduino);
 
-                    cargarMainActivity();
-                } else if(json.getString("status").equals("error")){
-                    Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
+                        cargarMainActivity();
+                    } else if(json.getString("status").equals("error")){
+                        Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Fin carga datos para cambiar contraseña
+        if(cargandoDatosCambioPass){
+            cargandoDatosCambioPass = false;
+
+            if(progressDialog != null)
+                progressDialog.dismiss();
+
+            if(json != null){
+                try {
+                    if(json.getString("status").equals("ok")){
+                        JSONObject data = json.getJSONObject("data");
+                        Integer idUsuario = data.getInt("id");
+                        Integer idPregSeguridad = data.getInt("id_preg_seguridad");
+                        // fixme cambiar a .getString("resp_preg_seguridad") cuando cambie en la base
+                        String respPregSeguridad = String.valueOf(data.getInt("resp_preg_seguridad"));
+
+                        cargarCambiarPassActivity(idUsuario, idPregSeguridad, respPregSeguridad);
+                    } else if(json.getString("status").equals("error")){
+                        Toast.makeText(getActivity(), "No existe el usuario" , Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
+            }
+            return;
         }
     }
 

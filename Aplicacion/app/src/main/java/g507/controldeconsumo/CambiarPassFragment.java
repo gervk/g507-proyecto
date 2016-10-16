@@ -29,15 +29,6 @@ import g507.controldeconsumo.modelo.PreguntaSeguridad;
 
 public class CambiarPassFragment extends Fragment implements TaskListener {
     private static final String ARG_FORM = "num_form";
-    private static final String ARG_USERNAME = "arg_username";
-    private static final int ID_PREG_TEST = 1;
-    private static final String RESP_TEST = "abcd";
-
-    //Usuario al que se le va a cambiar la contraseña
-    private String username;
-
-    private PreguntaSeguridad pregunta;
-    private String respuesta;
 
     private View view;
     private ViewFlipper viewFlipper;
@@ -47,7 +38,12 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
     private EditText txtNuevaPass;
     private EditText txtConfNuevaPass;
     private Button btnNuevaPass;
-    private Integer idUsuario;
+
+    // Datos del usuario al que se va a cambiar la contraseña
+    private Integer idUsuario = -1;
+    private PreguntaSeguridad pregunta;
+    private String respuesta;
+
     private boolean conectando = false;
     private ProgressDialog progressDialog;
 
@@ -55,10 +51,12 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
         // Required empty public constructor
     }
 
-    public static CambiarPassFragment newInstance(String username) {
+    public static CambiarPassFragment newInstance(Integer idUsuario, Integer idPregunta, String respPreg) {
         CambiarPassFragment fragment = new CambiarPassFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_USERNAME, username);
+        args.putInt(CambiarPassActivity.ARG_ID_USUARIO, idUsuario);
+        args.putInt(CambiarPassActivity.ARG_ID_PREG, idPregunta);
+        args.putString(CambiarPassActivity.ARG_RESP_PREG, respPreg);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,7 +65,9 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            username = getArguments().getString(ARG_USERNAME);
+            idUsuario = getArguments().getInt(CambiarPassActivity.ARG_ID_USUARIO);
+            pregunta = PreguntaSeguridad.getPreguntaById(getArguments().getInt(CambiarPassActivity.ARG_ID_PREG));
+            respuesta = getArguments().getString(CambiarPassActivity.ARG_RESP_PREG);
         }
 
         //Con esto carga el formulario del paso en que estaba al rotar la pantalla
@@ -111,7 +111,9 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
 
     @Override
     public void onStart() {
-        cargarPregunta();
+        if(pregunta != null){
+            txtVPreg.setText(pregunta.toString());
+        }
 
         super.onStart();
     }
@@ -130,13 +132,15 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
             txtRespuesta.setError(getString(R.string.error_resp_incorrecta));
             txtRespuesta.requestFocus();
         }
-
     }
 
     /**
      * Valida las contraseñas ingresadas y guarda en la BD
      */
     private void guardarNuevaPass(){
+        if(conectando)
+            return;
+
         boolean cancelar = false;
         View campoConError = null;
 
@@ -166,38 +170,15 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
         if(cancelar){
             campoConError.requestFocus();
         } else{
-            //TODO guardar en BD
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            //había que ponerle un valor default, puse que sea -1
-            idUsuario = Integer.parseInt(prefs.getString(getString(R.string.pref_sesion_inic), "-1"));
-
             if(idUsuario != -1)
                 new TaskRequestUrl(this).execute(ConstructorUrls.cambiarContraseña(idUsuario, pass), "PUT");
             else
                 Toast.makeText(getActivity(), "No hay un id de usuario asociado", Toast.LENGTH_SHORT).show();
         }
-            //Toast.makeText(getActivity(), getString(R.string.error_servidor_no_disp), Toast.LENGTH_SHORT).show();
-        }
-
-
-
+    }
 
     private boolean passwordValida(String password){
         return password.length() >= 8;
-    }
-
-    /**
-     * Se conecta a la BD para buscar la pregunta configurada por el usuario y la respuesta dada
-     */
-    private void cargarPregunta(){
-        //TODO pregunta-respuesta de ejemplo, eliminar y buscar en BD
-        int idPreg = ID_PREG_TEST;
-        pregunta = PreguntaSeguridad.getPreguntaById(idPreg);
-        respuesta = RESP_TEST;
-
-        if(pregunta != null){
-            txtVPreg.setText(pregunta.toString());
-        }
     }
 
     private void cargarMainActivity() {
@@ -215,7 +196,7 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
     @Override
     public void inicioRequest() {
         conectando = true;
-        progressDialog = ProgressDialog.show(getActivity(), "Espere", getString(R.string.msj_cargando), true);
+        progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
 
     @Override
@@ -228,6 +209,7 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
+                    Toast.makeText(getActivity(), "Contraseña cambiada" , Toast.LENGTH_SHORT).show();
 
                     cargarMainActivity();
                 } else if(json.getString("status").equals("error")){

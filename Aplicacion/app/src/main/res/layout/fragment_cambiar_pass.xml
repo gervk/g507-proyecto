@@ -48,7 +48,7 @@
                     android:id="@+id/txtRespuesta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Respuesta (abcd)"
+                    android:hint="Respuesta"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>

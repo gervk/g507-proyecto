@@ -127,8 +127,7 @@ public class MainActivity extends AppCompatActivity
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                                prefs.edit().putInt(getString(R.string.pref_sesion_inic), -1).apply();
+                                borrarDatosUsuario();
                                 startActivity(new Intent(getBaseContext(), LoginActivity.class));
                                 finish();
                             }
@@ -143,6 +142,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Borra lo guardado en la config local
+     */
+    private void borrarDatosUsuario() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        prefs.edit().putInt(getString(R.string.pref_sesion_inic), -1).apply();
+        prefs.edit().putInt(getString(R.string.pref_id_arduino), -1);
     }
 
     /**

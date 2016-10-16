@@ -43,7 +43,7 @@ public class AsociarFragment extends Fragment implements TaskListener{
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
 
-    private String resultado;
+    private int codigo = -1;
 
     private ProgressDialog progressDialog;
     private boolean guardandoDatos = false;
@@ -131,7 +131,7 @@ public class AsociarFragment extends Fragment implements TaskListener{
         if(guardandoDatos)
             return;
 
-        resultado = txtResultado.getText().toString();
+        String resultado = txtResultado.getText().toString();
 
         // Valida que se haya leido algo
         if(resultado.equals("")){
@@ -140,7 +140,6 @@ public class AsociarFragment extends Fragment implements TaskListener{
         }
 
         // Valida que sea un numero
-        int codigo = -1;
         try{
             codigo = Integer.parseInt(resultado);
         } catch (NumberFormatException e){
@@ -148,7 +147,7 @@ public class AsociarFragment extends Fragment implements TaskListener{
             return;
         }
 
-        //Leo el id de usuario logeado para guardarle el arduino
+        // Leo el id de usuario logeado para guardarle el arduino
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int idUsuario = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
 
@@ -171,9 +170,9 @@ public class AsociarFragment extends Fragment implements TaskListener{
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
-                    //Guardo el id del Arduino en SharedPreferences
+                    // Guardo el id del Arduino en SharedPreferences
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                    prefs.edit().putString(getString(R.string.pref_id_arduino), resultado).apply();
+                    prefs.edit().putInt(getString(R.string.pref_id_arduino), codigo).apply();
 
                     Toast.makeText(getActivity(), "Arduino asociado correctamente" , Toast.LENGTH_SHORT).show();
                 }
