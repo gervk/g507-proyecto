@@ -165,9 +165,14 @@ public class LoginFragment extends Fragment implements TaskListener{
         return password.length() >= 8;
     }
 
-    public void guardarUsuarioLogueado(Integer idUsuario) {
+    private void guardarUsuarioLogueado(Integer idUsuario) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefs.edit().putInt(getString(R.string.pref_sesion_inic), idUsuario).apply();
+    }
+
+    private void guardarCodigoArduino(Integer codigoArduino){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.edit().putInt(getString(R.string.pref_id_arduino), codigoArduino).apply();
     }
 
     private void cargarMainActivity() {
@@ -191,9 +196,13 @@ public class LoginFragment extends Fragment implements TaskListener{
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
-                    Integer idUsuario = json.getJSONObject("data").getInt("id");
+                    JSONObject data = json.getJSONObject("data");
+                    Integer idUsuario = data.getInt("id");
+                    //Integer codArduino = data.getInt("codigo_arduino");
 
                     guardarUsuarioLogueado(idUsuario);
+                    //guardarCodigoArduino(codArduino);
+
                     cargarMainActivity();
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();

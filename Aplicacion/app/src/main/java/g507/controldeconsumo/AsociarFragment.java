@@ -132,7 +132,18 @@ public class AsociarFragment extends Fragment implements TaskListener{
             return;
 
         resultado = txtResultado.getText().toString();
-        if(resultado.equals("") /* || !validarCodigoQr() */){
+
+        // Valida que se haya leido algo
+        if(resultado.equals("")){
+            Toast.makeText(getActivity(), R.string.error_qr_arduino, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Valida que sea un numero
+        int codigo = -1;
+        try{
+            codigo = Integer.parseInt(resultado);
+        } catch (NumberFormatException e){
             Toast.makeText(getActivity(), R.string.error_qr_arduino, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -141,7 +152,7 @@ public class AsociarFragment extends Fragment implements TaskListener{
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int idUsuario = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
 
-        new TaskRequestUrl(this).execute(ConstructorUrls.asociarArduino(idUsuario, Integer.parseInt(resultado)), "POST");
+        new TaskRequestUrl(this).execute(ConstructorUrls.asociarArduino(idUsuario, codigo), "POST");
     }
 
     @Override

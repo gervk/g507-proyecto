@@ -130,8 +130,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
-                    txtVResulActual.setText(String.valueOf(json.getJSONObject("data").getDouble("consumo")));
-                    //txtVResulActual.setText(String.valueOf(json.getJSONArray("data").getJSONObject(0).getDouble("consumo")));
+                    txtVResulActual.setText(String.valueOf(json.getJSONObject("data")));
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }

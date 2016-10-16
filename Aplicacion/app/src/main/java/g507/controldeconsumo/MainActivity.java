@@ -103,22 +103,22 @@ public class MainActivity extends AppCompatActivity
 
         switch (idItemSelecc) {
             case R.id.asoc_arduino:
-                cargarFragment(new AsociarFragment(), getString(R.string.title_frag_asoc_arduino),false);
+                cargarFragment(new AsociarFragment(), getString(R.string.title_frag_asoc_arduino));
                 break;
             case R.id.config:
-                cargarFragment(new ConfigFragment(), getString(R.string.title_frag_config), true);
+                cargarFragment(new ConfigFragment(), getString(R.string.title_frag_config));
                 break;
             case R.id.consumo_actual:
-                cargarFragment(new ConsActualFragment(), getString(R.string.title_frag_cons_actual), true);
+                cargarFragment(new ConsActualFragment(), getString(R.string.title_frag_cons_actual));
                 break;
             case R.id.consumo_acumulado:
-                cargarFragment(new ConsAcumFragment(), getString(R.string.title_frag_cons_acum), true);
+                cargarFragment(new ConsAcumFragment(), getString(R.string.title_frag_cons_acum));
                 break;
             case R.id.prox_factura:
-                cargarFragment(new ProxFacFragment(), getString(R.string.title_frag_prox_factura), true);
+                cargarFragment(new ProxFacFragment(), getString(R.string.title_frag_prox_factura));
                 break;
             case R.id.estadisticas:
-                cargarFragment(new EstadistFragment(), getString(R.string.title_frag_estadisticas), true);
+                cargarFragment(new EstadistFragment(), getString(R.string.title_frag_estadisticas));
                 break;
             case R.id.cerrar_sesion:
                 new AlertDialog.Builder(this)
@@ -156,13 +156,8 @@ public class MainActivity extends AppCompatActivity
         return idusuarioLogueado != -1;
     }
 
-    private void cargarFragment(Fragment fragment, String titulo, boolean rotable) {
+    private void cargarFragment(Fragment fragment, String titulo) {
         setTitle(titulo);
-        if (rotable) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
         getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment,
                 fragment).commit();
     }
