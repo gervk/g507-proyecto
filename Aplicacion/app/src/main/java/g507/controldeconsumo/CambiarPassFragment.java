@@ -170,10 +170,15 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
         if(cancelar){
             campoConError.requestFocus();
         } else{
-            if(idUsuario != -1)
-                new TaskRequestUrl(this).execute(ConstructorUrls.cambiarContraseña(idUsuario, pass), "PUT");
-            else
+            if(idUsuario != -1){
+                if(Utils.conexionAInternetOk(getActivity())){
+                    new TaskRequestUrl(this).execute(ConstructorUrls.cambiarContraseña(idUsuario, pass), "PUT");
+                } else{
+                    Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
+                }
+            } else{
                 Toast.makeText(getActivity(), "No hay un id de usuario asociado", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

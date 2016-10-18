@@ -13,187 +13,106 @@
         android:layout_height="match_parent"
         android:overScrollMode="never" >
 
-        <ViewFlipper
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/viewFlipper" >
+            android:layout_height="match_parent" >
 
-            <LinearLayout
-                android:orientation="vertical"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txtUsername"
-                        android:hint="Nombre de usuario"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
+                android:layout_height="wrap_content">
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txtEmail"
-                        android:inputType="textEmailAddress"
-                        android:hint="Email"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
+                    android:id="@+id/txtUsername"
+                    android:hint="Nombre de usuario"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txtPassword"
-                        android:hint="Contraseña"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txtConfPassword"
-                        android:hint="Confirmar contraseña"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Pregunta de seguridad"
-                    android:id="@+id/textView16"
-                    android:layout_marginLeft="5dp" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:id="@+id/spinPregSeg"
-                    android:layout_marginTop="5dp"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txtRespPreg"
-                        android:hint="Respuesta"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
-
-                <Button
-                    android:id="@+id/btnPaso2Reg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Registrar"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/boton" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.design.widget.TextInputLayout
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txtNombre"
-                        android:hint="Nombre" />
-                </android.support.design.widget.TextInputLayout>
+                    android:id="@+id/txtEmail"
+                    android:inputType="textEmailAddress"
+                    android:hint="Email"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txtApellido"
-                        android:hint="Apellido" />
-                </android.support.design.widget.TextInputLayout>
+                    android:id="@+id/txtPassword"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Localidad"
-                    android:id="@+id/textView17" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:id="@+id/spinLocalidad"
-                    android:layout_marginTop="5dp"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Barrio"
-                    android:id="@+id/textView18" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:id="@+id/spinBarrio"
-                    android:layout_marginTop="5dp"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown" />
-
-                <Button
-                    android:id="@+id/btnRegistrar"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Registrar"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:background="@drawable/boton"
-                    android:layout_marginTop="130dp" />
+                    android:id="@+id/txtConfPassword"
+                    android:hint="Confirmar contraseña"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Pregunta de seguridad"
+                android:id="@+id/textView16"
+                android:layout_marginLeft="5dp" />
 
-        </ViewFlipper>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/spinPregSeg"
+                android:layout_marginTop="5dp"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtRespPreg"
+                    android:hint="Respuesta"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnRegistrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Registrar"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/boton" />
+
+        </LinearLayout>
     </ScrollView>
 </FrameLayout>

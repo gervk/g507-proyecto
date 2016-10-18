@@ -23,25 +23,18 @@ import org.json.JSONObject;
 import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.TaskRequestUrl;
 import g507.controldeconsumo.conexion.TaskListener;
+import g507.controldeconsumo.conexion.Utils;
 import g507.controldeconsumo.modelo.PreguntaSeguridad;
 
 public class RegistroFragment extends Fragment implements TaskListener {
 
-    private static final String ARG_FORM = "num_form";
-
     private View view;
-    private ViewFlipper viewFlipper;
     private EditText txtUsername;
     private EditText txtEmail;
     private EditText txtPassword;
     private EditText txtConfPassword;
     private Spinner spinPregSeg;
     private EditText txtRespPreg;
-    private Button btnPaso2Reg;
-    private EditText txtNombre;
-    private EditText txtApellido;
-    private Spinner spinLocalidad;
-    private Spinner spinBarrio;
     private Button btnRegistrar;
 
     private boolean guardandoDatos = false;
@@ -54,13 +47,6 @@ public class RegistroFragment extends Fragment implements TaskListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Con esto carga el formulario del paso en que estaba al rotar la pantalla
-        //sin esto, si roto la pantalla vuelve siempre al paso 1
-        if(savedInstanceState != null){
-            int numForm = savedInstanceState.getInt(ARG_FORM);
-            viewFlipper.setDisplayedChild(numForm);
-        }
     }
 
     @Override
@@ -68,31 +54,18 @@ public class RegistroFragment extends Fragment implements TaskListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_registro, container, false);
 
-        viewFlipper = (ViewFlipper) view.findViewById(R.id.viewFlipper);
         txtUsername = (EditText) view.findViewById(R.id.txtUsername);
         txtEmail = (EditText) view.findViewById(R.id.txtEmail);
         txtPassword = (EditText) view.findViewById(R.id.txtPassword);
         txtConfPassword = (EditText) view.findViewById(R.id.txtConfPassword);
         spinPregSeg = (Spinner) view.findViewById(R.id.spinPregSeg);
         txtRespPreg = (EditText) view.findViewById(R.id.txtRespPreg);
-        btnPaso2Reg = (Button) view.findViewById(R.id.btnPaso2Reg);
-        txtNombre = (EditText) view.findViewById(R.id.txtNombre);
-        txtApellido = (EditText) view.findViewById(R.id.txtApellido);
-        spinLocalidad = (Spinner) view.findViewById(R.id.spinLocalidad);
-        spinBarrio = (Spinner) view.findViewById(R.id.spinBarrio);
         btnRegistrar = (Button) view.findViewById(R.id.btnRegistrar);
 
         //Set de opciones en los spinner
         ArrayAdapter<PreguntaSeguridad> preguntasAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item, PreguntaSeguridad.values());
         spinPregSeg.setAdapter(preguntasAdapter);
-
-        btnPaso2Reg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pasarASegundoPaso();
-            }
-        });
 
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +77,7 @@ public class RegistroFragment extends Fragment implements TaskListener {
         return view;
     }
 
-    private void pasarASegundoPaso(){
+    private void registrar(){
         if(guardandoDatos)
             return;
 
@@ -172,62 +145,17 @@ public class RegistroFragment extends Fragment implements TaskListener {
         if(cancelar){
             campoConError.requestFocus();
         } else{
-            //viewFlipper.showNext(); por ahora los datos del segundo paso no se graban en bd
-            //esto en realidad va en el boton del paso 2
-            new TaskRequestUrl(this).execute(ConstructorUrls.registro(username, password, email, pregunta, 1), "POST");
-        }
-    }
-
-    private void registrar(){
-        boolean cancelar = false;
-        View campoConError = null;
-
-        txtNombre.setError(null);
-        txtApellido.setError(null);
-
-        String nombre = txtNombre.getText().toString();
-        String apellido = txtApellido.getText().toString();
-        String localidad = (String) spinLocalidad.getSelectedItem();
-        String barrio = (String) spinBarrio.getSelectedItem();
-
-        if(TextUtils.isEmpty(barrio)){
-            //fixme no se puede hacer foco en los spinner ni el setError como en los txt
-            campoConError = spinBarrio;
-            cancelar = true;
-        }
-        if(TextUtils.isEmpty(localidad)){
-            //fixme no se puede hacer foco en los spinner ni el setError como en los txt
-            campoConError = spinLocalidad;
-            cancelar = true;
-        }
-        if(TextUtils.isEmpty(apellido)){
-            txtApellido.setError(getString(R.string.error_campo_requerido));
-            campoConError = txtApellido;
-            cancelar = true;
-        }
-        if(TextUtils.isEmpty(nombre)){
-            txtNombre.setError(getString(R.string.error_campo_requerido));
-            campoConError = txtNombre;
-            cancelar = true;
-        }
-
-        if(cancelar){
-            campoConError.requestFocus();
-        } else{
-            //TODO registrar en bd
-            Toast.makeText(getActivity(), R.string.error_servidor_no_disp, Toast.LENGTH_SHORT).show();
+            if(Utils.conexionAInternetOk(getActivity())){
+                //fixme respuesta de seguridad
+                new TaskRequestUrl(this).execute(ConstructorUrls.registro(username, password, email, pregunta, 1), "POST");
+            } else{
+                Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     private boolean passwordValida(String password){
         return password.length() >= 8;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        //Guarda el numero del paso en que esta al rotar la pantalla
-        int numForm = viewFlipper.getDisplayedChild();
-        outState.putInt(ARG_FORM, numForm);
     }
 
     public void guardarUsuarioLogueado(Integer idUsuario) {

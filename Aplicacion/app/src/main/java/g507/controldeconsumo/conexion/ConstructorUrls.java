@@ -2,7 +2,11 @@ package g507.controldeconsumo.conexion;
 
 import android.net.Uri;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+
 import g507.controldeconsumo.modelo.PreguntaSeguridad;
+import g507.controldeconsumo.modelo.TipoConsumo;
 
 /**
  * Genera las URL necesarias para las consultas/guardado de datos
@@ -14,7 +18,7 @@ public class ConstructorUrls {
     private static final String PATH_API = "api";
     private static final String PATH_VERSION = "v1";
 
-    public static String consumoActual(Integer codArduino, Integer tipoConsumo){
+    public static String consumoActual(Integer codArduino, TipoConsumo tipoConsumo){
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(PROTOCOLO)
                 .authority(URL_BASE)
@@ -22,7 +26,23 @@ public class ConstructorUrls {
                 .appendPath(PATH_VERSION)
                 .appendPath("consumo")
                 .appendPath(String.valueOf(codArduino))
-                .appendQueryParameter("tipo", String.valueOf(tipoConsumo));
+                .appendQueryParameter("tipo", String.valueOf(tipoConsumo.getId()));
+
+        return builder.build().toString();
+    }
+
+    public static String consumoAcumulado(Integer codArduino, TipoConsumo tipoConsumo, Timestamp fechaIni, Timestamp fechaFin){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .authority(URL_BASE)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("consumo")
+                .appendPath(String.valueOf(codArduino))
+                .appendPath("acumulado")
+                .appendQueryParameter("tipo", String.valueOf(tipoConsumo.getId()))
+                .appendQueryParameter("inicio", String.valueOf(fechaIni.getTime()))
+                .appendQueryParameter("desde", String.valueOf(fechaFin.getTime()));
 
         return builder.build().toString();
     }

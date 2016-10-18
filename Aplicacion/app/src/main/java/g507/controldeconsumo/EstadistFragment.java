@@ -18,6 +18,8 @@ import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import g507.controldeconsumo.modelo.TipoEstadistica;
+
 public class EstadistFragment extends Fragment {
     //Libreria para los graficos http://www.android-graphview.org/
 
@@ -53,8 +55,8 @@ public class EstadistFragment extends Fragment {
         txtVFechaMin = (TextView) view.findViewById(R.id.txtVFechaMin);
         grafico = (GraphView) view.findViewById(R.id.graph);
 
-        String[] items = new String[]{"Por hora", "Por día", "Por mes"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(),R.layout.support_simple_spinner_dropdown_item, items);
+        ArrayAdapter<TipoEstadistica> adapter = new ArrayAdapter<>(this.getActivity(),
+                R.layout.support_simple_spinner_dropdown_item, TipoEstadistica.values());
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerEstadist.setAdapter(adapter);
 

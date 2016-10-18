@@ -22,6 +22,7 @@ import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.Utils;
 import g507.controldeconsumo.conexion.TaskRequestUrl;
 import g507.controldeconsumo.conexion.TaskListener;
+import g507.controldeconsumo.modelo.TipoConsumo;
 
 public class ConsActualFragment extends Fragment implements TaskListener{
 
@@ -31,8 +32,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
     private RadioButton rbtnAgua;
     private Button btnConsultar;
     private TextView txtVResulActual;
-    private Integer tipoServicio;
-    private Integer idArduino;
+
     private ProgressDialog progressDialog;
     private boolean descargandoDatos = false;
 
@@ -77,6 +77,9 @@ public class ConsActualFragment extends Fragment implements TaskListener{
     }
 
     private void consultar(){
+        TipoConsumo tipoConsumo;
+        Integer idArduino;
+
         //Si ya esta descargando datos, no hace nada
         if(descargandoDatos)
             return;
@@ -88,17 +91,17 @@ public class ConsActualFragment extends Fragment implements TaskListener{
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
             } else{
                 if(rbtnElect.isChecked()) {
-                    tipoServicio = 1;
+                    tipoConsumo = TipoConsumo.ELECTRICIDAD;
                 }
                 else {
-                    tipoServicio = 2;
+                    tipoConsumo = TipoConsumo.AGUA;
                 }
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 //había que ponerle un valor default, puse que sea -1
                 idArduino = prefs.getInt(getString(R.string.pref_id_arduino), -1);
 
                 if(idArduino != -1)
-                    new TaskRequestUrl(this).execute(ConstructorUrls.consumoActual(idArduino, tipoServicio), "GET");
+                    new TaskRequestUrl(this).execute(ConstructorUrls.consumoActual(idArduino, tipoConsumo), "GET");
                 else
                     Toast.makeText(getActivity(), "No hay un arduino asociado", Toast.LENGTH_SHORT).show();
             }

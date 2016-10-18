@@ -1,13 +1,15 @@
 package g507.controldeconsumo.modelo;
 
-public enum TipoConsumo {
-    ELECTRICIDAD(1, "Electricidad"),
-    AGUA(2, "Agua");
+
+public enum TipoEstadistica {
+    POR_MES(1, "Por mes"),
+    POR_DIA(2, "Por dia"),
+    POR_HORA(3, "Por hora");
 
     private Integer id;
     private String tipo;
 
-    TipoConsumo(Integer id, String tipo){
+    TipoEstadistica(Integer id, String tipo){
         this.id = id;
         this.tipo = tipo;
     }

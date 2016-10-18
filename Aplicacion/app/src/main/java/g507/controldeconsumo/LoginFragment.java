@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.TaskListener;
 import g507.controldeconsumo.conexion.TaskRequestUrl;
+import g507.controldeconsumo.conexion.Utils;
 
 public class LoginFragment extends Fragment implements TaskListener{
 
@@ -135,8 +136,12 @@ public class LoginFragment extends Fragment implements TaskListener{
             //En caso de error, no loguea y hace foco en el primer campo con error
             campoConError.requestFocus();
         } else {
-            autenticando = true;
-            new TaskRequestUrl(this).execute(ConstructorUrls.login(usuario, password), "GET");
+            if(Utils.conexionAInternetOk(getActivity())){
+                autenticando = true;
+                new TaskRequestUrl(this).execute(ConstructorUrls.login(usuario, password), "GET");
+            } else{
+                Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -156,8 +161,12 @@ public class LoginFragment extends Fragment implements TaskListener{
             return;
         }
 
-        cargandoDatosCambioPass = true;
-        new TaskRequestUrl(this).execute(ConstructorUrls.getUsuario(usuario), "GET");
+        if(Utils.conexionAInternetOk(getActivity())){
+            cargandoDatosCambioPass = true;
+            new TaskRequestUrl(this).execute(ConstructorUrls.getUsuario(usuario), "GET");
+        } else{
+            Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private boolean passwordValida(String password) {
