@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 import g507.controldeconsumo.modelo.PreguntaSeguridad;
 import g507.controldeconsumo.modelo.TipoConsumo;
+import g507.controldeconsumo.modelo.TipoEstadistica;
 
 /**
  * Genera las URL necesarias para las consultas/guardado de datos
@@ -126,6 +127,23 @@ public class ConstructorUrls {
                 .appendPath(PATH_VERSION)
                 .appendPath("usuario")
                 .appendPath(String.valueOf(idUsuario));
+
+        return builder.build().toString();
+    }
+
+    public static String estadisticas(Integer codArduino, TipoConsumo tipoConsumo, TipoEstadistica tipoEstadistica, Timestamp fechaHoy){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .authority(URL_BASE)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("consumo")
+                .appendPath(String.valueOf(codArduino))
+                .appendPath("estadistica")
+                .appendQueryParameter("tipo", String.valueOf(tipoConsumo.getId()))
+                .appendQueryParameter("periodo", String.valueOf(tipoEstadistica.getId()))
+                // por alguna razon se agregan 3 ceros de mas, por eso divido por 1000
+                .appendQueryParameter("desde", String.valueOf(fechaHoy.getTime() / 1000));
 
         return builder.build().toString();
     }

@@ -61,4 +61,28 @@
 
     <string name="action_settings">Settings</string>
 
+    //descripción de meses, días y horas
+    <string-array
+        name="string_array_meses">
+        <item>Ene</item> <item>Feb</item> <item>Mar</item> <item>Abr</item>
+        <item>May</item> <item>Jun</item> <item>Jul</item> <item>Ago</item>
+        <item>Sep</item> <item>Oct</item> <item>Nov</item> <item>Dic</item>
+    </string-array>
+    <string-array
+        name="string_array_dias">
+        <item>Dom</item> <item>Lun</item> <item>Mar</item> <item>Mie</item>
+        <item>Jue</item> <item>Vie</item> <item>Sab</item>
+    </string-array>
+    <string-array
+        name="string_array_horas">
+        <item>00</item> <item>01</item> <item>02</item> <item>03</item>
+        <item>04</item> <item>05</item> <item>06</item> <item>07</item>
+        <item>08</item> <item>09</item> <item>10</item> <item>11</item>
+        <item>12</item> <item>13</item> <item>14</item> <item>15</item>
+        <item>16</item> <item>17</item> <item>18</item> <item>19</item>
+        <item>20</item> <item>21</item> <item>22</item> <item>23</item>
+    </string-array>
+
+
+
 </resources>

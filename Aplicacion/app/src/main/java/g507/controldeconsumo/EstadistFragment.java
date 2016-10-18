@@ -1,13 +1,16 @@
 package g507.controldeconsumo;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,6 +21,17 @@ import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.ArrayList;
+
+import g507.controldeconsumo.conexion.ConstructorUrls;
+import g507.controldeconsumo.conexion.TaskRequestUrl;
+import g507.controldeconsumo.conexion.TaskListener;
+import g507.controldeconsumo.conexion.Utils;
+import g507.controldeconsumo.modelo.TipoConsumo;
 import g507.controldeconsumo.modelo.TipoEstadistica;
 
 public class EstadistFragment extends Fragment {
@@ -25,6 +39,8 @@ public class EstadistFragment extends Fragment {
 
     private View view;
     private RadioGroup rgrpServicio;
+    private RadioButton rbtnElect;
+    private RadioButton rbtnAgua;
     private Spinner spinnerEstadist;
     private Button btnConsEstadist;
     private TextView txtVValorProm;
@@ -45,6 +61,8 @@ public class EstadistFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_estadist, container, false);
         rgrpServicio = (RadioGroup) view.findViewById(R.id.rgrpServicio);
+        rbtnElect = (RadioButton) view.findViewById(R.id.rbtnElect);
+        rbtnAgua = (RadioButton) view.findViewById(R.id.rbtnAgua);
         spinnerEstadist = (Spinner) view.findViewById(R.id.spinnerEstadist);
         btnConsEstadist = (Button) view.findViewById(R.id.btnConsEstadist);
         txtVValorProm = (TextView) view.findViewById(R.id.txtVValorProm);
@@ -71,6 +89,16 @@ public class EstadistFragment extends Fragment {
     }
 
     private void consultarEstadisticas() {
+
+        Calendar cal;
+        TipoConsumo tipoServicio;
+        TipoEstadistica tipoEstadistica;
+        String fechaHoy;
+        int idArduino;
+        String[] posiblesEtiq;
+        //String[] etiquetasGraf = new String[]{};
+        ArrayList<String> etiquetasGraf = new ArrayList<String>();
+
         if(rgrpServicio.getCheckedRadioButtonId() == -1){
             Toast.makeText(getActivity(), R.string.error_selecc_servicio, Toast.LENGTH_SHORT).show();
             return;
@@ -80,13 +108,97 @@ public class EstadistFragment extends Fragment {
             return;
         }
 
+        if(rbtnElect.isChecked()) {
+            tipoServicio = TipoConsumo.ELECTRICIDAD;
+        }
+        else {
+            tipoServicio = TipoConsumo.AGUA;
+        }
+
+        cal = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        fechaHoy = dateFormat.format(cal.getTime());
+
+        switch ((TipoEstadistica) spinnerEstadist.getSelectedItem()){
+            case POR_MES:
+                tipoEstadistica = TipoEstadistica.POR_MES;
+                posiblesEtiq = getResources().getStringArray(R.array.string_array_meses);
+                Integer mes = cal.get(Calendar.MONTH);
+                Integer mesAux;
+
+                for (int i = 0; i < 6; i++) {    //lleno las etiquetas de los días
+                    mesAux = mes - 5 + (2 * i);
+                    if (mesAux >= 0) {
+                        etiquetasGraf.add(i, posiblesEtiq[mesAux]);
+                    } else {
+                        etiquetasGraf.add(i, posiblesEtiq[mesAux + 12]);
+                    }
+                    mes = mes - 1;
+                }
+                break;
+
+            case POR_DIA:
+                tipoEstadistica = TipoEstadistica.POR_DIA;
+                posiblesEtiq = getResources().getStringArray(R.array.string_array_dias);
+                Integer dia = cal.get(Calendar.DAY_OF_WEEK)-1;  //Resto uno porque por ej el 3er dia de la semana en el array seria la posicion 2
+                Integer diaAux;
+
+                for (int i = 0; i < posiblesEtiq.length; i++) {    //lleno las etiquetas de los días
+                    diaAux = dia-6+(2*i);
+                    if (diaAux >= 0) {
+                        etiquetasGraf.add(i, posiblesEtiq[diaAux]);
+                    }
+                    else {
+                        etiquetasGraf.add(i, posiblesEtiq[diaAux+7]);
+                    }
+                    dia = dia - 1;
+                }
+                break;
+
+            case POR_HORA:
+                tipoEstadistica = TipoEstadistica.POR_HORA;
+                posiblesEtiq = getResources().getStringArray(R.array.string_array_horas);
+                Integer hora = cal.get(Calendar.HOUR_OF_DAY);
+                Integer horaAux;
+
+                for (int i = 0; i < 6; i++) {    //lleno las etiquetas de los días
+                    horaAux = hora - 5 + (2 * i);
+                    if (horaAux >= 0) {
+                        etiquetasGraf.add(i, posiblesEtiq[horaAux]);
+                    } else {
+                        etiquetasGraf.add(i, posiblesEtiq[horaAux + 24]);
+                    }
+                    hora = hora - 1;
+                }
+                break;
+        }
+
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //había que ponerle un valor default, puse que sea -1
+        idArduino = prefs.getInt(getString(R.string.pref_id_arduino), -1);
+
+        /*
+        if(idArduino != -1){
+            if(Utils.conexionAInternetOk(getActivity())){
+                String url = ConstructorUrls.consumoAcumulado(idArduino, tipoEstadistica,
+                        Timestamp.valueOf(fechaHoy));
+                new TaskRequestUrl(this).execute(url, "GET");
+            } else{
+                Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
+            }
+        } else{
+            Toast.makeText(getActivity(), "No hay un arduino asociado", Toast.LENGTH_SHORT).show();
+        }
+        */
+
         //TODO consultar
         Toast.makeText(getActivity(), R.string.error_servidor_no_disp, Toast.LENGTH_SHORT).show();
 
-        mockGrafico();
+        mockGrafico(etiquetasGraf);
     }
 
-    private void mockGrafico() {
+    private void mockGrafico(ArrayList<String> etiquetas) {
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
                 new DataPoint(0, 170),
                 new DataPoint(1, 156),
@@ -98,9 +210,10 @@ public class EstadistFragment extends Fragment {
         });
 
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(grafico);
-        staticLabelsFormatter.setHorizontalLabels(new String[] {"lun", "mar", "mie", "jue", "vie", "sab", "dom"});
+        staticLabelsFormatter.setHorizontalLabels(etiquetas.toArray(new String[etiquetas.size()]));
         grafico.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
         grafico.addSeries(series);
+
     }
 
 }
