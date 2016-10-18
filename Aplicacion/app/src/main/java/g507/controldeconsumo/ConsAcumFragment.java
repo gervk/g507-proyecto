@@ -140,11 +140,15 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
         //había que ponerle un valor default, puse que sea -1
         idArduino = prefs.getInt(getString(R.string.pref_id_arduino), -1);
 
-        if(Utils.conexionAInternetOk(getActivity())){
-            new TaskRequestUrl(this).execute(ConstructorUrls.consumoAcumulado(idArduino, tipoServicio,
-                    Timestamp.valueOf(fechaIni), Timestamp.valueOf(fechaFin)), "GET");
+        if(idArduino != -1){
+            if(Utils.conexionAInternetOk(getActivity())){
+                new TaskRequestUrl(this).execute(ConstructorUrls.consumoAcumulado(idArduino, tipoServicio,
+                        Timestamp.valueOf(fechaIni), Timestamp.valueOf(fechaFin)), "GET");
+            } else{
+                Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
+            }
         } else{
-            Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "No hay un arduino asociado", Toast.LENGTH_SHORT).show();
         }
     }
 
