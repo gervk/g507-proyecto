@@ -142,8 +142,9 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
 
         if(idArduino != -1){
             if(Utils.conexionAInternetOk(getActivity())){
-                new TaskRequestUrl(this).execute(ConstructorUrls.consumoAcumulado(idArduino, tipoServicio,
-                        Timestamp.valueOf(fechaIni), Timestamp.valueOf(fechaFin)), "GET");
+                String url = ConstructorUrls.consumoAcumulado(idArduino, tipoServicio,
+                        Timestamp.valueOf(fechaIni), Timestamp.valueOf(fechaFin));
+                new TaskRequestUrl(this).execute(url, "GET");
             } else{
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
             }

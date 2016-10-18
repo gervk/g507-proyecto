@@ -41,8 +41,9 @@ public class ConstructorUrls {
                 .appendPath(String.valueOf(codArduino))
                 .appendPath("acumulado")
                 .appendQueryParameter("tipo", String.valueOf(tipoConsumo.getId()))
-                .appendQueryParameter("inicio", String.valueOf(fechaIni.getTime()))
-                .appendQueryParameter("desde", String.valueOf(fechaFin.getTime()));
+                // por alguna razon se agregan 3 ceros de mas, por eso divido por 1000
+                .appendQueryParameter("inicio", String.valueOf(fechaIni.getTime() / 1000))
+                .appendQueryParameter("final", String.valueOf(fechaFin.getTime() / 1000));
 
         return builder.build().toString();
     }
