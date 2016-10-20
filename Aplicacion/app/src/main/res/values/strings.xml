@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Control de Consumo</string>
+    <string name="app_name">Enersaving</string>
 
     <!-- Titulos ventanas -->
     <string name="title_activity_login">Iniciar sesión</string>
