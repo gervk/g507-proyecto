@@ -3,6 +3,7 @@ package g507.controldeconsumo;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.SparseArray;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.TaskListener;
 import g507.controldeconsumo.conexion.TaskRequestUrl;
+import g507.controldeconsumo.conexion.Utils;
 
 public class AsociarFragment extends Fragment implements TaskListener{
 
@@ -55,6 +57,8 @@ public class AsociarFragment extends Fragment implements TaskListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
+        setRetainInstance(true);
 
         //Detector QR a usar por la cam
         barcodeDetector = new BarcodeDetector.Builder(getActivity())
@@ -63,6 +67,14 @@ public class AsociarFragment extends Fragment implements TaskListener{
         //Para leer un stream de imagenes de la camara
         cameraSource = new CameraSource.Builder(getActivity(), barcodeDetector)
                 .setRequestedPreviewSize(640, 480).build();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Si se esta volviendo de una rotacion de pantalla y sigue el request, muestra msj de espera
+        if(guardandoDatos)
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
 
     @Override
@@ -151,7 +163,10 @@ public class AsociarFragment extends Fragment implements TaskListener{
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         int idUsuario = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
 
-        new TaskRequestUrl(this).execute(ConstructorUrls.asociarArduino(idUsuario, codigo), "POST");
+        if(Utils.conexionAInternetOk(getActivity()))
+            new TaskRequestUrl(this).execute(ConstructorUrls.asociarArduino(idUsuario, codigo), "POST");
+        else
+            Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -183,5 +198,14 @@ public class AsociarFragment extends Fragment implements TaskListener{
         } else {
             Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onDetach() {
+        // Cierra el progressDialog si se saca el fragment del activity (cuando se rota), sino tira excepcion
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDetach();
     }
 }

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
@@ -54,6 +55,16 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Si se esta volviendo de una rotacion de pantalla y sigue el request, muestra msj de espera
+        if(conectando)
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
 
     @Override
@@ -169,6 +180,7 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
+                    txtResultadoAcum = (TextView) view.findViewById(R.id.txtVResulAcu);
                     txtResultadoAcum.setText(String.valueOf(json.getInt("data")));
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
@@ -180,5 +192,14 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
         } else {
             Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onDetach() {
+        // Cierra el progressDialog si se saca el fragment del activity (cuando se rota), sino tira excepcion
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDetach();
     }
 }

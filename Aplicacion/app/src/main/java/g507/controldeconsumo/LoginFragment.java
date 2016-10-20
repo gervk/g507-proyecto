@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -48,6 +49,16 @@ public class LoginFragment extends Fragment implements TaskListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Si se esta volviendo de una rotacion de pantalla y sigue el request, muestra msj de espera
+        if(autenticando || cargandoDatosCambioPass)
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
 
     @Override
@@ -271,4 +282,12 @@ public class LoginFragment extends Fragment implements TaskListener{
         }
     }
 
+    @Override
+    public void onDetach() {
+        // Cierra el progressDialog si se saca el fragment del activity (cuando se rota), sino tira excepcion
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDetach();
+    }
 }

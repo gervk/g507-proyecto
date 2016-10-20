@@ -43,14 +43,14 @@ public class ConsActualFragment extends Fragment implements TaskListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Para que mantenga la instancia del fragment ante una recreacion del activity
+        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
         setRetainInstance(true);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //Vuelve a mostrar el msj de espera si en el estado anterior estaba descargando datos
+        // Si se esta volviendo de una rotacion de pantalla y sigue el request, muestra msj de espera
         if(descargandoDatos)
             progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
@@ -110,7 +110,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
 
     @Override
     public void onDetach() {
-        //Cierra el progressDialog si se saca el fragment del activity
+        // Cierra el progressDialog si se saca el fragment del activity (cuando se rota), sino tira excepcion
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }

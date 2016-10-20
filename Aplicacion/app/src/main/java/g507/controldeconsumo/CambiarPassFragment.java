@@ -3,6 +3,7 @@ package g507.controldeconsumo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.BoolRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -64,6 +65,9 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
+        setRetainInstance(true);
+
         if (getArguments() != null) {
             idUsuario = getArguments().getInt(CambiarPassActivity.ARG_ID_USUARIO);
             pregunta = PreguntaSeguridad.getPreguntaById(getArguments().getInt(CambiarPassActivity.ARG_ID_PREG));
@@ -76,6 +80,14 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
             int numForm = savedInstanceState.getInt(ARG_FORM);
             viewFlipper.setDisplayedChild(numForm);
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Si se esta volviendo de una rotacion de pantalla y sigue el request, muestra msj de espera
+        if(conectando)
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
 
     @Override
@@ -227,5 +239,14 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
         } else {
             Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onDetach() {
+        // Cierra el progressDialog si se saca el fragment del activity (cuando se rota), sino tira excepcion
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDetach();
     }
 }
