@@ -177,6 +177,8 @@ bool ConexionRedClass::sendHttpData(String service)
 {
 	String cmd;
 
+	this->cleanWiFiBuffer();
+
 	cmd = "AT+CIPSTART=\"TCP\",\"";
 	cmd += httpServer;
 	cmd += "\",";
@@ -188,6 +190,7 @@ bool ConexionRedClass::sendHttpData(String service)
 	{
 		printLog("No se pudo conectar con el servidor HTTP:");
 		printLog(cmd);
+		wifi->println("AT+CIPCLOSE");
 		return false;
 	}
 
@@ -196,28 +199,32 @@ bool ConexionRedClass::sendHttpData(String service)
 	cmd += urlParameters;
 	cmd += " HTTP/1.1\r\n";
 	cmd += "Host: ";
-	cmd += httpServer;
+	cmd += httpServer + ":" + httpPort;
 	cmd += "\r\n\r\n";
+
+	this->clearUrl();
 	
 	wifi->print("AT+CIPSEND=");
 	wifi->println(cmd.length());
 
 	if (wifi->find(">"))
+	{
 		wifi->print(cmd);
+	}
 	else
 	{
 		printLog("No se pudieron enviar los datos");
 		printLog(cmd);
 		printLog((String)cmd.length());
-	}
-
-	this->clearUrl();
+		wifi->println("AT+CIPCLOSE");
+		return false;
+	}	
 	
 	for (int i=0; i<8; i++)
 	{
 		if (wifi->available() > 0)
 		{
-			if (wifi->find("OK"))
+			if (wifi->find("HTTP/1.1 200 OK"))
 			{
 				wifi->println("AT+CIPCLOSE");
 				return true;
@@ -229,6 +236,9 @@ bool ConexionRedClass::sendHttpData(String service)
 
 	wifi->println("AT+CIPCLOSE");
 	printLog("Error al enviar los datos");
+
+	this->resetWifi();
+
 	return false;	
 }
 

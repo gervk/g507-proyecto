@@ -15,8 +15,8 @@
 
 SensorCorrienteClass *sensorCorriente;
 ConexionRedClass *conexionRed;
-String ssid = "";
-String pass = "";
+String ssid = "proyecto";
+String pass = "enersaving";
 
 // -- initialize serial comm & parameters ------------
 void setup() {
@@ -38,7 +38,8 @@ void setup() {
 	conexionRed->setLogSerial(&Serial,115200);
 	conexionRed->setDisplayLog(false);			
 	//conexionRed->setDisplayLog(true);
-	conexionRed->configHttpServer("enersaving-laravel.herokuapp.com","80");	
+	//conexionRed->configHttpServer("enersaving-laravel.herokuapp.com","80");	
+	conexionRed->configHttpServer("192.168.43.191", "80");
 
 	conexionRed->resetWifi();
 

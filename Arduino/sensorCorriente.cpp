@@ -39,7 +39,7 @@ float SensorCorrienteClass::leerSensor(float fc)
 		delay(ff);            // espera centro de ciclo
 		delay(10);            // estabilizacion CAD
 
-		retorno = retorno + (analogRead(0)*fc);
+		retorno = retorno + (analogRead(A0)*fc);
 	}
 
 	return retorno / ni;
@@ -137,7 +137,7 @@ void SensorCorrienteClass::enviarConsumo()
 		conexionRed->addParameter("consumo", pKWacum);
 
 		//Enviar datos al servidor por medio de la api "consumo"
-		if (conexionRed->sendHttpData("api/v1/consumo"))
+		if (conexionRed->sendHttpData("enersaving-laravel/public/api/v1/consumo"))
 		{
 			ttUltimoEnvio = millis();
 			pKWacum = 0;
