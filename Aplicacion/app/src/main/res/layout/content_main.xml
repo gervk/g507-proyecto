@@ -15,4 +15,11 @@
         android:id="@+id/imgFondo"
         android:src="@drawable/header"
         android:scaleType="fitStart"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/fondo_inicio"
+        android:id="@+id/fondoInicio"
+        android:layout_gravity="center" />
 </FrameLayout>

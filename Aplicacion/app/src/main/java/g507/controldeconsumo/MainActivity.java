@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     private static final String ARG_FONDO = "arg_fondo";
 
     private ImageView imagen;
+    private ImageView fondoInicio;
     private boolean mostrarFondo = true;
 
     @Override
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
             navigationView.setNavigationItemSelectedListener(this);
 
             imagen = (ImageView) this.findViewById(R.id.imgFondo);
+            fondoInicio = (ImageView) this.findViewById(R.id.fondoInicio);
 
             //Si habia una instancia anterior, carga la variable para mostrar o no el fondo
             if(savedInstanceState != null){
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity
             }
             if(!mostrarFondo){
                 imagen.setVisibility(View.GONE);
+                fondoInicio.setVisibility(View.GONE);
             }
         }
     }
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         imagen.setVisibility(View.GONE);
+        fondoInicio.setVisibility(View.GONE);
         mostrarFondo = false;
 
         item.setChecked(true);
