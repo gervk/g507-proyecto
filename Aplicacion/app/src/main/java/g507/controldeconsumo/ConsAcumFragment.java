@@ -181,7 +181,7 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
             try {
                 if(json.getString("status").equals("ok")){
                     txtResultadoAcum = (TextView) view.findViewById(R.id.txtVResulAcu);
-                    txtResultadoAcum.setText(String.valueOf(json.getInt("data")));
+                    txtResultadoAcum.setText(String.valueOf(json.getDouble("data"))+" KWh");
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }
