@@ -234,11 +234,10 @@ bool ConexionRedClass::sendHttpData(String service)
 		delay(1000);
 	}
 
-	wifi->println("AT+CIPCLOSE");
-	printLog("Error al enviar los datos");
-
 	this->resetWifi();
 
+	
+	printLog("Error al enviar los datos");
 	return false;	
 }
 
