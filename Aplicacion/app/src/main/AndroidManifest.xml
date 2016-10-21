@@ -26,13 +26,19 @@
         <activity
             android:name=".CambiarPassActivity"
             android:label="@string/title_activity_cambiar_pass" />
-        <activity android:name=".RegistroActivity"
-            android:label="@string/title_activity_registro"/>
+        <activity
+            android:name=".RegistroActivity"
+            android:label="@string/title_activity_registro" />
 
-        <!--<meta-data
+        <!--
+        <meta-data
         android:name="com.google.android.gms.vision.DEPENDENCIES"
-        android:value="barcode" />-->
+        android:value="barcode" />
+        -->
 
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" />
     </application>
 
 </manifest>

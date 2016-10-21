@@ -264,8 +264,7 @@ public class LoginFragment extends Fragment implements TaskListener{
                         JSONObject data = json.getJSONObject("data");
                         Integer idUsuario = data.getInt("id");
                         Integer idPregSeguridad = data.getInt("id_preg_seguridad");
-                        // fixme cambiar a .getString("resp_preg_seguridad") cuando cambie en la base
-                        String respPregSeguridad = String.valueOf(data.getInt("resp_preg_seguridad"));
+                        String respPregSeguridad = data.getString("resp_preg_seguridad");
 
                         cargarCambiarPassActivity(idUsuario, idPregSeguridad, respPregSeguridad);
                     } else if(json.getString("status").equals("error")){

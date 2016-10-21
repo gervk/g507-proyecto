@@ -14,9 +14,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
+import g507.controldeconsumo.conexion.ConstructorUrls;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,6 +33,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Carga los default de settings (se hace solo la primera vez)
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
         if (!sesionIniciada()) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -72,7 +78,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-/* Lo dejo comentado asi no se crea en la barra el boton de settings
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -87,14 +92,12 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            startActivity(new Intent(getBaseContext(), SettingsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
     }
-*/
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

@@ -23,7 +23,6 @@ public class ConfigCuentaFragment extends Fragment {
     private View view;
     private Switch swiMedirElec;
     private Spinner spinEmpresaElec;
-    private Spinner spinTipoTarifa;
     private Switch swiMedirAgua;
     private Spinner spinEmpresaAgua;
     private Button btnGuardar;
@@ -44,7 +43,6 @@ public class ConfigCuentaFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_config_cuenta, container, false);
         swiMedirElec = (Switch) view.findViewById(R.id.swiMedirElec);
         spinEmpresaElec = (Spinner) view.findViewById(R.id.spinEmpresaElec);
-        spinTipoTarifa = (Spinner) view.findViewById(R.id.spinTipoTarifa);
         swiMedirAgua = (Switch) view.findViewById(R.id.swiMedirAgua);
         spinEmpresaAgua = (Spinner) view.findViewById(R.id.spinEmpresaAgua);
         btnGuardar = (Button) view.findViewById(R.id.btnGuardar);
@@ -62,7 +60,6 @@ public class ConfigCuentaFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 spinEmpresaElec.setEnabled(checked);
-                spinTipoTarifa.setEnabled(checked);
             }
         });
         swiMedirAgua.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -89,7 +86,6 @@ public class ConfigCuentaFragment extends Fragment {
 
         boolean medirElect = prefs.getBoolean(getString(R.string.pref_medir_elect), false);
         spinEmpresaElec.setEnabled(medirElect);
-        spinTipoTarifa.setEnabled(medirElect);
         if(medirElect){
             int idEmpresaElect = prefs.getInt(getString(R.string.pref_empresa_elect), 1);
             spinEmpresaElec.setSelection(idEmpresaElect - 1);

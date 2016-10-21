@@ -29,8 +29,6 @@ import g507.controldeconsumo.conexion.TaskListener;
 import g507.controldeconsumo.modelo.PreguntaSeguridad;
 
 public class CambiarPassFragment extends Fragment implements TaskListener {
-    private static final String ARG_FORM = "num_form";
-
     private View view;
     private ViewFlipper viewFlipper;
     private TextView txtVPreg;
@@ -39,6 +37,8 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
     private EditText txtNuevaPass;
     private EditText txtConfNuevaPass;
     private Button btnNuevaPass;
+
+    private int pasoFlipper = 0;
 
     // Datos del usuario al que se va a cambiar la contraseña
     private Integer idUsuario = -1;
@@ -72,13 +72,6 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
             idUsuario = getArguments().getInt(CambiarPassActivity.ARG_ID_USUARIO);
             pregunta = PreguntaSeguridad.getPreguntaById(getArguments().getInt(CambiarPassActivity.ARG_ID_PREG));
             respuesta = getArguments().getString(CambiarPassActivity.ARG_RESP_PREG);
-        }
-
-        //Con esto carga el formulario del paso en que estaba al rotar la pantalla
-        //sin esto, si roto la pantalla vuelve siempre al paso 1
-        if(savedInstanceState != null){
-            int numForm = savedInstanceState.getInt(ARG_FORM);
-            viewFlipper.setDisplayedChild(numForm);
         }
     }
 
@@ -118,16 +111,13 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
             }
         });
 
-        return view;
-    }
+        viewFlipper.setDisplayedChild(pasoFlipper);
 
-    @Override
-    public void onStart() {
         if(pregunta != null){
             txtVPreg.setText(pregunta.toString());
         }
 
-        super.onStart();
+        return view;
     }
 
     /**
@@ -140,6 +130,7 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
         if(respIngresada.equals(respuesta)){
             //Habilita el prox paso
             viewFlipper.showNext();
+            pasoFlipper = 1;
         } else {
             txtRespuesta.setError(getString(R.string.error_resp_incorrecta));
             txtRespuesta.requestFocus();
@@ -201,13 +192,6 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
     private void cargarMainActivity() {
         startActivity(new Intent(getActivity(), MainActivity.class));
         getActivity().finish();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        //Guarda el numero del paso en que esta al rotar la pantalla
-        int numForm = viewFlipper.getDisplayedChild();
-        outState.putInt(ARG_FORM, numForm);
     }
 
     @Override

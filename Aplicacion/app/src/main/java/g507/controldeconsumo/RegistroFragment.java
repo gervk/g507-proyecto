@@ -145,6 +145,12 @@ public class RegistroFragment extends Fragment implements TaskListener {
             txtEmail.setError(getString(R.string.error_campo_requerido));
             campoConError = txtEmail;
             cancelar = true;
+        } else {
+            if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                txtEmail.setError("Formato incorrecto");
+                campoConError = txtEmail;
+                cancelar = true;
+            }
         }
 
         if(TextUtils.isEmpty(username)){
@@ -157,8 +163,7 @@ public class RegistroFragment extends Fragment implements TaskListener {
             campoConError.requestFocus();
         } else{
             if(Utils.conexionAInternetOk(getActivity())){
-                //fixme respuesta de seguridad
-                new TaskRequestUrl(this).execute(ConstructorUrls.registro(username, password, email, pregunta, 1), "POST");
+                new TaskRequestUrl(this).execute(ConstructorUrls.registro(username, password, email, pregunta, respuesta), "POST");
             } else{
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
             }
