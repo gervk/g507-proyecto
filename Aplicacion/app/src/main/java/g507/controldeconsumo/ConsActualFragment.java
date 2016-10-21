@@ -18,6 +18,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.Utils;
 import g507.controldeconsumo.conexion.TaskRequestUrl;
@@ -133,7 +135,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
-                    txtVResulActual.setText(String.valueOf(json.getDouble("data"))+" KWh");
+                    txtVResulActual.setText(new DecimalFormat("0.##").format(json.getDouble("data"))+" KWh");
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }

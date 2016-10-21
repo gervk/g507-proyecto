@@ -1,9 +1,12 @@
 package g507.controldeconsumo;
 
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +21,16 @@ import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -34,7 +43,7 @@ import g507.controldeconsumo.conexion.Utils;
 import g507.controldeconsumo.modelo.TipoConsumo;
 import g507.controldeconsumo.modelo.TipoEstadistica;
 
-public class EstadistFragment extends Fragment {
+public class EstadistFragment extends Fragment implements TaskListener{
     //Libreria para los graficos http://www.android-graphview.org/
 
     private View view;
@@ -51,8 +60,28 @@ public class EstadistFragment extends Fragment {
     private TextView txtVFechaMin;
     private GraphView grafico;
 
+    private ArrayList<String> etiquetasGraf;
+
+    private boolean conectando = false;
+    private ProgressDialog progressDialog;
+
     public EstadistFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Si se esta volviendo de una rotacion de pantalla y sigue el request, muestra msj de espera
+        if(conectando)
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
 
     @Override
@@ -89,15 +118,17 @@ public class EstadistFragment extends Fragment {
     }
 
     private void consultarEstadisticas() {
-
         Calendar cal;
         TipoConsumo tipoServicio;
-        TipoEstadistica tipoEstadistica;
+        TipoEstadistica tipoEstadistica = null;
         String fechaHoy;
         int idArduino;
         String[] posiblesEtiq;
         //String[] etiquetasGraf = new String[]{};
-        ArrayList<String> etiquetasGraf = new ArrayList<String>();
+        etiquetasGraf = new ArrayList<String>();
+
+        if(conectando)
+            return;
 
         if(rgrpServicio.getCheckedRadioButtonId() == -1){
             Toast.makeText(getActivity(), R.string.error_selecc_servicio, Toast.LENGTH_SHORT).show();
@@ -171,6 +202,9 @@ public class EstadistFragment extends Fragment {
                     hora = hora - 1;
                 }
                 break;
+            default:
+                tipoEstadistica = TipoEstadistica.POR_MES;
+                break;
         }
 
 
@@ -178,10 +212,9 @@ public class EstadistFragment extends Fragment {
         //había que ponerle un valor default, puse que sea -1
         idArduino = prefs.getInt(getString(R.string.pref_id_arduino), -1);
 
-        /*
         if(idArduino != -1){
             if(Utils.conexionAInternetOk(getActivity())){
-                String url = ConstructorUrls.consumoAcumulado(idArduino, tipoEstadistica,
+                String url = ConstructorUrls.estadisticas(idArduino, tipoServicio, tipoEstadistica,
                         Timestamp.valueOf(fechaHoy));
                 new TaskRequestUrl(this).execute(url, "GET");
             } else{
@@ -190,30 +223,106 @@ public class EstadistFragment extends Fragment {
         } else{
             Toast.makeText(getActivity(), "No hay un arduino asociado", Toast.LENGTH_SHORT).show();
         }
-        */
-
-        //TODO consultar
-        Toast.makeText(getActivity(), R.string.error_servidor_no_disp, Toast.LENGTH_SHORT).show();
-
-        mockGrafico(etiquetasGraf);
     }
 
-    private void mockGrafico(ArrayList<String> etiquetas) {
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 170),
-                new DataPoint(1, 156),
-                new DataPoint(2, 137),
-                new DataPoint(3, 180),
-                new DataPoint(4, 164),
-                new DataPoint(5, 220),
-                new DataPoint(6, 205)
-        });
+    private void completarEstadisticas(ArrayList<Double> valores) throws JSONException {
+        // Limpia datos anteriores
+        grafico.removeAllSeries();
+        txtVValorMax.setText("");
+        txtVValorMin.setText("");
+        txtVValorProm.setText("");
+        txtVFechaMax.setText("");
+        txtVFechaMin.setText("");
 
+        // Puntos para el grafico
+        DataPoint[] dataPoints = new DataPoint[valores.size()];
+        for(int n = 0; n < valores.size(); n++){
+            DataPoint dataPoint = new DataPoint(n, valores.get(n));
+            dataPoints[n] = dataPoint;
+        }
+
+        // Completa grafico
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<DataPoint>(dataPoints);
+        series.setSpacing(50);
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(grafico);
-        staticLabelsFormatter.setHorizontalLabels(etiquetas.toArray(new String[etiquetas.size()]));
+        staticLabelsFormatter.setHorizontalLabels(etiquetasGraf.toArray(new String[etiquetasGraf.size()]));
         grafico.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
         grafico.addSeries(series);
 
+        // Calculo maximo, minimo y promedio
+        double maximo = valores.get(0);
+        int indiceMaximo = 0;
+        double minimo = valores.get(0);
+        int indiceMinimo = 0;
+        double total = 0;
+        double promedio;
+
+        for(int n = 0; n < valores.size(); n++){
+            double valor = valores.get(n);
+            total = total + valor;
+            if(valor > maximo){
+                maximo = valor;
+                indiceMaximo = n;
+            }
+            if(valor < minimo){
+                minimo = valor;
+                indiceMinimo = n;
+            }
+        }
+        promedio = total / valores.size();
+
+        // Completa txts max/min/prom
+        DecimalFormat redondeo2Dec = new DecimalFormat("0.##");
+        txtVValorMax.setText(redondeo2Dec.format(maximo) + " KWh");
+        txtVValorMin.setText(redondeo2Dec.format(minimo) + " KWh");
+        txtVValorProm.setText(redondeo2Dec.format(promedio) + " KWh");
+        txtVFechaMax.setText(etiquetasGraf.get(indiceMaximo));
+        txtVFechaMin.setText(etiquetasGraf.get(indiceMinimo));
     }
 
+    @Override
+    public void inicioRequest() {
+        conectando = true;
+        progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
+    }
+
+    @Override
+    public void finRequest(JSONObject json) {
+        conectando = false;
+
+        if(progressDialog != null)
+            progressDialog.dismiss();
+
+        if(json != null){
+            try {
+                if(json.getString("status").equals("ok")){
+                    JSONObject data = json.getJSONObject("data");
+                    JSONArray jsonArray = data.toJSONArray(data.names());
+
+                    ArrayList<Double> valores = new ArrayList<>();
+                    for(int n = 0; n < jsonArray.length(); n++){
+                        valores.add(jsonArray.getDouble(n));
+                    }
+
+                    completarEstadisticas(valores);
+                } else if(json.getString("status").equals("error")){
+                    Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        // Cierra el progressDialog si se saca el fragment del activity (cuando se rota), sino tira excepcion
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDetach();
+    }
 }

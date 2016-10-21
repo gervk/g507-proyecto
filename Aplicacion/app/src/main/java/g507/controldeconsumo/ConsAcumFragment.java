@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -181,7 +182,7 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
             try {
                 if(json.getString("status").equals("ok")){
                     txtResultadoAcum = (TextView) view.findViewById(R.id.txtVResulAcu);
-                    txtResultadoAcum.setText(String.valueOf(json.getDouble("data"))+" KWh");
+                    txtResultadoAcum.setText(new DecimalFormat("0.##").format(json.getDouble("data"))+" KWh");
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }
