@@ -1,13 +1,16 @@
 package g507.controldeconsumo;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,13 +21,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
-import g507.controldeconsumo.conexion.ConstructorUrls;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String ARG_FONDO = "arg_fondo";
+    private static final int CODIGO_REQUEST_CAMARA = 001;
 
     private ImageView imagen;
     private ImageView fondoInicio;
@@ -110,7 +113,14 @@ public class MainActivity extends AppCompatActivity
 
         switch (idItemSelecc) {
             case R.id.asoc_arduino:
-                cargarFragment(new AsociarFragment(), getString(R.string.title_frag_asoc_arduino));
+                // Abre la pantalla asociar solo si tiene permiso para la cam, en caso que no, lo pide
+                int tienePermisoCamara = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+                if(tienePermisoCamara != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA},
+                            CODIGO_REQUEST_CAMARA);
+                } else{
+                    cargarFragment(new AsociarFragment(), getString(R.string.title_frag_asoc_arduino));
+                }
                 break;
             case R.id.config:
                 cargarFragment(new ConfigFragment(), getString(R.string.title_frag_config));
@@ -140,7 +150,13 @@ public class MainActivity extends AppCompatActivity
                             }
                         })
 
-                        .setNegativeButton("No", null).show();
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                imagen.setVisibility(View.VISIBLE);
+                                fondoInicio.setVisibility(View.VISIBLE);
+                            }
+                        }).show();
                 break;
             default:
                 break;
@@ -182,5 +198,21 @@ public class MainActivity extends AppCompatActivity
         //Guarda temporalmente la variable mostrarFondo para la prox que se cree la vista, ej cuando se rota
         outState.putBoolean(ARG_FONDO, mostrarFondo);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case CODIGO_REQUEST_CAMARA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    cargarFragment(new AsociarFragment(), getString(R.string.title_frag_asoc_arduino));
+                } else {
+                    Toast.makeText(this, "No se puede asociar el sensor sin la cámara", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
     }
 }
