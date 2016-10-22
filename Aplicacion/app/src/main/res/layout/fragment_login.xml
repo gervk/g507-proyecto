@@ -22,7 +22,7 @@
             <ImageView
                 android:id="@+id/imgLogo"
                 android:layout_width="match_parent"
-                android:layout_height="97dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/enersaving" />
@@ -90,4 +90,5 @@
 
         </LinearLayout>
     </ScrollView>
+
 </FrameLayout>

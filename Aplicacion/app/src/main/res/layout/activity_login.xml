@@ -4,4 +4,11 @@
     android:id="@+id/container_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="g507.controldeconsumo.LoginActivity" />
+    tools:context="g507.controldeconsumo.LoginActivity" >
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/content_footer"
+        android:layout_gravity="center_horizontal|bottom" />
+</FrameLayout>

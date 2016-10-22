@@ -23,6 +23,11 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Menú"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:autoText="false"
+        android:shadowColor="#111010"
+        android:textStyle="bold"
+        android:textColorHint="@color/abc_search_url_text_selected"
+        android:textColor="#010101" />
 
 </LinearLayout>
