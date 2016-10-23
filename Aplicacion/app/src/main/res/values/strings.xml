@@ -27,8 +27,8 @@
     <string name="nav_cerrar_sesion">Cerrar Sesión</string>
 
     <!-- Msjs error -->
-    <string name="error_selecc_servicio">Seleccione servicio</string>
-    <string name="error_selecc_periodo">Seleccione período</string>
+    <string name="error_selecc_servicio">Seleccione un servicio</string>
+    <string name="error_selecc_periodo">Seleccione un período</string>
     <string name="error_selecc_tipo_est">Seleccione tipo de estadística</string>
     <string name="error_qr_arduino">Código no válido</string>
     <string name="error_campo_requerido">Campo requerido</string>

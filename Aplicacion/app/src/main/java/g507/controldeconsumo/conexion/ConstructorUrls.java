@@ -176,4 +176,24 @@ public class ConstructorUrls {
 
         return url;
     }
+
+
+    /*public static String factura(Integer idUsuario, TipoConsumo tipoConsumo){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .encodedAuthority(urlBase)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("usuario")
+                .appendPath(String.valueOf(idUsuario))
+                .appendPath("factura")
+                .appendQueryParameter("tipo", String.valueOf(tipoConsumo.getId()));
+
+        String url = builder.build().toString();
+        Log.d("ConstructorUrls", url);
+
+        return url;
+    }*/
+
+
 }
