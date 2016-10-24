@@ -20,4 +20,13 @@ public enum TipoConsumo {
     public Integer getId(){
         return id;
     }
+
+    public static TipoConsumo getById(Integer id){
+        for(TipoConsumo tipoConsumo : TipoConsumo.values()){
+            if(tipoConsumo.getId() == id){
+                return tipoConsumo;
+            }
+        }
+        return null;
+    }
 }

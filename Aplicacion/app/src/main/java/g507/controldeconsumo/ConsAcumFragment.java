@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +20,11 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.TaskListener;
@@ -157,11 +154,11 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
                 String url = ConstructorUrls.consumoAcumulado(idArduino, tipoServicio,
                         Timestamp.valueOf(fechaIni), Timestamp.valueOf(fechaFin));
                 new TaskRequestUrl(this).execute(url, "GET");
-            } else{
+            } else {
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
             }
-        } else{
-            Toast.makeText(getActivity(), "No hay un arduino asociado", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.error_no_arduino), Toast.LENGTH_SHORT).show();
         }
     }
 

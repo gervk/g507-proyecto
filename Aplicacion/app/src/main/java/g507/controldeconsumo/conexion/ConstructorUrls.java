@@ -3,6 +3,7 @@ package g507.controldeconsumo.conexion;
 import android.net.Uri;
 import android.util.Log;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import g507.controldeconsumo.modelo.PreguntaSeguridad;
@@ -52,6 +53,8 @@ public class ConstructorUrls {
                 .appendQueryParameter("final", String.valueOf(fechaFin.getTime() / 1000));
 
         String url = builder.build().toString();
+        Log.d("ConstructorUrls", "Fecha inicio: " + new Date(fechaIni.getTime()));
+        Log.d("ConstructorUrls", "Fecha fin: " + new Date(fechaFin.getTime()));
         Log.d("ConstructorUrls", url);
 
         return url;
@@ -170,6 +173,25 @@ public class ConstructorUrls {
                 .appendQueryParameter("periodo", String.valueOf(tipoEstadistica.getId()))
                 // por alguna razon se agregan 3 ceros de mas, por eso divido por 1000
                 .appendQueryParameter("desde", String.valueOf(fechaHoy.getTime() / 1000));
+
+        String url = builder.build().toString();
+
+        Log.d("ConstructorUrls", url);
+
+        return url;
+    }
+
+    public static String guardarLimite(Integer idUsuario, TipoConsumo tipoConsumo, Integer limite){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .encodedAuthority(urlBase)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("usuario")
+                .appendPath(String.valueOf(idUsuario))
+                .appendPath("setLimite")
+                .appendQueryParameter("tipo", String.valueOf(tipoConsumo.getId()))
+                .appendQueryParameter("limite", String.valueOf(limite));
 
         String url = builder.build().toString();
         Log.d("ConstructorUrls", url);

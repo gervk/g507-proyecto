@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Escaneé el código QR que se encuentra junto al dispositivo Arduino"
+        android:text="Escaneé el código QR que se encuentra junto al sensor"
         android:id="@+id/textView13"
         android:layout_gravity="center_horizontal"
         android:textAlignment="center" />

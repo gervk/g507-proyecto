@@ -23,10 +23,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import g507.controldeconsumo.modelo.TipoConsumo;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String ARG_FONDO = "arg_fondo";
+    public static final String ARG_FONDO = "arg_fondo";
     private static final int CODIGO_REQUEST_CAMARA = 001;
 
     private ImageView imagen;
@@ -63,6 +65,17 @@ public class MainActivity extends AppCompatActivity
             //Si habia una instancia anterior, carga la variable para mostrar o no el fondo
             if(savedInstanceState != null){
                 mostrarFondo = savedInstanceState.getBoolean(ARG_FONDO);
+            } else{
+                Bundle extras = getIntent().getExtras();
+                if(extras != null){
+                    int idTipoConsumo = extras.getInt(ControlLimites.ARG_TIPO_NOTIF, -1);
+                    /* Si esta el argumento tipo notif, es porque se llego al activity al clickear una notif
+                    entonces hay que eliminar el control de ese tipo de consumo para no repetir la notif
+                    */
+                    if(idTipoConsumo != -1){
+                        ConfigNotifFragment.eliminarControl(this, idTipoConsumo);
+                    }
+                }
             }
             if(!mostrarFondo){
                 imagen.setVisibility(View.GONE);
@@ -173,7 +186,12 @@ public class MainActivity extends AppCompatActivity
     private void borrarDatosUsuario() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         prefs.edit().putInt(getString(R.string.pref_sesion_inic), -1).apply();
-        prefs.edit().putInt(getString(R.string.pref_id_arduino), -1);
+        prefs.edit().putInt(getString(R.string.pref_id_arduino), -1).apply();
+        prefs.edit().putInt(getString(R.string.pref_limite_elect), -1).apply();
+        prefs.edit().putInt(getString(R.string.pref_limite_agua), -1).apply();
+
+        ConfigNotifFragment.eliminarControl(this, TipoConsumo.ELECTRICIDAD.getId());
+        ConfigNotifFragment.eliminarControl(this, TipoConsumo.AGUA.getId());
     }
 
     /**
@@ -207,7 +225,7 @@ public class MainActivity extends AppCompatActivity
             case CODIGO_REQUEST_CAMARA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    cargarFragment(new AsociarFragment(), getString(R.string.title_frag_asoc_arduino));
+                    // Permiso agregado, no cargar fragment aca porque sino rompe
                 } else {
                     Toast.makeText(this, "No se puede asociar el sensor sin la cámara", Toast.LENGTH_SHORT).show();
                 }

@@ -189,7 +189,7 @@ public class AsociarFragment extends Fragment implements TaskListener{
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     prefs.edit().putInt(getString(R.string.pref_id_arduino), codigo).apply();
 
-                    Toast.makeText(getActivity(), "Arduino asociado correctamente" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Sensor asociado correctamente" , Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();

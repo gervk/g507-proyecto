@@ -105,7 +105,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
                 if(idArduino != -1)
                     new TaskRequestUrl(this).execute(ConstructorUrls.consumoActual(idArduino, tipoConsumo), "GET");
                 else
-                    Toast.makeText(getActivity(), "No hay un arduino asociado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.error_no_arduino), Toast.LENGTH_SHORT).show();
             }
         }
     }

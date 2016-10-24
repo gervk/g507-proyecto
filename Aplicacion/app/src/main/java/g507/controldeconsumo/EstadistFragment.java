@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,13 +30,12 @@ import org.json.JSONObject;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import g507.controldeconsumo.conexion.ConstructorUrls;
-import g507.controldeconsumo.conexion.TaskRequestUrl;
 import g507.controldeconsumo.conexion.TaskListener;
+import g507.controldeconsumo.conexion.TaskRequestUrl;
 import g507.controldeconsumo.conexion.Utils;
 import g507.controldeconsumo.modelo.TipoConsumo;
 import g507.controldeconsumo.modelo.TipoEstadistica;
@@ -221,7 +218,7 @@ public class EstadistFragment extends Fragment implements TaskListener{
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
             }
         } else{
-            Toast.makeText(getActivity(), "No hay un arduino asociado", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.error_no_arduino), Toast.LENGTH_SHORT).show();
         }
     }
 
