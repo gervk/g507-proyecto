@@ -14,6 +14,8 @@ public class ServicioElectricidad {
     private Double a_mas_20_variable;
     private String fecUltFact;
     private String fecPrimerConsumo;
+    private boolean ahorro = false;
+    private boolean penalizado = false;
 
     public ServicioElectricidad(Double cargo_fijo, Double cargo_variable, Double a_10_20_fijo, Double a_10_20_variable, Double
             a_mas_20_fijo, Double a_mas_20_variable){
@@ -30,26 +32,19 @@ public class ServicioElectricidad {
         Double totalAntesImpuestos = 100.0;//valor asignado solo para efectuar las pruebas
 
         if(consumoActual < consumoAnterior*0.8){
-            totalAntesImpuestos = dias*( totalAntesImpuestos - 20);
-            //usar tarifa de costo fijo y variable de ahorro mayor al 20% tope de 2000 de ahorro
-            //que abajo aparezca una aclaracion "durante este período el consumo fue menor que en el mismo período del año pasado"
+            totalAntesImpuestos = this.getA_mas_20_fijo() + this.getA_mas_20_variable()*dias;
+            this.setAhorro(true);
         }else{
             if(consumoActual < consumoAnterior*0.9 ){
-                totalAntesImpuestos =  dias*(totalAntesImpuestos - 10);
-                //usar tarifa de costo fijo y variable de ahorro mayor al 20% tope de 2000 de ahorro
-                //que abajo aparezca una aclaracion "durante este período el consumo fue menor que en el mismo período del año pasado"
+                totalAntesImpuestos =  this.getA_10_20_fijo() + this.getA_10_20_variable()*dias;
+                this.setAhorro(true);
             }else{
                 if(consumoActual< 300){
-                    if(consumoActual >= consumoAnterior*1.1){
-                        //penalizacion por exceso de consumo
-                        totalAntesImpuestos = dias*(totalAntesImpuestos + 20);
-                        //excedente por cargo variable
-                        //resto calculo normal factura
-                        //que abajo aparezca una aclaracion "durante este período el consumo fue mayor que en el mismo período del año pasado"
+                    if(consumoActual >= consumoAnterior*1.9){
+                        totalAntesImpuestos = this.getCargo_fijo()+this.getCargo_variable()*dias*(consumoActual - (consumoAnterior*1.9));
+                        this.setPenalizado(true);
                     }else{
-                        totalAntesImpuestos = totalAntesImpuestos*dias;
-                        //calculo con valores normales consumo*costo fijo y consumo*costo variable
-                        //calcular para cada tipo de tarifa y empresa, teniendo en cuenta la tarifa normal (sin descuento)
+                        totalAntesImpuestos = this.getCargo_fijo()+this.getCargo_variable()*dias;
                     }
                 }
             }
@@ -59,9 +54,12 @@ public class ServicioElectricidad {
 
     private Double efectuarImpuestos(Double valorAntesImpuestos){
         Double valorDespImpuestos = 0.0;
-        //TODO ver impuestos que aplican
-        //para edesur 10% imp al serv deelectricidad, 5,5% fondo obras publicas, 21% iva, 0,6% sta cruz, 6,4% cont municipal, 0,6424 cont provincial
-        valorDespImpuestos = valorAntesImpuestos*1.21;
+        Double IVA = 1.21;
+        Double contMunicipal = 1.064;
+        Double fondoObras = 1.055;
+        Double impServElec = 1.1;
+
+        valorDespImpuestos = valorAntesImpuestos*IVA*contMunicipal*fondoObras*impServElec;
         return valorDespImpuestos;
     }
     public int getId() {
@@ -142,6 +140,22 @@ public class ServicioElectricidad {
 
     public void setFecPrimerConsumo(String fecPrimerConsumo) {
         this.fecPrimerConsumo = fecPrimerConsumo;
+    }
+
+    public boolean isAhorro() {
+        return ahorro;
+    }
+
+    public void setAhorro(boolean ahorro) {
+        this.ahorro = ahorro;
+    }
+
+    public boolean isPenalizado() {
+        return penalizado;
+    }
+
+    public void setPenalizado(boolean penalizado) {
+        this.penalizado = penalizado;
     }
 
 }

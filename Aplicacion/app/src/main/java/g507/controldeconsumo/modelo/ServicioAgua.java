@@ -47,9 +47,11 @@ public class ServicioAgua {
 
     private Double efectuarImpuestos(Double valorAntesImpuestos){
         Double valorDespImpuestos = 0.0;
-        //efectuar impuestos de factura de agua
-        // TODO ver impuestos que aplican
-        valorDespImpuestos = valorAntesImpuestos*1.21;
+        Double eras = 0.0155;
+        Double apla= 0.0112;
+        Double IVA = 0.21;
+
+        valorDespImpuestos = valorAntesImpuestos*eras*apla*IVA;
         return valorDespImpuestos;
     }
     public int getId() {

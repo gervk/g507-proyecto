@@ -217,14 +217,15 @@ public class ConstructorUrls {
         return url;
     }
 
-    public static String tarifa(Double consumo){
+    public static String tarifa(Double consumo, Integer id_empresa){
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(PROTOCOLO)
                 .encodedAuthority(urlBase)
                 .appendPath(PATH_API)
                 .appendPath(PATH_VERSION)
                 .appendPath("tarifa")
-                .appendPath(String.valueOf(consumo));
+                .appendPath(String.valueOf(consumo))
+                .appendQueryParameter("empresa", String.valueOf(id_empresa));
 
         String url = builder.build().toString();
         Log.d("ConstructorUrls", url);
