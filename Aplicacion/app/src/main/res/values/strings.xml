@@ -14,7 +14,11 @@
     <string name="title_frag_cons_acum">Consumo Acumulado</string>
     <string name="title_frag_prox_factura">Próxima Factura</string>
     <string name="title_frag_estadisticas">Estadísticas</string>
+    <string name="title_frag_recomendaciones">Recomendaciones</string>
+    <string name="title_frag_recomendLuz">Energía</string>
+    <string name="title_frag_recomendAgua">Agua</string>
     <string name="title_activity_settings">Opciones adicionales</string>
+
 
     <!-- Items nav -->
     <string name="nav_asoc_arduino">Asociar Sensor</string>
@@ -24,6 +28,7 @@
     <string name="nav_cons_acum">Acumulado</string>
     <string name="nav_prox_factura">Próxima factura</string>
     <string name="nav_estadisticas">Estadísticas</string>
+    <string name="nav_recomendaciones">Recomendaciones</string>
     <string name="nav_cerrar_sesion">Cerrar Sesión</string>
 
     <!-- Msjs error -->
@@ -63,27 +68,65 @@
 
     <string name="action_settings">Opciones</string>
 
-    //descripción de meses, días y horas
-    <string-array
-        name="string_array_meses">
-        <item>Ene</item> <item>Feb</item> <item>Mar</item> <item>Abr</item>
-        <item>May</item> <item>Jun</item> <item>Jul</item> <item>Ago</item>
-        <item>Sep</item> <item>Oct</item> <item>Nov</item> <item>Dic</item>
+    <!-- Descripción de meses, días y horas -->
+    <string-array name="string_array_meses">
+        <item>Ene</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Abr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Ago</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dic</item>
     </string-array>
-    <string-array
-        name="string_array_dias">
-        <item>Dom</item> <item>Lun</item> <item>Mar</item> <item>Mie</item>
-        <item>Jue</item> <item>Vie</item> <item>Sab</item>
+    <string-array name="string_array_dias">
+        <item>Dom</item>
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mie</item>
+        <item>Jue</item>
+        <item>Vie</item>
+        <item>Sab</item>
     </string-array>
-    <string-array
-        name="string_array_horas">
-        <item>00</item> <item>01</item> <item>02</item> <item>03</item>
-        <item>04</item> <item>05</item> <item>06</item> <item>07</item>
-        <item>08</item> <item>09</item> <item>10</item> <item>11</item>
-        <item>12</item> <item>13</item> <item>14</item> <item>15</item>
-        <item>16</item> <item>17</item> <item>18</item> <item>19</item>
-        <item>20</item> <item>21</item> <item>22</item> <item>23</item>
+    <string-array name="string_array_horas">
+        <item>00</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
     </string-array>
+
+    <!-- Recomendaciones de ahorro de energía -->
+
+
+    <!-- Recomendaciones de ahorro de agua -->
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

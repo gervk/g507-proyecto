@@ -150,6 +150,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.estadisticas:
                 cargarFragment(new EstadistFragment(), getString(R.string.title_frag_estadisticas));
                 break;
+            case R.id.recomendaciones:
+                cargarFragment(new RecomendFragment(), getString(R.string.title_frag_recomendaciones));
+                break;
             case R.id.cerrar_sesion:
                 new AlertDialog.Builder(this)
                         .setTitle("Cerrar sesión")

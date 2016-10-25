@@ -27,6 +27,9 @@
             android:id="@+id/estadisticas"
             android:title="@string/nav_estadisticas" />
         <item
+            android:id="@+id/recomendaciones"
+            android:title="@string/nav_recomendaciones" />
+        <item
             android:id="@+id/cerrar_sesion"
             android:title="@string/nav_cerrar_sesion" />
     </group>
