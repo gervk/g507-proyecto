@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:columnCount="2"
-                android:rowCount="9"
+                android:rowCount="10"
                 android:columnOrderPreserved="false"
                 android:nestedScrollingEnabled="false">
 
@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editText" />
+                    android:id="@+id/txtK" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editText2" />
+                    android:id="@+id/txtZf" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editText3" />
+                    android:id="@+id/txtTgdf" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/txtVElegirServ" />
+                    android:id="@+id/txtSc" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editText5" />
+                    android:id="@+id/txtEf" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editText6" />
+                    android:id="@+id/txtSt" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -132,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editText7" />
+                    android:id="@+id/txtAud" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editText8" />
+                    android:id="@+id/txtFs" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -160,7 +160,22 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editText9" />
+                    android:id="@+id/txtCl" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Fecha última factura"
+                    android:id="@+id/textView13" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:inputType="date"
+                    android:ems="10"
+                    android:id="@+id/txtFecUltFact" />
 
             </GridLayout>
 

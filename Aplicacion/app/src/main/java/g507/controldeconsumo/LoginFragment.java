@@ -273,7 +273,7 @@ public class LoginFragment extends Fragment implements TaskListener{
             if(json != null){
                 try {
                     if(json.getString("status").equals("ok")){
-                        JSONObject data = json.getJSONObject("data");
+                        JSONObject data = json.getJSONObject("data").getJSONObject("user");
                         Integer idUsuario = data.getInt("id");
                         Integer idPregSeguridad = data.getInt("id_preg_seguridad");
                         String respPregSeguridad = data.getString("resp_preg_seguridad");

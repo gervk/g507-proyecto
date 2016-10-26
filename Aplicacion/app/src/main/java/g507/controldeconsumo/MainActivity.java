@@ -117,10 +117,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        imagen.setVisibility(View.GONE);
-        fondoInicio.setVisibility(View.GONE);
-        mostrarFondo = false;
-
         item.setChecked(true);
         int idItemSelecc = item.getItemId();
 
@@ -169,8 +165,10 @@ public class MainActivity extends AppCompatActivity
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                imagen.setVisibility(View.VISIBLE);
-                                fondoInicio.setVisibility(View.VISIBLE);
+                                if(mostrarFondo){
+                                    imagen.setVisibility(View.VISIBLE);
+                                    fondoInicio.setVisibility(View.VISIBLE);
+                                }
                             }
                         }).show();
                 break;
@@ -209,6 +207,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void cargarFragment(Fragment fragment, String titulo) {
+        imagen.setVisibility(View.GONE);
+        fondoInicio.setVisibility(View.GONE);
+        mostrarFondo = false;
+
         setTitle(titulo);
         getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment,
                 fragment).commit();
@@ -230,6 +232,10 @@ public class MainActivity extends AppCompatActivity
                 if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permiso agregado, no cargar fragment aca porque sino rompe
                 } else {
+                    if(mostrarFondo){
+                        imagen.setVisibility(View.VISIBLE);
+                        fondoInicio.setVisibility(View.VISIBLE);
+                    }
                     Toast.makeText(this, "No se puede asociar el sensor sin la cámara", Toast.LENGTH_SHORT).show();
                 }
                 return;

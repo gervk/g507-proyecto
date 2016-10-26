@@ -128,18 +128,29 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
 
         fechaFin = dateFormat.format(cal.getTime());
 
+        // Para que sea desde las 00hs
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+
         switch ((Periodo) spinPeriodo.getSelectedItem()){
             case DIA:
-                cal.add(Calendar.DATE, -1);
+                //cal.add(Calendar.DATE, -1);
+                // no hace falta cambiar nada
                 break;
             case SEMANA:
-                cal.add(Calendar.DATE, -7);
+                //cal.add(Calendar.DATE, -7);
+                cal.set(Calendar.DAY_OF_WEEK, 2); // desde el dia lunes de la semana actual
                 break;
             case MES:
-                cal.add(Calendar.MONTH, -1);
+                //cal.add(Calendar.MONTH, -1);
+                cal.set(Calendar.DAY_OF_MONTH, 1); // desde el primer dia del mes actual
                 break;
             case BIMESTRE:
-                cal.add(Calendar.MONTH, -2);
+                //cal.add(Calendar.MONTH, -2);
+                cal.add(Calendar.MONTH, -1);
+                cal.set(Calendar.DAY_OF_MONTH, 1); // desde el 1° dia del mes anterior
                 break;
         }
 

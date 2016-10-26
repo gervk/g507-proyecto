@@ -3,8 +3,13 @@ package g507.controldeconsumo.conexion;
 import android.net.Uri;
 import android.util.Log;
 
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import g507.controldeconsumo.modelo.PreguntaSeguridad;
 import g507.controldeconsumo.modelo.TipoConsumo;
@@ -21,6 +26,8 @@ public class ConstructorUrls {
     public static String urlBase = URL_BASE_CLOUD;
     private static final String PATH_API = "api";
     private static final String PATH_VERSION = "v1";
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static String consumoActual(Integer codArduino, TipoConsumo tipoConsumo){
         Uri.Builder builder = new Uri.Builder();
@@ -53,8 +60,8 @@ public class ConstructorUrls {
                 .appendQueryParameter("final", String.valueOf(fechaFin.getTime() / 1000));
 
         String url = builder.build().toString();
-        Log.d("ConstructorUrls", "Fecha inicio: " + new Date(fechaIni.getTime()));
-        Log.d("ConstructorUrls", "Fecha fin: " + new Date(fechaFin.getTime()));
+        Log.d("ConstructorUrls", "Fecha inicio: " + dateFormat.format(fechaIni.getTime()));
+        Log.d("ConstructorUrls", "Fecha fin: " + dateFormat.format(fechaFin.getTime()));
         Log.d("ConstructorUrls", url);
 
         return url;
@@ -175,7 +182,7 @@ public class ConstructorUrls {
                 .appendQueryParameter("desde", String.valueOf(fechaHoy.getTime() / 1000));
 
         String url = builder.build().toString();
-
+        Log.d("ConstructorUrls", "Fecha desde: " + dateFormat.format(fechaHoy.getTime()));
         Log.d("ConstructorUrls", url);
 
         return url;
@@ -228,6 +235,27 @@ public class ConstructorUrls {
                 .appendQueryParameter("empresa", String.valueOf(id_empresa));
 
         String url = builder.build().toString();
+        Log.d("ConstructorUrls", url);
+
+        return url;
+    }
+
+    public static String configAgua(Integer idUsuario, JSONObject jsonCoeficientes, Timestamp fechaUltimaFactura){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .encodedAuthority(urlBase)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("usuario")
+                .appendPath(String.valueOf(idUsuario))
+                .appendPath("setServ")
+                .appendQueryParameter("tipo", String.valueOf(TipoConsumo.AGUA.getId()))
+                .appendQueryParameter("coeficientes", jsonCoeficientes.toString())
+                // por alguna razon se agregan 3 ceros de mas, por eso divido por 1000
+                .appendQueryParameter("ultimaFactura", String.valueOf(fechaUltimaFactura.getTime() / 1000));
+
+        String url = builder.build().toString();
+        Log.d("ConstructorUrls", "Fecha ult factura: " + dateFormat.format(fechaUltimaFactura.getTime()));
         Log.d("ConstructorUrls", url);
 
         return url;

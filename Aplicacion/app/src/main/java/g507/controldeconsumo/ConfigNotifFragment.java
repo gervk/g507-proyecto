@@ -253,6 +253,11 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
         return pendingIntent;
     }
 
+    /**
+     * Elimina la alarma (control) para el tipo de consumo dado, en caso que exista
+     * @param activity
+     * @param idTipoConsumo
+     */
     public static void eliminarControl(Activity activity, int idTipoConsumo){
         AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
         PendingIntent intent = ConfigNotifFragment.intentControl(activity, TipoConsumo.getById(idTipoConsumo), 0, 0);
