@@ -61,6 +61,7 @@ public class ControlLimites extends BroadcastReceiver implements TaskListener{
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar cal = Calendar.getInstance();
         Timestamp fechaFin = Timestamp.valueOf(dateFormat.format(cal.getTime()));
+        cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.clear(Calendar.MINUTE);
         cal.clear(Calendar.SECOND);
         cal.clear(Calendar.MILLISECOND);
