@@ -6,13 +6,9 @@
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="16dp" >
-    <!--tools:context="g507.controldeconsumo.ConfigCuentaFragment"-->
+    android:paddingTop="16dp"
+    tools:context="g507.controldeconsumo.RecomendLuzFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,18 +26,14 @@
                 android:textStyle="bold"
                 android:textAlignment="center"/>
 
-            <!--<TextView
-                android:id="@+id/txtListaRecomendLuz"
-                android:layout_width="wrap_content"
+            <ListView
+                android:id="@+id/lvRecomendLuz"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/string_recomend_luz"
-                />-->
-
+                android:listSelector="@android:color/transparent"/>
 
 
         </LinearLayout>
 
-    </ScrollView>
 
 </FrameLayout>

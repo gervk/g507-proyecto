@@ -6,33 +6,33 @@
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="16dp" >
-    <!--tools:context="g507.controldeconsumo.ConfigCuentaFragment"-->
+    android:paddingTop="16dp"
+    tools:context="g507.controldeconsumo.RecomendAguaFragment">
 
-    <ScrollView
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <TextView
+            android:id="@+id/txtTituloRecomendAgua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Recomendaciones para ahorrar agua:"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
 
+        <ListView
+            android:id="@+id/lvRecomendAgua"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:listSelector="@android:color/transparent"/>
 
-            <TextView
-                android:id="@+id/txtTituloRecomendAgua"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Recomendaciones para ahorrar agua:"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textStyle="bold"
-                android:textAlignment="center"/>
+    </LinearLayout>
 
-
-        </LinearLayout>
-
-    </ScrollView>
 
 </FrameLayout>

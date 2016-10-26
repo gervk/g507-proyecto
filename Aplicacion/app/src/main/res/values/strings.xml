@@ -120,10 +120,27 @@
     </string-array>
 
     <!-- Recomendaciones de ahorro de energía -->
-
+    <string-array name="string_array_rec_luz" formatted="false">
+        <item>Usa focos de bajo consumo: ahorran hasta un 75% de energía.</item>
+        <item>Recordá apagar la luz cuando salgas de una habitación o cuando la luz natural sea suficiente.</item>
+        <item>Regular la calefacción en 20°: Es la temperatura indicada para lograr que los equipos de calefacción logren eficiencia y ahorro energético, ya que por cada grado que se aleja de los 20° el consumo aumenta un 7%.</item>
+        <item>Usa la lavadora llena: ahorrarás agua y electricidad.</item>
+        <item>Descongelá el freezer: la escarcha crea un aislamiento que puede acarrear un 20% de consumo eléctrico suplementario.</item>
+        <item>Sustituye tu refrigerador viejo (de más de 10 años) de alto consumo eléctrico, por uno moderno de bajo consumo (consume 1/3 parte de electricidad). La diferencia de costo se paga con el ahorro de energía.</item>
+        <item>Desconecta todos los aparatos eléctricos que no estés utilizando, al estar conectados consumen energía (aunque no estén encendidos).</item>
+        <item>La mayor parte de la energía que usan los lavarropas (del 80% al 85%) se utiliza para calentar el agua. Por lo tanto, lave -siempre que se pueda- con los programas de agua fría. Intente que trabaje siempre a plena carga. Use sólo el jabón necesario pues su exceso produce mucha espuma y hace que el motor trabaje de más.</item>
+    </string-array>
 
     <!-- Recomendaciones de ahorro de agua -->
-
+    <string-array name="string_array_rec_agua" formatted="false">
+        <item>Cerrá la canilla al lavarte los dientes o afeitarte, podés ahorrar hasta 10 litros.</item>
+        <item>Arregla con urgencia las averías de canillas y cañerías. Una canilla que gotea pierde 30 litros diarios.</item>
+        <item>Utilice todo el espacio en su lavarropa cuando lo encienda, así se requerirán menos ciclos por semana. También esté consciente de que la mayoría de las funciones que requieren media carga son ineficientes debido a que utilizan más de la mitad del agua requerida para una carga completa.</item>
+        <item>Igualmente, si tiene un lavaplatos, sólo utilícelo cuando tenga suficientes vajillas que ocupen toda su capacidad. No enjuague los platos bajo la canilla antes, ya que los lavaplatos están diseñados para deshacerse de la grasa de los platos, tazas y cubiertos.</item>
+        <item>Riegue el jardín durante la noche para minimizar la evaporación.</item>
+        <item>Lave las frutas y las verduras en un recipiente con agua y no las limpie bajo la canilla.</item>
+        <item>Prefiera lavar el automóvil usando baldes y una esponja en vez de una manguera. También puede comprar toallas especiales para lavar el carro que no necesitan agua.</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
