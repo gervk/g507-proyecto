@@ -264,13 +264,14 @@ public class ProxFacFragment extends Fragment implements TaskListener {
         try {
             if(json.getString("status").equals("ok")){
                 if(tipoServicio == TipoConsumo.AGUA){
-                    JSONObject data = json.getJSONObject("servicio");
+                    JSONObject data = json.getJSONObject("data");
+                    JSONObject servicio = data.getJSONObject("servicio");
 
-                    servicioAgua = new ServicioAgua(data.getInt("id"), data.getDouble("k"),data.getDouble("zf"),
-                            data.getDouble("tgdf"), data.getDouble("sc"),data.getDouble("ef"), data.getDouble("st"),
-                            data.getDouble("aud"), data.getDouble("fs"),data.getDouble("cl"));
-                    servicioAgua.setFecFact(data.getString("ultima_factura"));
-                    obtenerDiferencia(servicioAgua.getFecFact(), tipoServicio);
+                    servicioAgua = new ServicioAgua(servicio.getInt("id"), servicio.getDouble("k"),servicio.getDouble("zf"),
+                           servicio.getDouble("tgdf"), servicio.getDouble("sc"),servicio.getDouble("ef"), servicio.getDouble("st"),
+                            servicio.getDouble("aud"), servicio.getDouble("fs"),servicio.getDouble("cl"));
+                    servicioAgua.setFecFact(servicio.getString("ultima_factura"));
+                    obtenerDiferencia(servicioAgua.getFecFact()+" 00:00:00", tipoServicio);
 
 
                 }else{
