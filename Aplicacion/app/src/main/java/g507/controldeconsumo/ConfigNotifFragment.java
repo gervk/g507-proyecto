@@ -292,7 +292,7 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
                 if(json.getString("status").equals("ok")){
                     Toast.makeText(getActivity(), "Datos guardados" , Toast.LENGTH_SHORT).show();
                 } else if(json.getString("status").equals("error")){
-                    Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), json.getString("data") , Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();

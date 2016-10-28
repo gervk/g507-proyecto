@@ -191,7 +191,7 @@ public class AsociarFragment extends Fragment implements TaskListener{
 
                     Toast.makeText(getActivity(), "Sensor asociado correctamente" , Toast.LENGTH_SHORT).show();
                 } else if(json.getString("status").equals("error")){
-                    Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), json.getString("data") , Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();

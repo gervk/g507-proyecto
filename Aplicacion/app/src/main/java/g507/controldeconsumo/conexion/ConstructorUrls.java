@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 import g507.controldeconsumo.modelo.PreguntaSeguridad;
+import g507.controldeconsumo.modelo.ServicioAgua;
 import g507.controldeconsumo.modelo.TipoConsumo;
 import g507.controldeconsumo.modelo.TipoEstadistica;
 
@@ -240,7 +241,7 @@ public class ConstructorUrls {
         return url;
     }
 
-    public static String configAgua(Integer idUsuario, JSONObject jsonCoeficientes, Timestamp fechaUltimaFactura){
+    public static String configAgua(Integer idUsuario, ServicioAgua servAgua, Timestamp fechaUltimaFactura){
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(PROTOCOLO)
                 .encodedAuthority(urlBase)
@@ -250,7 +251,15 @@ public class ConstructorUrls {
                 .appendPath(String.valueOf(idUsuario))
                 .appendPath("setServ")
                 .appendQueryParameter("tipo", String.valueOf(TipoConsumo.AGUA.getId()))
-                .appendQueryParameter("coeficientes", jsonCoeficientes.toString())
+                .appendQueryParameter("k", String.valueOf(servAgua.getK()))
+                .appendQueryParameter("zf", String.valueOf(servAgua.getZf()))
+                .appendQueryParameter("tgdf", String.valueOf(servAgua.getTgdf()))
+                .appendQueryParameter("sc", String.valueOf(servAgua.getSc()))
+                .appendQueryParameter("ef", String.valueOf(servAgua.getEf()))
+                .appendQueryParameter("st", String.valueOf(servAgua.getSt()))
+                .appendQueryParameter("aud", String.valueOf(servAgua.getAud()))
+                .appendQueryParameter("fs", String.valueOf((int) servAgua.getFs()))
+                .appendQueryParameter("cl", String.valueOf((int) servAgua.getCl()))
                 // por alguna razon se agregan 3 ceros de mas, por eso divido por 1000
                 .appendQueryParameter("ultimaFactura", String.valueOf(fechaUltimaFactura.getTime() / 1000));
 
@@ -260,6 +269,4 @@ public class ConstructorUrls {
 
         return url;
     }
-
-
 }

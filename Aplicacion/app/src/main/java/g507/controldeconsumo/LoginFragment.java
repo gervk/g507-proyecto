@@ -280,7 +280,7 @@ public class LoginFragment extends Fragment implements TaskListener{
 
                         cargarCambiarPassActivity(idUsuario, idPregSeguridad, respPregSeguridad);
                     } else if(json.getString("status").equals("error")){
-                        Toast.makeText(getActivity(), "No existe el usuario" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), json.getString("data") , Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();

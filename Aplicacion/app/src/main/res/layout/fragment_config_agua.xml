@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="K (coeficiente de modificación)"
+                    android:text="K (coef. de modificación)"
                     android:id="@+id/textView4" />
 
                 <EditText
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Zf (coeficiente de zona para cargo fijo)"
+                    android:text="Zf (coef. de zona para cargo fijo)"
                     android:id="@+id/textView5" />
 
                 <EditText
@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Ef (coeficiente de edificación para cargo fijo)"
+                    android:text="Ef (coef. de edificación para cargo fijo)"
                     android:id="@+id/textView8" />
 
                 <EditText
@@ -166,7 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Fecha última factura"
+                    android:text="Fecha última factura (dd/mm/yyyy)"
                     android:id="@+id/textView13" />
 
                 <EditText

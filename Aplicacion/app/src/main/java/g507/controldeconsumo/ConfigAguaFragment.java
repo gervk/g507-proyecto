@@ -15,20 +15,20 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.gcm.Task;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 
 import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.TaskListener;
 import g507.controldeconsumo.conexion.TaskRequestUrl;
 import g507.controldeconsumo.conexion.Utils;
+import g507.controldeconsumo.modelo.ServicioAgua;
 
 public class ConfigAguaFragment extends Fragment implements TaskListener {
 
@@ -109,7 +109,7 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         double aud = 0;
         double fs = 0;
         double cl = 0;
-        double fecUltFact;
+        Timestamp fecUltFact = null;
 
         // Para control de errores
         boolean cancelar = false;
@@ -127,14 +127,21 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         txtCl.setError(null);
         txtFecUltFact.setError(null);
 
-        /*
         if(TextUtils.isEmpty(txtFecUltFact.getText())){
             txtFecUltFact.setError(getString(R.string.error_campo_requerido));
             campoConError = txtFecUltFact;
             cancelar = true;
         } else {
-
-        }*/
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            try{
+                Date dateUltFact = dateFormat.parse(txtFecUltFact.getText().toString());
+                fecUltFact = new Timestamp(dateUltFact.getTime());
+            } catch (ParseException e){
+                txtFecUltFact.setError("Formato incorrecto");
+                campoConError = txtFecUltFact;
+                cancelar = true;
+            }
+        }
 
         if(TextUtils.isEmpty(txtCl.getText())){
             txtCl.setError(getString(R.string.error_campo_requerido));
@@ -213,36 +220,16 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         } else{
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             int idUsuario = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
-            JSONObject jsonCoef = getJsonCoef(k, zf, tgdf, sc, ef, st, aud, fs, cl);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Timestamp timeStampHoy = Timestamp.valueOf(dateFormat.format(Calendar.getInstance().getTime()));
+            ServicioAgua servicioAgua = new ServicioAgua(0, k, zf, tgdf, sc, ef, st, aud, fs, cl);
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //Timestamp timeStampHoy = Timestamp.valueOf(dateFormat.format(Calendar.getInstance().getTime()));
 
             if(Utils.conexionAInternetOk(getActivity())){
-                new TaskRequestUrl(this).execute(ConstructorUrls.configAgua(idUsuario, jsonCoef, timeStampHoy), "POST");
+                new TaskRequestUrl(this).execute(ConstructorUrls.configAgua(idUsuario, servicioAgua, fecUltFact), "POST");
             } else{
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private JSONObject getJsonCoef(double k, double zf, double tgdf, double sc, double ef, double st, double aud, double fs, double cl){
-        JSONObject json = new JSONObject();
-
-        try{
-            json.put("k", k);
-            json.put("zf", zf);
-            json.put("tgdf", tgdf);
-            json.put("sc", sc);
-            json.put("ef", ef);
-            json.put("st", st);
-            json.put("aud", aud);
-            json.put("fs", fs);
-            json.put("cl", cl);
-        } catch (JSONException e) {
-            return null;
-        }
-
-        return json;
     }
 
     @Override

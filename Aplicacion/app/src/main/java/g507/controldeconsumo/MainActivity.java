@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity
                     */
                     if(idTipoConsumo != -1){
                         ConfigNotifFragment.eliminarControl(this, idTipoConsumo);
+                        cargarFragment(new RecomendFragment(), getString(R.string.title_frag_recomendaciones));
                     }
                 }
             }
