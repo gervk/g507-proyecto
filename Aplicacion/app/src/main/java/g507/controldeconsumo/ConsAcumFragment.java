@@ -42,7 +42,7 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
     private Spinner spinPeriodo;
     private Button btnConsultar;
     private TextView txtResultadoAcum;
-
+    private String unidad;
     private boolean conectando = false;
     private ProgressDialog progressDialog;
 
@@ -116,9 +116,11 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
 
         if(rbtnElect.isChecked()) {
             tipoServicio = TipoConsumo.ELECTRICIDAD;
+            unidad = " KWh";
         }
         else {
             tipoServicio = TipoConsumo.AGUA;
+            unidad = " m3";
         }
 
 
@@ -190,7 +192,7 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
             try {
                 if(json.getString("status").equals("ok")){
                     txtResultadoAcum = (TextView) view.findViewById(R.id.txtVResulAcu);
-                    txtResultadoAcum.setText(new DecimalFormat("0.##").format(json.getDouble("data"))+" KWh");
+                    txtResultadoAcum.setText(new DecimalFormat("0.##").format(json.getDouble("data"))+unidad);
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }

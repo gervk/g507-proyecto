@@ -34,7 +34,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
     private RadioButton rbtnAgua;
     private Button btnConsultar;
     private TextView txtVResulActual;
-
+    private String unidad;
     private ProgressDialog progressDialog;
     private boolean descargandoDatos = false;
 
@@ -94,9 +94,11 @@ public class ConsActualFragment extends Fragment implements TaskListener{
             } else{
                 if(rbtnElect.isChecked()) {
                     tipoConsumo = TipoConsumo.ELECTRICIDAD;
+                    unidad = " KWh";
                 }
                 else {
                     tipoConsumo = TipoConsumo.AGUA;
+                    unidad = " m3";
                 }
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 //había que ponerle un valor default, puse que sea -1
@@ -135,7 +137,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
-                    txtVResulActual.setText(new DecimalFormat("0.##").format(json.getDouble("data"))+" KWh");
+                    txtVResulActual.setText(new DecimalFormat("0.##").format(json.getDouble("data"))+unidad);
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }
