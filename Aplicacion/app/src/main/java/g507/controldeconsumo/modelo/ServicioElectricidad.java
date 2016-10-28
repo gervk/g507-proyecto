@@ -17,6 +17,8 @@ public class ServicioElectricidad {
     private boolean ahorro = false;
     private boolean penalizado = false;
 
+    public ServicioElectricidad (){}
+
     public ServicioElectricidad(Double cargo_fijo, Double cargo_variable, Double a_10_20_fijo, Double a_10_20_variable, Double
             a_mas_20_fijo, Double a_mas_20_variable){
 

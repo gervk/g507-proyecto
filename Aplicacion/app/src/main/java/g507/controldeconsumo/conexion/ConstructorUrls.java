@@ -233,7 +233,7 @@ public class ConstructorUrls {
                 .appendPath(PATH_VERSION)
                 .appendPath("tarifa")
                 .appendPath(String.valueOf(consumo))
-                .appendQueryParameter("empresa", String.valueOf(id_empresa));
+                .appendQueryParameter("idEmpresa", String.valueOf(id_empresa));
 
         String url = builder.build().toString();
         Log.d("ConstructorUrls", url);

@@ -51,8 +51,8 @@ public class ProxFacFragment extends Fragment implements TaskListener {
     private Double consumo;
     private Long diferencia;
     private Integer idArduino;
-    private Integer id_empresa;
     private TipoConsumo tipoServicio;
+    private boolean obteniendoTarifa = false;
 
     private ProgressDialog progressDialog;
 
@@ -188,8 +188,9 @@ public class ProxFacFragment extends Fragment implements TaskListener {
     }
 
     private void obtenerTarifas(Double consumo){
+        obteniendoTarifa = true;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        EmpresaElec empresaElec = EmpresaElec.getEmpresaById(prefs.getInt(getString(R.string. pref_empresa_elect),-1));
+        EmpresaElec empresaElec = EmpresaElec.getEmpresaById(2);
         servicioElectricidad.setEmpresa(empresaElec);
 
         if(Utils.conexionAInternetOk(getActivity())){
@@ -202,6 +203,7 @@ public class ProxFacFragment extends Fragment implements TaskListener {
     }
     @Override
     public void inicioRequest() {
+        if(progressDialog!= null && progressDialog.isShowing())
         progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
 
@@ -215,12 +217,16 @@ public class ProxFacFragment extends Fragment implements TaskListener {
 
         }else{
             if(obteniendoAcum){
-                obteniendoAcum = false;
                 procesarJsonAcum(json);
-
+                obteniendoAcum =false;
             }else{
+               if(obteniendoTarifa){
                 procesarJsonTarifa(json);
+                obteniendoTarifa = false;
             }
+            }
+
+
         }
     }
 
@@ -234,19 +240,19 @@ public class ProxFacFragment extends Fragment implements TaskListener {
     }
 
     private void calcularAgua(){
-        Double consumoRegistrado = obtenerDiferencia(servicioAgua.getFecFact(), tipoServicio);
-        Double totalAPagar = servicioAgua.calcularCosto(diferencia, consumoRegistrado);
+
+        Double totalAPagar = servicioAgua.calcularCosto(diferencia, consumo);
         if(totalAPagar < 271.00){
             totalAPagar = 271.00;
         }
-        txtVConsumoMes.setText(new DecimalFormat("0.##").format(consumoRegistrado)+" m3");
+        txtVConsumoMes.setText(new DecimalFormat("0.##").format(consumo)+" m3");
         txtVCostoProxFac.setText(new DecimalFormat("0.##").format(totalAPagar)+" $");
     }
 
     private void calcularElectricidad(){
         Double consumoActual = obtenerDiferencia(servicioElectricidad.getFecUltFact(), tipoServicio);
         Integer dias = diferencia.intValue();
-        obtenerTarifas(consumoActual);
+        obtenerTarifas(consumo);
         Double totalAPagar = servicioElectricidad.calcularCosto(consumoActual,obtenerDiferencia(servicioElectricidad.getFecPrimerConsumo(), tipoServicio),dias);
         txtVConsumoMes.setText(new DecimalFormat("0.##").format(consumoActual)+" KWh");
         txtVCostoProxFac.setText(new DecimalFormat("0.##").format(totalAPagar)+" $");
@@ -264,20 +270,22 @@ public class ProxFacFragment extends Fragment implements TaskListener {
                             data.getDouble("tgdf"), data.getDouble("sc"),data.getDouble("ef"), data.getDouble("st"),
                             data.getDouble("aud"), data.getDouble("fs"),data.getDouble("cl"));
                     servicioAgua.setFecFact(data.getString("ultima_factura"));
+                    obtenerDiferencia(servicioAgua.getFecFact(), tipoServicio);
 
-                    calcularAgua();
 
                 }else{
                     JSONObject data = json.getJSONObject("servicio");
+                    servicioElectricidad = new ServicioElectricidad();
                     servicioElectricidad.setFecUltFact(data.getString("ultima_factura"));
                     JSONObject primerConsumo = json.getJSONObject("primerConsumo");
                     servicioElectricidad.setFecPrimerConsumo(primerConsumo.getString("updated_at"));
-
-                    calcularElectricidad();
+                    obtenerDiferencia(servicioElectricidad.getFecPrimerConsumo(), tipoServicio);
+                    //calcularElectricidad();
                 }
 
             } else if(json.getString("status").equals("error")){
                 Toast.makeText(getActivity(), "Por favor complete los datos de configuracion" , Toast.LENGTH_SHORT).show();
+
             }
         } catch (JSONException e) {
             Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
@@ -289,13 +297,22 @@ public class ProxFacFragment extends Fragment implements TaskListener {
     }
 
     private void procesarJsonAcum(JSONObject json){
+        obteniendoAcum = false;
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
                     consumo = json.getDouble("data");
+                    if(tipoServicio == TipoConsumo.AGUA){
+                    calcularAgua();
+                    }else {
+                        calcularElectricidad();
+                    }
+
+
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }
+
             } catch (JSONException e) {
                 Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
