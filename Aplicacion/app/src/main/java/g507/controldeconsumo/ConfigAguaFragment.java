@@ -48,6 +48,8 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
     private ProgressDialog progressDialog;
     private boolean conectando = false;
 
+    private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
     public ConfigAguaFragment() {
         // Required empty public constructor
     }
@@ -92,7 +94,64 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             }
         });
 
+        cargarConfigLocal();
+
         return view;
+    }
+
+    /**
+     * Completa los campos con los valores guardados localmente en caso que existan
+     */
+    private void cargarConfigLocal() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        double k = prefs.getFloat(getString(R.string.pref_agua_k), -1);
+        double zf = prefs.getFloat(getString(R.string.pref_agua_zf), -1);
+        double tgdf = prefs.getFloat(getString(R.string.pref_agua_tgdf), -1);
+        double sc = prefs.getFloat(getString(R.string.pref_agua_sc), -1);
+        double ef = prefs.getFloat(getString(R.string.pref_agua_ef), -1);
+        double st = prefs.getFloat(getString(R.string.pref_agua_st), -1);
+        double aud = prefs.getFloat(getString(R.string.pref_agua_aud), -1);
+        int fs = prefs.getInt(getString(R.string.pref_agua_fs), -1);
+        int cl = prefs.getInt(getString(R.string.pref_agua_cl), -1);
+        String fecha = prefs.getString(getString(R.string.pref_agua_fecha_fact), "");
+
+        if(k != -1){
+            txtK.setText(String.valueOf(k));
+        }
+        if(zf != -1){
+            txtZf.setText(String.valueOf(zf));
+        }
+        if(tgdf != -1){
+            txtTgdf.setText(String.valueOf(tgdf));
+        }
+        if(sc != -1){
+            txtSc.setText(String.valueOf(sc));
+        }
+        if(ef != -1){
+            txtEf.setText(String.valueOf(ef));
+        }
+        if(st != -1){
+            txtSt.setText(String.valueOf(st));
+        }
+        if(aud != -1){
+            txtAud.setText(String.valueOf(aud));
+        }
+        if(fs != -1){
+            txtFs.setText(String.valueOf(fs));
+        }
+        if(cl != -1){
+            txtCl.setText(String.valueOf(cl));
+        }
+        if(fecha != ""){
+            try {
+                // Convierte del formato de fecha separado con "-" a "/"
+                DateFormat dateFormatGuardado = new SimpleDateFormat("yyyy-MM-dd");
+                Date fechaGuardada = dateFormatGuardado.parse(fecha);
+                txtFecUltFact.setText(String.valueOf(dateFormat.format(fechaGuardada)));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void guardar(){
@@ -107,8 +166,8 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         double ef = 0;
         double st = 0;
         double aud = 0;
-        double fs = 0;
-        double cl = 0;
+        int fs = 0;
+        int cl = 0;
         Timestamp fecUltFact = null;
 
         // Para control de errores
@@ -132,7 +191,6 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtFecUltFact;
             cancelar = true;
         } else {
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             try{
                 Date dateUltFact = dateFormat.parse(txtFecUltFact.getText().toString());
                 fecUltFact = new Timestamp(dateUltFact.getTime());
@@ -148,7 +206,7 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtCl;
             cancelar = true;
         } else {
-            cl = Double.parseDouble(txtCl.getText().toString());
+            cl = Integer.parseInt(txtCl.getText().toString());
         }
 
         if(TextUtils.isEmpty(txtFs.getText())){
@@ -156,7 +214,7 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtFs;
             cancelar = true;
         } else {
-            fs = Double.parseDouble(txtFs.getText().toString());
+            fs = Integer.parseInt(txtFs.getText().toString());
         }
 
         if(TextUtils.isEmpty(txtAud.getText())){
@@ -221,8 +279,6 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             int idUsuario = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
             ServicioAgua servicioAgua = new ServicioAgua(0, k, zf, tgdf, sc, ef, st, aud, fs, cl);
-            //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //Timestamp timeStampHoy = Timestamp.valueOf(dateFormat.format(Calendar.getInstance().getTime()));
 
             if(Utils.conexionAInternetOk(getActivity())){
                 new TaskRequestUrl(this).execute(ConstructorUrls.configAgua(idUsuario, servicioAgua, fecUltFact), "POST");

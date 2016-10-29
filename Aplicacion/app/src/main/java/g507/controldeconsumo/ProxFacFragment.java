@@ -269,7 +269,7 @@ public class ProxFacFragment extends Fragment implements TaskListener {
 
                     servicioAgua = new ServicioAgua(servicio.getInt("id"), servicio.getDouble("k"),servicio.getDouble("zf"),
                            servicio.getDouble("tgdf"), servicio.getDouble("sc"),servicio.getDouble("ef"), servicio.getDouble("st"),
-                            servicio.getDouble("aud"), servicio.getDouble("fs"),servicio.getDouble("cl"));
+                            servicio.getDouble("aud"), servicio.getInt("fs"),servicio.getInt("cl"));
                     servicioAgua.setFecFact(servicio.getString("ultima_factura"));
                     obtenerDiferencia(servicioAgua.getFecFact()+" 00:00:00", tipoServicio);
 

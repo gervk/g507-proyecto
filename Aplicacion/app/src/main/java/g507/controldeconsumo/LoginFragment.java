@@ -27,6 +27,7 @@ import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.TaskListener;
 import g507.controldeconsumo.conexion.TaskRequestUrl;
 import g507.controldeconsumo.conexion.Utils;
+import g507.controldeconsumo.modelo.ServicioAgua;
 import g507.controldeconsumo.modelo.TipoConsumo;
 
 public class LoginFragment extends Fragment implements TaskListener{
@@ -103,7 +104,7 @@ public class LoginFragment extends Fragment implements TaskListener{
         btnRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirRegistro();
+                cargarActivityRegistro();
             }
         });
 
@@ -156,10 +157,6 @@ public class LoginFragment extends Fragment implements TaskListener{
         }
     }
 
-    private void abrirRegistro() {
-        startActivity(new Intent(getActivity(), RegistroActivity.class));
-    }
-
     private void abrirRecuperarPass() {
         if(cargandoDatosCambioPass)
             return;
@@ -185,7 +182,7 @@ public class LoginFragment extends Fragment implements TaskListener{
     }
 
     /**
-     * Guarda en la config local los datos del usuario
+     * Guarda en la config local los datos del usuario y setea las alertas de consumo correspondientes
      * @param idUsuario
      * @param codigoArduino
      */
@@ -193,18 +190,44 @@ public class LoginFragment extends Fragment implements TaskListener{
                                      Integer limiteAgua, Integer limiteElect) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        // Lo que se vaya agregando aca hay que ponerlo en el borrarDatosUsuario() de MainActivity
         prefs.edit().putInt(getString(R.string.pref_sesion_inic), idUsuario).apply();
         prefs.edit().putInt(getString(R.string.pref_id_arduino), codigoArduino).apply();
         prefs.edit().putInt(getString(R.string.pref_limite_agua), limiteAgua).apply();
         prefs.edit().putInt(getString(R.string.pref_limite_elect), limiteElect).apply();
 
+        // Seteo de alertas para los limites configurados
         if(codigoArduino != -1 && limiteElect != -1){
             ConfigNotifFragment.setControl(getActivity(), TipoConsumo.ELECTRICIDAD, limiteElect, codigoArduino);
         }
         if(codigoArduino != -1 && limiteAgua != -1){
             ConfigNotifFragment.setControl(getActivity(), TipoConsumo.AGUA, limiteAgua, codigoArduino);
         }
+    }
+
+    /**
+     * Guarda en la config local el id de empresa de electricidad y la fecha de la ultima factura
+     */
+    private void guardarDatosConfigElec(Integer idEmpresa, String fechaFactura) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.edit().putInt(getString(R.string.pref_empresa_elect), idEmpresa).apply();
+        prefs.edit().putString(getString(R.string.pref_fecha_fact_elect), fechaFactura).apply();
+    }
+
+    /**
+     * Guarda en la config local los coeficientes del servicio de agua
+     */
+    private void guardarDatosConfigAgua(ServicioAgua servicio){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.edit().putFloat(getString(R.string.pref_agua_k), (float) servicio.getK()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_zf), (float) servicio.getZf()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_tgdf), (float) servicio.getTgdf()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_sc), (float) servicio.getSc()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_ef), (float) servicio.getEf()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_st), (float) servicio.getSt()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_aud), (float) servicio.getAud()).apply();
+        prefs.edit().putInt(getString(R.string.pref_agua_fs), servicio.getFs()).apply();
+        prefs.edit().putInt(getString(R.string.pref_agua_cl), servicio.getCl()).apply();
+        prefs.edit().putString(getString(R.string.pref_agua_fecha_fact), servicio.getFecFact()).apply();
     }
 
     private void cargarMainActivity() {
@@ -221,6 +244,10 @@ public class LoginFragment extends Fragment implements TaskListener{
         args.putString(CambiarPassActivity.ARG_RESP_PREG, respPregSeguridad);
         intent.putExtras(args);
         startActivity(intent);
+    }
+
+    private void cargarActivityRegistro() {
+        startActivity(new Intent(getActivity(), RegistroActivity.class));
     }
 
     @Override
@@ -240,15 +267,32 @@ public class LoginFragment extends Fragment implements TaskListener{
             if(json != null){
                 try {
                     if(json.getString("status").equals("ok")){
-                        JSONObject data = json.getJSONObject("data").getJSONObject("user");
-                        Integer idUsuario = data.getInt("id");
+                        JSONObject data = json.getJSONObject("data");
+                        JSONObject user = data.getJSONObject("user");
+
+                        Integer idUsuario = user.getInt("id");
                         // optInt devuelve un valor dado en caso que sea null
-                        Integer codArduino = data.optInt("codigo_arduino", -1);
-                        Integer limiteAgua = data.optInt("limite_agua", -1);
-                        Integer limiteElect = data.optInt("limite_luz", -1);
+                        Integer codArduino = user.optInt("codigo_arduino", -1);
+                        Integer limiteAgua = user.optInt("limite_agua", -1);
+                        Integer limiteElect = user.optInt("limite_luz", -1);
+
+                        if(!data.isNull("config_elec")){
+                            JSONObject configElec = data.getJSONObject("config_elec");
+                            Integer idEmpresa = configElec.getInt("id_empresa");
+                            String fechaFactura = configElec.getString("ultima_factura");
+                            guardarDatosConfigElec(idEmpresa, fechaFactura);
+                        }
+
+                        if(!data.isNull("config_agua")){
+                            JSONObject configAgua = data.getJSONObject("config_agua");
+                            ServicioAgua servicioAgua = new ServicioAgua(configAgua.getInt("id"), configAgua.getDouble("k"),configAgua.getDouble("zf"),
+                                    configAgua.getDouble("tgdf"), configAgua.getDouble("sc"),configAgua.getDouble("ef"), configAgua.getDouble("st"),
+                                    configAgua.getDouble("aud"), configAgua.getInt("fs"),configAgua.getInt("cl"));
+                            servicioAgua.setFecFact(configAgua.getString("ultima_factura"));
+                            guardarDatosConfigAgua(servicioAgua);
+                        }
 
                         guardarDatosUsuario(idUsuario, codArduino, limiteAgua, limiteElect);
-
                         cargarMainActivity();
                     } else if(json.getString("status").equals("error")){
                         Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();

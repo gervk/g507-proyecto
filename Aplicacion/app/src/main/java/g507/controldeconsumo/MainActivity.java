@@ -183,14 +183,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Borra lo guardado en la config local
+     * Borra lo guardado en la config local y los controles de alertas seteados
      */
     private void borrarDatosUsuario() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        prefs.edit().putInt(getString(R.string.pref_sesion_inic), -1).apply();
+        prefs.edit().clear();
+
+        /*prefs.edit().putInt(getString(R.string.pref_sesion_inic), -1).apply();
         prefs.edit().putInt(getString(R.string.pref_id_arduino), -1).apply();
         prefs.edit().putInt(getString(R.string.pref_limite_elect), -1).apply();
-        prefs.edit().putInt(getString(R.string.pref_limite_agua), -1).apply();
+        prefs.edit().putInt(getString(R.string.pref_limite_agua), -1).apply();*/
 
         ConfigNotifFragment.eliminarControl(this, TipoConsumo.ELECTRICIDAD.getId());
         ConfigNotifFragment.eliminarControl(this, TipoConsumo.AGUA.getId());

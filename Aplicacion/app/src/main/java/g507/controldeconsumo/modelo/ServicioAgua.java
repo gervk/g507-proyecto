@@ -11,8 +11,8 @@ public class ServicioAgua {
     private double ef;
     private double st;
     private double aud;
-    private double fs;
-    private double cl;
+    private int fs;
+    private int cl;
     private String fecUltFact;
 
     public ServicioAgua(){
@@ -20,7 +20,7 @@ public class ServicioAgua {
     }
 
     public ServicioAgua(int id, double k, double zf, double tgdf, double sc, double ef, double st,
-                        double aud, double fs, double cl){
+                        double aud, int fs, int cl){
         this.id = id;
         this.k = k;
         this.zf = zf;
@@ -114,19 +114,19 @@ public class ServicioAgua {
         this.aud = aud;
     }
 
-    public double getFs() {
+    public int getFs() {
         return fs;
     }
 
-    public void setFs(double fs) {
+    public void setFs(int fs) {
         this.fs = fs;
     }
 
-    public double getCl() {
+    public int getCl() {
         return cl;
     }
 
-    public void setCl(double cl) {
+    public void setCl(int cl) {
         this.cl = cl;
     }
 
