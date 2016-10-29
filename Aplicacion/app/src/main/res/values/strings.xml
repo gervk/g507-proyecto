@@ -5,7 +5,7 @@
     <string name="title_activity_login">Iniciar sesión</string>
     <string name="title_activity_registro">Registro</string>
     <string name="title_activity_cambiar_pass">Cambiar contraseña</string>
-    <string name="title_frag_config_cuenta">Cuenta</string>
+    <string name="title_frag_config_serv_elect">Servicio de electricidad</string>
     <string name="title_frag_config_notif">Notificaciones</string>
     <string name="title_frag_config_serv_agua">Servicio de agua</string>
     <string name="title_frag_asoc_arduino">Asociar Sensor</string>

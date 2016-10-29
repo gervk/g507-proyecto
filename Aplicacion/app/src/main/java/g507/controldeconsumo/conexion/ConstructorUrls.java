@@ -269,4 +269,25 @@ public class ConstructorUrls {
 
         return url;
     }
+
+    public static String configElec(int idUsuario, int idEmpresaSelecc, Timestamp fechaUltimaFactura) {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(PROTOCOLO)
+                .encodedAuthority(urlBase)
+                .appendPath(PATH_API)
+                .appendPath(PATH_VERSION)
+                .appendPath("usuario")
+                .appendPath(String.valueOf(idUsuario))
+                .appendPath("setServ")
+                .appendQueryParameter("tipo", String.valueOf(TipoConsumo.ELECTRICIDAD.getId()))
+                .appendQueryParameter("empresa", String.valueOf(idEmpresaSelecc))
+                // por alguna razon se agregan 3 ceros de mas, por eso divido por 1000
+                .appendQueryParameter("ultimaFactura", String.valueOf(fechaUltimaFactura.getTime() / 1000));
+
+        String url = builder.build().toString();
+        Log.d("ConstructorUrls", "Fecha ult factura: " + dateFormat.format(fechaUltimaFactura.getTime()));
+        Log.d("ConstructorUrls", url);
+
+        return url;
+    }
 }

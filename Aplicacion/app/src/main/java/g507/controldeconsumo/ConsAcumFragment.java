@@ -97,8 +97,8 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
     private void consultar(){
         Calendar cal;
         TipoConsumo tipoServicio;
-        String fechaIni;
-        String fechaFin;
+        Timestamp fechaIni;
+        Timestamp fechaFin;
         int idArduino;
 
         if(conectando)
@@ -126,9 +126,7 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
 
         cal = Calendar.getInstance();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        fechaFin = dateFormat.format(cal.getTime());
+        fechaFin = Utils.timestampServer(cal.getTime());
 
         // Para que sea desde las 00hs
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -156,7 +154,7 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
                 break;
         }
 
-        fechaIni = dateFormat.format(cal.getTime());
+        fechaIni = Utils.timestampServer(cal.getTime());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         //había que ponerle un valor default, puse que sea -1
@@ -165,7 +163,7 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
         if(idArduino != -1){
             if(Utils.conexionAInternetOk(getActivity())){
                 String url = ConstructorUrls.consumoAcumulado(idArduino, tipoServicio,
-                        Timestamp.valueOf(fechaIni), Timestamp.valueOf(fechaFin));
+                        fechaIni, fechaFin);
                 new TaskRequestUrl(this).execute(url, "GET");
             } else {
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
