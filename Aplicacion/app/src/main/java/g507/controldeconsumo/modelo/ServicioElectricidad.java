@@ -34,20 +34,24 @@ public class ServicioElectricidad {
     public double calcularCosto(Double consumoActual, Double consumoAnterior, Integer dias){
         Double totalAntesImpuestos = 0.0;
 
-        if(consumoActual < consumoAnterior*0.8){
-            totalAntesImpuestos = this.getA_mas_20_fijo() + this.getA_mas_20_variable()*dias;
-            this.setAhorro(true);
+        if(consumoAnterior == -1.00){
+            totalAntesImpuestos = this.getCargo_fijo()+this.getCargo_variable()*dias;
         }else{
-            if(consumoActual < consumoAnterior*0.9 ){
-                totalAntesImpuestos =  this.getA_10_20_fijo() + this.getA_10_20_variable()*dias;
+            if(consumoActual < consumoAnterior*0.8){
+                totalAntesImpuestos = this.getA_mas_20_fijo() + this.getA_mas_20_variable()*dias;
                 this.setAhorro(true);
             }else{
-                if(consumoActual< 300){
-                    if(consumoActual > consumoAnterior*1.9){
-                        totalAntesImpuestos = this.getCargo_fijo()+this.getCargo_variable()*dias*(consumoActual - (consumoAnterior*1.9));
-                        this.setPenalizado(true);
-                    }else{
-                        totalAntesImpuestos = this.getCargo_fijo()+this.getCargo_variable()*dias;
+                if(consumoActual < consumoAnterior*0.9 ){
+                    totalAntesImpuestos =  this.getA_10_20_fijo() + this.getA_10_20_variable()*dias;
+                    this.setAhorro(true);
+                }else{
+                    if(consumoActual< 300){
+                        if(consumoActual > consumoAnterior*1.9){
+                            totalAntesImpuestos = this.getCargo_fijo()+this.getCargo_variable()*dias*(consumoActual - (consumoAnterior*1.9));
+                            this.setPenalizado(true);
+                        }else {
+                            totalAntesImpuestos = this.getCargo_fijo()+this.getCargo_variable()*dias;
+                        }
                     }
                 }
             }
