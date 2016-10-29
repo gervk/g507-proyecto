@@ -164,10 +164,18 @@ public class CambiarPassFragment extends Fragment implements TaskListener {
             txtNuevaPass.setError(getString(R.string.error_campo_requerido));
             campoConError = txtNuevaPass;
             cancelar = true;
-        } else if(!passwordValida(pass)){
-            txtNuevaPass.setError(getString(R.string.error_pass_invalida));
-            campoConError = txtNuevaPass;
-            cancelar = true;
+        } else {
+            if(!Utils.alfanumericoSinEspacios(pass)){
+                txtNuevaPass.setError(getString(R.string.error_campo_formato));
+                campoConError = txtNuevaPass;
+                cancelar = true;
+            } else{
+                if (!passwordValida(pass)) {
+                    txtNuevaPass.setError(getString(R.string.error_pass_invalida));
+                    campoConError = txtNuevaPass;
+                    cancelar = true;
+                }
+            }
         }
 
         if(cancelar){

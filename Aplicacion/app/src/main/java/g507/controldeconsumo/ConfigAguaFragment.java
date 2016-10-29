@@ -332,4 +332,13 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onDetach() {
+        // Cierra el progressDialog si se saca el fragment del activity (cuando se rota), sino tira excepcion
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDetach();
+    }
 }
