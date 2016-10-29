@@ -52,9 +52,9 @@ public class ConfigFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new ConfigCuentaFragment();
-                case 1:
                     return new ConfigNotifFragment();
+                case 1:
+                    return new ConfigElectFragment();
                 case 2:
                     return new ConfigAguaFragment();
                 default:
@@ -66,9 +66,9 @@ public class ConfigFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position){
                 case 0:
-                    return getString(R.string.title_frag_config_cuenta);
-                case 1:
                     return getString(R.string.title_frag_config_notif);
+                case 1:
+                    return getString(R.string.title_frag_config_serv_elect);
                 case 2:
                     return getString(R.string.title_frag_config_serv_agua);
                 default:

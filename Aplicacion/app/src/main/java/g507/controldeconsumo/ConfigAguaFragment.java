@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +48,8 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
     private ProgressDialog progressDialog;
     private boolean conectando = false;
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private static final DateFormat dateFormatVista = new SimpleDateFormat("dd/MM/yyyy");
+    private static final DateFormat dateFormatGuardado = new SimpleDateFormat("yyyy-MM-dd");
 
     public ConfigAguaFragment() {
         // Required empty public constructor
@@ -145,11 +146,10 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         if(fecha != ""){
             try {
                 // Convierte del formato de fecha separado con "-" a "/"
-                DateFormat dateFormatGuardado = new SimpleDateFormat("yyyy-MM-dd");
                 Date fechaGuardada = dateFormatGuardado.parse(fecha);
-                txtFecUltFact.setText(String.valueOf(dateFormat.format(fechaGuardada)));
+                txtFecUltFact.setText(String.valueOf(dateFormatVista.format(fechaGuardada)));
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.d(this.getClass().getName(), "Error al parsear la fecha guardada");
             }
         }
     }
@@ -192,7 +192,7 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             cancelar = true;
         } else {
             try{
-                Date dateUltFact = dateFormat.parse(txtFecUltFact.getText().toString());
+                Date dateUltFact = dateFormatVista.parse(txtFecUltFact.getText().toString());
                 fecUltFact = new Timestamp(dateUltFact.getTime());
             } catch (ParseException e){
                 txtFecUltFact.setError("Formato incorrecto");
@@ -276,9 +276,12 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         if(cancelar){
             campoConError.requestFocus();
         } else{
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            int idUsuario = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
             ServicioAgua servicioAgua = new ServicioAgua(0, k, zf, tgdf, sc, ef, st, aud, fs, cl);
+            servicioAgua.setFecFact(txtFecUltFact.getText().toString());
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            guardarEnConfigLocal(prefs, servicioAgua);
+            int idUsuario = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
 
             if(Utils.conexionAInternetOk(getActivity())){
                 new TaskRequestUrl(this).execute(ConstructorUrls.configAgua(idUsuario, servicioAgua, fecUltFact), "POST");
@@ -286,6 +289,19 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void guardarEnConfigLocal(SharedPreferences prefs, ServicioAgua servicio){
+        prefs.edit().putFloat(getString(R.string.pref_agua_k), (float) servicio.getK()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_zf), (float) servicio.getZf()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_tgdf), (float) servicio.getTgdf()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_sc), (float) servicio.getSc()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_ef), (float) servicio.getEf()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_st), (float) servicio.getSt()).apply();
+        prefs.edit().putFloat(getString(R.string.pref_agua_aud), (float) servicio.getAud()).apply();
+        prefs.edit().putInt(getString(R.string.pref_agua_fs), servicio.getFs()).apply();
+        prefs.edit().putInt(getString(R.string.pref_agua_cl), servicio.getCl()).apply();
+        prefs.edit().putString(getString(R.string.pref_agua_fecha_fact), servicio.getFecFact()).apply();
     }
 
     @Override
