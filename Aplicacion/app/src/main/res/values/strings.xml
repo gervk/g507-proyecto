@@ -38,6 +38,7 @@
     <string name="error_qr_arduino">Código no válido</string>
     <string name="error_no_arduino">No hay un sensor asociado</string>
     <string name="error_campo_requerido">Campo requerido</string>
+    <string name="error_campo_formato">Formato incorrecto</string>
     <string name="error_pass_invalida">Mínimo 8 caracteres</string>
     <string name="error_pass_incorrecta">Contraseña incorrecta</string>
     <string name="error_resp_incorrecta">Respuesta incorrecta</string>

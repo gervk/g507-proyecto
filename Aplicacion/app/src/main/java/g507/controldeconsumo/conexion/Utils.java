@@ -131,4 +131,12 @@ public class Utils {
     public static Timestamp timestampServer(Date date){
         return Timestamp.valueOf(dateFormatServer.format(date));
     }
+
+    public static boolean alfanumericoSinEspacios(String texto){
+        if(texto.matches("\\w*")){
+            return texto.matches("[A-Za-z0-9][^.]*");
+        } else {
+            return false;
+        }
+    }
 }

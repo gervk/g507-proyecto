@@ -132,14 +132,26 @@ public class LoginFragment extends Fragment implements TaskListener{
             txtPassword.setError(getString(R.string.error_campo_requerido));
             campoConError = txtPassword;
             cancelar = true;
-        } else if (!passwordValida(password)) {
-            txtPassword.setError(getString(R.string.error_pass_invalida));
-            campoConError = txtPassword;
-            cancelar = true;
+        } else {
+            if(!Utils.alfanumericoSinEspacios(password)){
+                txtPassword.setError(getString(R.string.error_campo_formato));
+                campoConError = txtPassword;
+                cancelar = true;
+            } else{
+                if (!passwordValida(password)) {
+                    txtPassword.setError(getString(R.string.error_pass_invalida));
+                    campoConError = txtPassword;
+                    cancelar = true;
+                }
+            }
         }
 
         if (TextUtils.isEmpty(usuario)) {
             txtUsuario.setError(getString(R.string.error_campo_requerido));
+            campoConError = txtUsuario;
+            cancelar = true;
+        } else if (!Utils.alfanumericoSinEspacios(usuario)){
+            txtUsuario.setError(getString(R.string.error_campo_formato));
             campoConError = txtUsuario;
             cancelar = true;
         }

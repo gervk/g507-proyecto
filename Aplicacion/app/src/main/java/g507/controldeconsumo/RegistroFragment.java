@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -135,10 +134,18 @@ public class RegistroFragment extends Fragment implements TaskListener {
             txtPassword.setError(getString(R.string.error_campo_requerido));
             campoConError = txtPassword;
             cancelar = true;
-        } else if(!passwordValida(password)){
-            txtPassword.setError(getString(R.string.error_pass_invalida));
-            campoConError = txtPassword;
-            cancelar = true;
+        } else {
+            if(!Utils.alfanumericoSinEspacios(password)){
+                txtPassword.setError(getString(R.string.error_campo_formato));
+                campoConError = txtPassword;
+                cancelar = true;
+            } else{
+                if (!passwordValida(password)) {
+                    txtPassword.setError(getString(R.string.error_pass_invalida));
+                    campoConError = txtPassword;
+                    cancelar = true;
+                }
+            }
         }
 
         if(TextUtils.isEmpty(email)){
@@ -147,7 +154,7 @@ public class RegistroFragment extends Fragment implements TaskListener {
             cancelar = true;
         } else {
             if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                txtEmail.setError("Formato incorrecto");
+                txtEmail.setError(getString(R.string.error_campo_formato));
                 campoConError = txtEmail;
                 cancelar = true;
             }
@@ -155,6 +162,10 @@ public class RegistroFragment extends Fragment implements TaskListener {
 
         if(TextUtils.isEmpty(username)){
             txtUsername.setError(getString(R.string.error_campo_requerido));
+            campoConError = txtUsername;
+            cancelar = true;
+        } else if (!Utils.alfanumericoSinEspacios(username)){
+            txtUsername.setError(getString(R.string.error_campo_formato));
             campoConError = txtUsername;
             cancelar = true;
         }
