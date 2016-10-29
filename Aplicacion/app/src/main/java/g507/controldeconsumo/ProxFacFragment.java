@@ -111,7 +111,6 @@ public class ProxFacFragment extends Fragment implements TaskListener {
     }
 
     private Double obtenerDiferencia(String fecha, TipoConsumo tipoConsumo){
-
         Calendar cal;
         String fechaIni;
         String fechaFin;
@@ -146,9 +145,7 @@ public class ProxFacFragment extends Fragment implements TaskListener {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
-
         }else {
             try {
                 Date date = dateFormat.parse(fechaIni);
@@ -159,12 +156,9 @@ public class ProxFacFragment extends Fragment implements TaskListener {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
-
         primerConsumo = false;
         return consumo;
-
     }
 
     private void obtenerConsumo(String fechaIni, String fechaFin, TipoConsumo tipoConsumo) {
@@ -251,9 +245,24 @@ public class ProxFacFragment extends Fragment implements TaskListener {
     private void calcularElectricidad(){
         Double consumoActual = consumo;
         Integer dias = diferencia.intValue();
-        obtenerTarifas(consumoActual);
-        obtenerDiferencia(servicioElectricidad.getFecPrimerConsumo(), tipoServicio);
-        Double totalAPagar = servicioElectricidad.calcularCosto(consumoActual,consumo,dias);
+        Double totalAPagar;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date fecPrimerConsumo = dateFormat.parse(servicioElectricidad.getFecPrimerConsumo());
+            Date fecUltFact = dateFormat.parse(servicioElectricidad.getFecUltFact());
+            diferencia = (fecUltFact.getTime() - fecPrimerConsumo.getTime())/ (24 * 60 * 60 * 1000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(diferencia >= 365){
+            obtenerDiferencia(servicioElectricidad.getFecPrimerConsumo(), tipoServicio);
+            totalAPagar = servicioElectricidad.calcularCosto(consumoActual,consumo,dias);
+        }else{
+            totalAPagar = servicioElectricidad.calcularCosto(consumoActual,0.00 ,dias);
+            //Toast.makeText(getActivity(), getString("No se tiene en cuenta valores del año anterior debido a falta de datos") , Toast.LENGTH_SHORT).show();
+        }
+
+
         txtVConsumoMes.setText(new DecimalFormat("0.##").format(consumoActual)+" KWh");
         txtVCostoProxFac.setText(new DecimalFormat("0.##").format(totalAPagar)+" $");
 
@@ -280,9 +289,9 @@ public class ProxFacFragment extends Fragment implements TaskListener {
                     servicioElectricidad = new ServicioElectricidad();
                     servicioElectricidad.setFecUltFact(servicio.getString("ultimaFactura")+ " 00:00:00");
                     JSONObject primerConsumo = servicio.getJSONObject("primerConsumo");
+                    servicioElectricidad.setPrimerConsumo(primerConsumo.getDouble("consumo"));
                     servicioElectricidad.setFecPrimerConsumo(primerConsumo.getString("updated_at"));
                     obtenerDiferencia(servicioElectricidad.getFecUltFact(), tipoServicio);
-                    //calcularElectricidad();
                 }
 
             } else if(json.getString("status").equals("error")){
@@ -306,7 +315,7 @@ public class ProxFacFragment extends Fragment implements TaskListener {
                     if(tipoServicio == TipoConsumo.AGUA){
                         calcularAgua();
                     }else {
-                        calcularElectricidad();
+                        obtenerTarifas(consumo);
                     }
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
@@ -325,12 +334,16 @@ public class ProxFacFragment extends Fragment implements TaskListener {
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
-                    JSONObject cargos = json.getJSONObject("tarifa");
+                    JSONObject data = json.getJSONObject("data");
 
-                    servicioElectricidad = new ServicioElectricidad(cargos.getDouble("cargo_fijo"),
-                            cargos.getDouble("cargo_variable"), cargos.getDouble("a_10_20_fijo"), cargos.getDouble("a_10_20_variable"),
-                            cargos.getDouble("a_mas_20_fijo"),cargos.getDouble("a_mas_20_variable") );
+                    servicioElectricidad.setCargo_fijo(data.getDouble("cargo_fijo"));
+                    servicioElectricidad.setCargo_variable(data.getDouble("cargo_variable"));
+                    servicioElectricidad.setA_10_20_fijo(data.getDouble("a_10_20_fijo"));
+                    servicioElectricidad.setA_10_20_variable(data.getDouble("a_10_20_variable"));
+                    servicioElectricidad.setA_mas_20_fijo(data.getDouble("a_mas_20_fijo"));
+                    servicioElectricidad.setA_mas_20_variable(data.getDouble("a_mas_20_variable"));
 
+                    calcularElectricidad();
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }

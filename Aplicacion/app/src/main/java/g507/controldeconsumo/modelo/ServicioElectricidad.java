@@ -14,6 +14,7 @@ public class ServicioElectricidad {
     private Double a_mas_20_variable;
     private String fecUltFact;
     private String fecPrimerConsumo;
+    private Double primerConsumo;
     private boolean ahorro = false;
     private boolean penalizado = false;
 
@@ -162,4 +163,11 @@ public class ServicioElectricidad {
         this.penalizado = penalizado;
     }
 
+    public Double getPrimerConsumo() {
+        return primerConsumo;
+    }
+
+    public void setPrimerConsumo(Double primerConsumo) {
+        this.primerConsumo = primerConsumo;
+    }
 }
