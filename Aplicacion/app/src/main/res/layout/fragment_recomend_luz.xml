@@ -30,7 +30,8 @@
                 android:id="@+id/lvRecomendLuz"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:listSelector="@android:color/transparent"/>
+                android:listSelector="@android:color/transparent"
+                android:overScrollMode="never"/>
 
 
         </LinearLayout>

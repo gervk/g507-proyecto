@@ -118,7 +118,7 @@ public class EstadistFragment extends Fragment implements TaskListener{
         Calendar cal;
         TipoConsumo tipoServicio;
         TipoEstadistica tipoEstadistica = null;
-        String fechaHoy;
+        Timestamp fechaHoy;
         int idArduino;
         String[] posiblesEtiq;
         //String[] etiquetasGraf = new String[]{};
@@ -144,8 +144,8 @@ public class EstadistFragment extends Fragment implements TaskListener{
         }
 
         cal = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        fechaHoy = dateFormat.format(cal.getTime());
+
+        fechaHoy = Utils.timestampServer(cal.getTime());
 
         switch ((TipoEstadistica) spinnerEstadist.getSelectedItem()){
             case POR_MES:
@@ -211,8 +211,7 @@ public class EstadistFragment extends Fragment implements TaskListener{
 
         if(idArduino != -1){
             if(Utils.conexionAInternetOk(getActivity())){
-                String url = ConstructorUrls.estadisticas(idArduino, tipoServicio, tipoEstadistica,
-                        Timestamp.valueOf(fechaHoy));
+                String url = ConstructorUrls.estadisticas(idArduino, tipoServicio, tipoEstadistica, fechaHoy);
                 new TaskRequestUrl(this).execute(url, "GET");
             } else{
                 Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();

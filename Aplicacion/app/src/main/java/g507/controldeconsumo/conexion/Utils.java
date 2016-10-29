@@ -16,10 +16,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Utils {
 
     private static final String LOG_TAG = Utils.class.getSimpleName();
+
+    private static final SimpleDateFormat dateFormatServer = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * Devuelve true o false segun si tiene conexion a internet
@@ -121,5 +126,9 @@ public class Utils {
         }
 
         return null;
+    }
+
+    public static Timestamp timestampServer(Date date){
+        return Timestamp.valueOf(dateFormatServer.format(date));
     }
 }
