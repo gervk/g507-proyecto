@@ -80,8 +80,7 @@ public class RegistroFragment extends Fragment implements TaskListener {
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //registrar();
-                cargarMainActivity();
+                registrar();
             }
         });
 
