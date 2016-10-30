@@ -80,7 +80,8 @@ public class RegistroFragment extends Fragment implements TaskListener {
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registrar();
+                //registrar();
+                cargarMainActivity();
             }
         });
 
@@ -191,8 +192,10 @@ public class RegistroFragment extends Fragment implements TaskListener {
     }
 
     private void cargarMainActivity() {
-        startActivity(new Intent(getActivity(), MainActivity.class));
-        getActivity().finish();
+        Intent mainIntent = new Intent(getActivity(), MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mainIntent);
+        //getActivity().finish();
     }
 
     @Override
