@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity
      */
     private void borrarDatosUsuario() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        prefs.edit().clear();
+        prefs.edit().clear().apply();
 
         /*prefs.edit().putInt(getString(R.string.pref_sesion_inic), -1).apply();
         prefs.edit().putInt(getString(R.string.pref_id_arduino), -1).apply();

@@ -47,11 +47,12 @@
     <string name="error_internet_no_disp">Conexion a internet no disponible</string>
     <string name="error_inesperado_serv">Error inesperado en el servidor</string>
     <string name="error_traducc_datos">Error al traducir datos</string>
+    <string name="error_complete_config">Por favor complete los datos de configuracion</string>
 
     <!-- Msjs -->
     <string name="msj_espere">Espere</string>
     <string name="msj_cargando">Cargando</string>
-    <string name="msj_advertencia"> Los datos pueden ser variar en la realidad, dado que no posee informacion del año pasado</string>
+    <string name="msj_advertencia"> Los datos pueden variar en la realidad, dado que no se posee informacion del año pasado</string>
 
 
     <!-- Claves para las SharedPrefferences -->
