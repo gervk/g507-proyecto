@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,22 @@ public class ProxFacFragment extends Fragment implements TaskListener {
 
     public ProxFacFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Si se esta volviendo de una rotacion de pantalla y sigue el request, muestra msj de espera
+        if(consultandoFactura || obteniendoAcum || primerConsumo || obteniendoTarifa){
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
+        }
     }
 
     @Override

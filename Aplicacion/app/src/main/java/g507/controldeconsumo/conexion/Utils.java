@@ -2,6 +2,7 @@ package g507.controldeconsumo.conexion;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -19,6 +20,8 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import g507.controldeconsumo.R;
 
 public class Utils {
 
@@ -130,6 +133,21 @@ public class Utils {
 
     public static Timestamp timestampServer(Date date){
         return Timestamp.valueOf(dateFormatServer.format(date));
+    }
+
+    public static void configDireccServer(SharedPreferences sharedPreferences, String keyPrefServerLocal, String keyPrefIpServer){
+        if(!sharedPreferences.getBoolean(keyPrefServerLocal, false)){
+            // Si no se usa servidor local, setea url base como la de heroku
+            ConstructorUrls.urlBase = ConstructorUrls.URL_BASE_CLOUD;
+            Log.d("Settings", "Direccion server: " + ConstructorUrls.urlBase);
+        } else{
+            // Si usa servidor local seta url base segun la ip configurada
+            String ipServer = sharedPreferences.getString(keyPrefIpServer, "");
+            if(ipServer != ""){
+                ConstructorUrls.urlBase = ipServer;
+            }
+            Log.d("Settings", "Direccion server: " + ConstructorUrls.urlBase);
+        }
     }
 
     public static boolean alfanumericoSinEspacios(String texto){

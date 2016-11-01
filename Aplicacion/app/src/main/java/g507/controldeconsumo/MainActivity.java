@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import g507.controldeconsumo.conexion.Utils;
 import g507.controldeconsumo.modelo.TipoConsumo;
 
 public class MainActivity extends AppCompatActivity
@@ -41,6 +42,10 @@ public class MainActivity extends AppCompatActivity
 
         // Carga los default de settings (se hace solo la primera vez)
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+
+        // Setea la ip del server segun configuracion guardada
+        Utils.configDireccServer(PreferenceManager.getDefaultSharedPreferences(this),
+                getString(R.string.pref_server_local), getString(R.string.pref_ip_server));
 
         if (!sesionIniciada()) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -187,12 +192,15 @@ public class MainActivity extends AppCompatActivity
      */
     private void borrarDatosUsuario() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        // Lee la config del server para volverla a guardar despues de borrar toda la config
+        boolean serverLocal = prefs.getBoolean(getString(R.string.pref_server_local), false);
+        String ipServer = prefs.getString(getString(R.string.pref_ip_server), "");
+
         prefs.edit().clear().apply();
 
-        /*prefs.edit().putInt(getString(R.string.pref_sesion_inic), -1).apply();
-        prefs.edit().putInt(getString(R.string.pref_id_arduino), -1).apply();
-        prefs.edit().putInt(getString(R.string.pref_limite_elect), -1).apply();
-        prefs.edit().putInt(getString(R.string.pref_limite_agua), -1).apply();*/
+        prefs.edit().putBoolean(getString(R.string.pref_server_local), serverLocal).apply();
+        prefs.edit().putString(getString(R.string.pref_ip_server), ipServer).apply();
 
         ConfigNotifFragment.eliminarControl(this, TipoConsumo.ELECTRICIDAD.getId());
         ConfigNotifFragment.eliminarControl(this, TipoConsumo.AGUA.getId());

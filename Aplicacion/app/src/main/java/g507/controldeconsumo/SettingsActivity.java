@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import g507.controldeconsumo.conexion.ConstructorUrls;
+import g507.controldeconsumo.conexion.Utils;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -18,15 +19,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(!sharedPreferences.getBoolean(getString(R.string.pref_server_local), false)){
-            // Si no se usa servidor local, setea url base como la de heroku
-            ConstructorUrls.urlBase = ConstructorUrls.URL_BASE_CLOUD;
-            Log.d("Settings", ConstructorUrls.urlBase);
-        } else{
-            // Si usa servidor local seta url base segun la ip configurada
-            ConstructorUrls.urlBase = sharedPreferences.getString(getString(R.string.pref_ip_server), "");
-            Log.d("Settings", ConstructorUrls.urlBase);
-        }
+        Utils.configDireccServer(sharedPreferences, getString(R.string.pref_server_local), getString(R.string.pref_ip_server));
     }
 
     @Override
