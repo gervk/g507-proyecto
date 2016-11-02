@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Límite de consumo:"
+        android:text="Límite de consumo (KWh):"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Límite de consumo:"
+        android:text="Límite de consumo (m3):"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
