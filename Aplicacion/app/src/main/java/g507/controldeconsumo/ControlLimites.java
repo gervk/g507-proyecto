@@ -83,7 +83,15 @@ public class ControlLimites extends BroadcastReceiver implements TaskListener{
         // Usa el tiempo para tener un id unico
         PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), mainIntent, 0);
 
-        String consumoRedondeado = new DecimalFormat("0.##").format(consumo);
+        String unidad;
+        if(tipoConsumo.equals(TipoConsumo.ELECTRICIDAD)) {
+            unidad = " KWh";
+        }
+        else {
+            unidad = " m3";
+        }
+
+        String consumoRedondeado = new DecimalFormat("0.##").format(consumo) + unidad;
 
         Notification notif = new Notification.Builder(context)
                 .setContentTitle("Alerta límite de consumo")

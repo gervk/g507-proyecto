@@ -232,8 +232,8 @@ public class ProxFacFragment extends Fragment implements TaskListener {
 
     private void calcularAgua(){
         Double totalAPagar = servicioAgua.calcularCosto(diferencia, consumo);
-        if(totalAPagar < 271.00){
-            totalAPagar = 271.00;
+        if(totalAPagar <= 271.46){
+            totalAPagar = 271.46;
         }
         txtVConsumoMes.setText(new DecimalFormat("0.##").format(consumo)+" m3");
         txtVCostoProxFac.setText(new DecimalFormat("0.##").format(totalAPagar)+" $");

@@ -245,6 +245,11 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             cancelar = true;
         } else {
             fs = Integer.parseInt(txtFs.getText().toString());
+            if (fs != 1 && fs != 2) {
+                txtFs.setError("Solo 1 o 2");
+                campoConError = txtFs;
+                cancelar = true;
+            }
         }
 
         if(TextUtils.isEmpty(txtAud.getText())){
