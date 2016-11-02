@@ -1,5 +1,6 @@
 package g507.controldeconsumo;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import g507.controldeconsumo.conexion.ConstructorUrls;
@@ -44,6 +47,9 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
     private TextView txtCl;
     private TextView txtFecUltFact;
     private Button btnGuardar;
+
+    private Calendar calendar = Calendar.getInstance();
+    private DatePickerDialog datePickerDialog;
 
     private ProgressDialog progressDialog;
     private boolean conectando = false;
@@ -88,6 +94,13 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         txtFecUltFact = (TextView) view.findViewById(R.id.txtFecUltFact);
         btnGuardar = (Button) view.findViewById(R.id.btnGuardar);
 
+        txtFecUltFact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialog.show();
+            }
+        });
+
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +110,22 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
 
         cargarConfigLocal();
 
+        crearDatePicker();
+
         return view;
+    }
+
+    private void crearDatePicker() {
+        datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendar.set(year, monthOfYear, dayOfMonth);
+                txtFecUltFact.setText(dateFormatVista.format(calendar.getTime()));
+            }
+
+        },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
     }
 
     /**
@@ -148,6 +176,8 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
                 // Convierte del formato de fecha separado con "-" a "/"
                 Date fechaGuardada = dateFormatGuardado.parse(fecha);
                 txtFecUltFact.setText(String.valueOf(dateFormatVista.format(fechaGuardada)));
+                // seteo en el calendar para la fecha inicial del date picker
+                calendar.setTime(fechaGuardada);
             } catch (ParseException e) {
                 Log.d(this.getClass().getName(), "Error al parsear la fecha guardada");
             }

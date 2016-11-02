@@ -166,15 +166,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Fecha última factura (dd/mm/yyyy)"
+                    android:text="Fecha última factura"
                     android:id="@+id/textView13" />
 
-                <EditText
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:inputType="date"
-                    android:ems="10"
                     android:id="@+id/txtFecUltFact" />
 
             </GridLayout>
