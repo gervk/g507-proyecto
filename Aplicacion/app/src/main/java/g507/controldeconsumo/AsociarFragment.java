@@ -1,6 +1,8 @@
 package g507.controldeconsumo;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -45,6 +47,7 @@ public class AsociarFragment extends Fragment implements TaskListener{
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
 
+    private int idUsuario;
     private int codigo = -1;
 
     private ProgressDialog progressDialog;
@@ -161,12 +164,20 @@ public class AsociarFragment extends Fragment implements TaskListener{
 
         // Leo el id de usuario logeado para guardarle el arduino
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int idUsuario = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
+        idUsuario = prefs.getInt(getString(R.string.pref_sesion_inic), -1);
+        int arduinoLocal = prefs.getInt(getString(R.string.pref_id_arduino), -1);
 
-        if(Utils.conexionAInternetOk(getActivity()))
-            new TaskRequestUrl(this).execute(ConstructorUrls.asociarArduino(idUsuario, codigo), "POST");
-        else
-            Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
+        if(arduinoLocal == -1){
+            // si es -1, es porque no tiene uno anterior, guardo directo
+            guardarEnBd();
+        } else {
+            // si es != -1, tiene uno anterior, muestra msj de confirmacion
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            DialogInterface.OnClickListener listenerDialogo = getListenerDialogConfirm();
+            builder.setMessage("Seguro que desea asociar un nuevo sensor? Perderá sus consumos anteriores")
+                    .setPositiveButton("Sí", listenerDialogo).setNegativeButton("No", listenerDialogo).show();
+        }
+
     }
 
     @Override
@@ -200,6 +211,35 @@ public class AsociarFragment extends Fragment implements TaskListener{
         } else {
             Toast.makeText(getActivity(), getString(R.string.error_inesperado_serv) , Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void guardarEnBd(){
+        if(Utils.conexionAInternetOk(getActivity()))
+            new TaskRequestUrl(this).execute(ConstructorUrls.asociarArduino(idUsuario, codigo), "POST");
+        else
+            Toast.makeText(getActivity(), R.string.error_internet_no_disp, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Listener para cuando se elige si/no en el msj de confirmacion
+     */
+    private DialogInterface.OnClickListener getListenerDialogConfirm(){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        guardarEnBd();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        return dialogClickListener;
     }
 
     @Override

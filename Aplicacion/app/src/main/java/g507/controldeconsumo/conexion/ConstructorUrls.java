@@ -22,7 +22,7 @@ import g507.controldeconsumo.modelo.TipoEstadistica;
  */
 public class ConstructorUrls {
 
-    private static final String PROTOCOLO = "https";
+    private static final String PROTOCOLO = "http";
     public static final String URL_BASE_CLOUD = "enersaving-laravel.herokuapp.com";
     public static String urlBase = URL_BASE_CLOUD;
     private static final String PATH_API = "api";

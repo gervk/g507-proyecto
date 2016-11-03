@@ -223,7 +223,7 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         } else {
             try{
                 Date dateUltFact = dateFormatVista.parse(txtFecUltFact.getText().toString());
-                fecUltFact = new Timestamp(dateUltFact.getTime());
+                fecUltFact = Utils.timestampServer(dateUltFact);
             } catch (ParseException e){
                 txtFecUltFact.setError("Formato incorrecto");
                 campoConError = txtFecUltFact;
