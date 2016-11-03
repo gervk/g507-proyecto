@@ -42,16 +42,25 @@ public class ServicioAgua {
             precio = 0.6566;
         }
         Double cargoVariable = (consumoRegistrado - cl)* precio* k*fs;
-        return efectuarImpuestos(cargoFijo+cargoVariable);
+
+        double cargoSinImpuestos = cargoFijo + cargoVariable;
+        if(cargoSinImpuestos <= 271.46){
+            cargoSinImpuestos = 271.46;
+        }
+
+        return efectuarImpuestos(cargoSinImpuestos);
     }
 
     private Double efectuarImpuestos(Double valorAntesImpuestos){
-        Double valorDespImpuestos = 0.0;
+        Double valorDespImpuestos;
         Double eras = 0.0155;
         Double apla= 0.0112;
         Double IVA = 0.21;
 
-        valorDespImpuestos = valorAntesImpuestos*eras*apla*IVA;
+        double impuestos = valorAntesImpuestos * eras + valorAntesImpuestos * apla + valorAntesImpuestos * IVA;
+
+        valorDespImpuestos = valorAntesImpuestos + impuestos;
+
         return valorDespImpuestos;
     }
     public int getId() {

@@ -6,7 +6,6 @@ public enum PreguntaSeguridad {
     MASCOTA(2, "Nombre de tu primer mascota?"),
     LIBRO(3, "Nombre de tu libro favorito?");
 
-
     private int id;
     private String pregunta;
 

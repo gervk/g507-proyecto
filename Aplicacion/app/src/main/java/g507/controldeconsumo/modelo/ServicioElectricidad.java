@@ -62,13 +62,17 @@ public class ServicioElectricidad {
     }
 
     private Double efectuarImpuestos(Double valorAntesImpuestos){
-        Double valorDespImpuestos = 0.0;
-        Double IVA = 1.21;
-        Double contMunicipal = 1.064;
-        Double fondoObras = 1.055;
-        Double impServElec = 1.1;
+        Double valorDespImpuestos;
+        Double IVA = 0.21;
+        Double contMunicipal = 0.064;
+        Double fondoObras = 0.055;
+        Double impServElec = 0.1;
 
-        valorDespImpuestos = valorAntesImpuestos*IVA*contMunicipal*fondoObras*impServElec;
+        double impuestos = valorAntesImpuestos * IVA + valorAntesImpuestos * contMunicipal +
+                valorAntesImpuestos * fondoObras + valorAntesImpuestos * impServElec;
+
+        valorDespImpuestos = valorAntesImpuestos + impuestos;
+
         return valorDespImpuestos;
     }
     public int getId() {

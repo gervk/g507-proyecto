@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -232,9 +233,6 @@ public class ProxFacFragment extends Fragment implements TaskListener {
 
     private void calcularAgua(){
         Double totalAPagar = servicioAgua.calcularCosto(diferencia, consumo);
-        if(totalAPagar <= 271.46){
-            totalAPagar = 271.46;
-        }
         txtVConsumoMes.setText(new DecimalFormat("0.##").format(consumo)+" m3");
         txtVCostoProxFac.setText(new DecimalFormat("0.##").format(totalAPagar)+" $");
     }
@@ -245,11 +243,14 @@ public class ProxFacFragment extends Fragment implements TaskListener {
 
         Double totalAPagar;
 
-        diferenciaDeDias(servicioElectricidad.getFecPrimerConsumo(), servicioElectricidad.getFecUltFact());
+        Date fecUltBi = cal.getTime();
+        cal.setTime(fecUltBi);
+        cal.add(Calendar.DATE, -dias);
+        String fecUltBim = dateFormat.format(cal.getTime());
+
+        diferenciaDeDias(servicioElectricidad.getFecPrimerConsumo(), fecUltBim);
         if(diferencia >= 365){
-                //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date = cal.getTime();
-                cal.setTime(date);
+                cal.setTime(fecUltBi);
                 cal.add(Calendar.YEAR, -1);
                 fechaIni = dateFormat.format(cal.getTime());
                 cal.add(Calendar.DATE, 61);
