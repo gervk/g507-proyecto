@@ -90,7 +90,7 @@ public class ControlLimites extends BroadcastReceiver implements TaskListener{
             unidad = " m3";
         }
 
-        String consumoRedondeado = new DecimalFormat("0.##").format(consumo) + unidad;
+        String consumoRedondeado = new DecimalFormat("0.####").format(consumo) + unidad;
 
         Notification notif = new Notification.Builder(context)
                 .setContentTitle("Alerta límite de consumo")

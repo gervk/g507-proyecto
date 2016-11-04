@@ -190,7 +190,7 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
             try {
                 if(json.getString("status").equals("ok")){
                     txtResultadoAcum = (TextView) view.findViewById(R.id.txtVResulAcu);
-                    txtResultadoAcum.setText(new DecimalFormat("0.##").format(json.getDouble("data"))+unidad);
+                    txtResultadoAcum.setText(new DecimalFormat("0.####").format(json.getDouble("data"))+unidad);
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }

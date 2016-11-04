@@ -268,7 +268,7 @@ public class EstadistFragment extends Fragment implements TaskListener{
         promedio = total / valores.size();
 
         // Completa txts max/min/prom
-        DecimalFormat redondeo2Dec = new DecimalFormat("0.##");
+        DecimalFormat redondeo2Dec = new DecimalFormat("0.####");
         txtVValorMax.setText(redondeo2Dec.format(maximo) + " KWh");
         txtVValorMin.setText(redondeo2Dec.format(minimo) + " KWh");
         txtVValorProm.setText(redondeo2Dec.format(promedio) + " KWh");
