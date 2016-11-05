@@ -56,6 +56,8 @@ public class EstadistFragment extends Fragment implements TaskListener{
     private TextView txtVFechaMin;
     private GraphView grafico;
 
+    private String labels;
+
     private ArrayList<String> etiquetasGraf;
 
     private boolean conectando = false;
@@ -139,9 +141,11 @@ public class EstadistFragment extends Fragment implements TaskListener{
 
         if(rbtnElect.isChecked()) {
             tipoServicio = TipoConsumo.ELECTRICIDAD;
+            labels = " KWh";
         }
         else {
             tipoServicio = TipoConsumo.AGUA;
+            labels = " m3";
         }
 
         cal = Calendar.getInstance();
@@ -155,8 +159,8 @@ public class EstadistFragment extends Fragment implements TaskListener{
                 Integer mes = cal.get(Calendar.MONTH);
                 Integer mesAux;
 
-                for (int i = 0; i < 12; i++) {    //lleno las etiquetas de los meses
-                    mesAux = mes - 11 + (2 * i);
+                for (int i = 0; i < 13; i++) {    //lleno las etiquetas de los meses
+                    mesAux = mes - 12 + (2 * i);
                     if (mesAux >= 0) {
                         etiquetasGraf.add(i, posiblesEtiq[mesAux]);
                     } else {
@@ -269,9 +273,9 @@ public class EstadistFragment extends Fragment implements TaskListener{
         promedio = total / valores.size();
         // Completa txts max/min/prom
         DecimalFormat redondeo2Dec = new DecimalFormat("0.####");
-        txtVValorMax.setText(redondeo2Dec.format(maximo) + " KWh");
-        txtVValorMin.setText(redondeo2Dec.format(minimo) + " KWh");
-        txtVValorProm.setText(redondeo2Dec.format(promedio) + " KWh");
+        txtVValorMax.setText(redondeo2Dec.format(maximo) + labels);
+        txtVValorMin.setText(redondeo2Dec.format(minimo) + labels);
+        txtVValorProm.setText(redondeo2Dec.format(promedio) + labels);
         txtVFechaMax.setText(etiquetasGraf.get(indiceMaximo));
         txtVFechaMin.setText(etiquetasGraf.get(indiceMinimo));
     }
