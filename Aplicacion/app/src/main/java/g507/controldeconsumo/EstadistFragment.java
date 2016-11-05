@@ -155,8 +155,8 @@ public class EstadistFragment extends Fragment implements TaskListener{
                 Integer mes = cal.get(Calendar.MONTH);
                 Integer mesAux;
 
-                for (int i = 0; i < 6; i++) {    //lleno las etiquetas de los días
-                    mesAux = mes - 5 + (2 * i);
+                for (int i = 0; i < 12; i++) {    //lleno las etiquetas de los meses
+                    mesAux = mes - 11 + (2 * i);
                     if (mesAux >= 0) {
                         etiquetasGraf.add(i, posiblesEtiq[mesAux]);
                     } else {
@@ -190,7 +190,7 @@ public class EstadistFragment extends Fragment implements TaskListener{
                 Integer hora = cal.get(Calendar.HOUR_OF_DAY);
                 Integer horaAux;
 
-                for (int i = 0; i < 6; i++) {    //lleno las etiquetas de los días
+                for (int i = 0; i < 6; i++) {    //lleno las etiquetas de las horas
                     horaAux = hora - 5 + (2 * i);
                     if (horaAux >= 0) {
                         etiquetasGraf.add(i, posiblesEtiq[horaAux]);
