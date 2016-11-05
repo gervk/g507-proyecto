@@ -29,7 +29,6 @@ import org.json.JSONObject;
 
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -110,6 +109,8 @@ public class EstadistFragment extends Fragment implements TaskListener{
                 consultarEstadisticas();
             }
         });
+
+        grafico.getGridLabelRenderer().setHorizontalLabelsAngle(90);
 
         return view;
     }
@@ -266,7 +267,6 @@ public class EstadistFragment extends Fragment implements TaskListener{
             }
         }
         promedio = total / valores.size();
-
         // Completa txts max/min/prom
         DecimalFormat redondeo2Dec = new DecimalFormat("0.####");
         txtVValorMax.setText(redondeo2Dec.format(maximo) + " KWh");
