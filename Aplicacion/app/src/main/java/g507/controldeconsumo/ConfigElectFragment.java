@@ -114,7 +114,7 @@ public class ConfigElectFragment extends Fragment implements TaskListener{
             }
         }
 
-        if(fecha != ""){
+        if(!fecha.equals("")){
             try {
                 Date dateGuardado = dateFormatGuardado.parse(fecha);
                 datePickFechaFact.setDate(dateGuardado.getTime(), true, true);

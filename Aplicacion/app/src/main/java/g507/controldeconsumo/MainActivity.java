@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String ARG_FONDO = "arg_fondo";
-    private static final int CODIGO_REQUEST_CAMARA = 001;
+    private static final int CODIGO_REQUEST_CAMARA = 1;
 
     private ImageView imagen;
     private ImageView fondoInicio;

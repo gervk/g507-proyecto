@@ -19,14 +19,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import 	java.util.concurrent.TimeUnit;
 
 import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.TaskListener;
@@ -56,12 +53,13 @@ public class ProxFacFragment extends Fragment implements TaskListener {
     private TipoConsumo tipoServicio;
     private boolean obteniendoTarifa = false;
     private Calendar cal;
-    private String fechaIni;
-    private String fechaFin;
+    private Date fechaIni;
+    private Date fechaFin;
     private ProgressDialog progressDialog;
     private Double consumoActual;
     private Integer dias;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat dateFormatHoraMinSeg = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public ProxFacFragment() {
         // Required empty public constructor
@@ -141,15 +139,19 @@ public class ProxFacFragment extends Fragment implements TaskListener {
     private Double obtenerDiferencia(String fecha, TipoConsumo tipoConsumo){
         tipoServicio = tipoConsumo;
         cal = Calendar.getInstance();
-        fechaIni = fecha;
-        fechaFin = dateFormat.format(cal.getTime());
+        try {
+            fechaIni = dateFormat.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        fechaFin = cal.getTime();
         diferenciaDeDias(fechaIni, fechaFin);
 
         if (diferencia > 61){
             Integer bimestresPasados = (int)(diferencia/61);
             Integer dias = (int)(diferencia - 61*bimestresPasados);
             cal.add(Calendar.DATE, -dias);
-            fechaIni = dateFormat.format(cal.getTime());
+            fechaIni = cal.getTime();
             diferenciaDeDias(fechaIni, fechaFin);
         }
 
@@ -158,14 +160,14 @@ public class ProxFacFragment extends Fragment implements TaskListener {
         return consumo;
     }
 
-    private void obtenerConsumo(String fechaIni, String fechaFin, TipoConsumo tipoConsumo) {
+    private void obtenerConsumo(Date fechaIni, Date fechaFin, TipoConsumo tipoConsumo) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         idArduino = prefs.getInt(getString(R.string.pref_id_arduino), -1);
 
         if(idArduino != -1){
             if(Utils.conexionAInternetOk(getActivity())){
                 String url = ConstructorUrls.consumoAcumulado(idArduino, tipoConsumo,
-                        Timestamp.valueOf(fechaIni), Timestamp.valueOf(fechaFin));
+                        Utils.timestampServer(fechaIni), Utils.timestampServer(fechaFin));
                 consultandoFactura = false;
                 obteniendoAcum = true;
                 new TaskRequestUrl(this).execute(url, "GET");
@@ -232,10 +234,10 @@ public class ProxFacFragment extends Fragment implements TaskListener {
 
     private void calcularAgua(){
         Double totalAPagar = servicioAgua.calcularCosto(diferencia, consumo);
-        if(totalAPagar <= 271.46){
-            totalAPagar = 271.46;
+        if (consumo == 0){
+            Toast.makeText(getActivity(), "No se registraron consumos en el bimestre. Se cobrará el importe mínimo", Toast.LENGTH_LONG).show();
         }
-        txtVConsumoMes.setText(new DecimalFormat("0.##").format(consumo)+" m3");
+        txtVConsumoMes.setText(new DecimalFormat("0.####").format(consumo)+" m3");
         txtVCostoProxFac.setText(new DecimalFormat("0.##").format(totalAPagar)+" $");
     }
 
@@ -245,22 +247,29 @@ public class ProxFacFragment extends Fragment implements TaskListener {
 
         Double totalAPagar;
 
-        diferenciaDeDias(servicioElectricidad.getFecPrimerConsumo(), servicioElectricidad.getFecUltFact());
+        Date fecUltBi = cal.getTime();
+        cal.setTime(fecUltBi);
+        cal.add(Calendar.DATE, -dias);
+        Date fecUltBim = cal.getTime();
+
+        try {
+            diferenciaDeDias(dateFormatHoraMinSeg.parse(servicioElectricidad.getFecPrimerConsumo()), fecUltBim);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if(diferencia >= 365){
-                //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date = cal.getTime();
-                cal.setTime(date);
+                cal.setTime(fecUltBi);
                 cal.add(Calendar.YEAR, -1);
-                fechaIni = dateFormat.format(cal.getTime());
+                fechaIni = cal.getTime();
                 cal.add(Calendar.DATE, 61);
-                fechaFin = dateFormat.format(cal.getTime());
+                fechaFin = cal.getTime();
                 primerConsumo = true;
                 obtenerConsumo(fechaIni, fechaFin, tipoServicio);
         }else{
             consumo = -1.00;
             Toast.makeText(getActivity(), getString(R.string.msj_advertencia) , Toast.LENGTH_LONG).show();
             totalAPagar = servicioElectricidad.calcularCosto(consumoActual,consumo,dias);
-            txtVConsumoMes.setText(new DecimalFormat("0.##").format(consumoActual)+" KWh");
+            txtVConsumoMes.setText(new DecimalFormat("0.####").format(consumoActual)+" KWh");
             txtVCostoProxFac.setText(new DecimalFormat("0.##").format(totalAPagar)+" $");
         }
 
@@ -278,13 +287,13 @@ public class ProxFacFragment extends Fragment implements TaskListener {
                            servicio.getDouble("tgdf"), servicio.getDouble("sc"),servicio.getDouble("ef"), servicio.getDouble("st"),
                             servicio.getDouble("aud"), servicio.getInt("fs"),servicio.getInt("cl"));
                     servicioAgua.setFecFact(servicio.getString("ultima_factura"));
-                    obtenerDiferencia(servicioAgua.getFecFact()+" 00:00:00", tipoServicio);
+                    obtenerDiferencia(servicioAgua.getFecFact(), tipoServicio);
 
                 }else{
                     JSONObject data = json.getJSONObject("data");
                     JSONObject servicio = data.getJSONObject("servicio");
                     servicioElectricidad = new ServicioElectricidad();
-                    servicioElectricidad.setFecUltFact(servicio.getString("ultimaFactura")+ " 00:00:00");
+                    servicioElectricidad.setFecUltFact(servicio.getString("ultimaFactura"));
                     if(servicio.isNull("primerConsumo")){
                         servicioElectricidad.setFecPrimerConsumo(dateFormat.format(new Date().getTime()));
                     }else{
@@ -322,7 +331,14 @@ public class ProxFacFragment extends Fragment implements TaskListener {
                         obtenerTarifas(consumo);
                         }else{
                             Double totalAPagar = servicioElectricidad.calcularCosto(consumoActual,consumo,dias);
-                            txtVConsumoMes.setText(new DecimalFormat("0.##").format(consumoActual)+" KWh");
+                            if (servicioElectricidad.isAhorro()){
+                                Toast.makeText(getActivity(), getString(R.string.msj_ahorro_elect), Toast.LENGTH_SHORT).show();
+                            }
+                            if (servicioElectricidad.isPenalizado()){
+                                Toast.makeText(getActivity(), getString(R.string.msj_penalizac_elect), Toast.LENGTH_SHORT).show();
+                            }
+
+                            txtVConsumoMes.setText(new DecimalFormat("0.####").format(consumoActual)+" KWh");
                             txtVCostoProxFac.setText(new DecimalFormat("0.##").format(totalAPagar)+" $");
                         }
                     }
@@ -365,15 +381,9 @@ public class ProxFacFragment extends Fragment implements TaskListener {
         }
     }
 
-    private void diferenciaDeDias(String fechaIni, String fechaFin){
+    private void diferenciaDeDias(Date fechaIni, Date fechaFin){
         //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date date1 = dateFormat.parse(fechaIni);
-            Date date2 = dateFormat.parse(fechaFin);
-            diferencia = (date2.getTime() - date1.getTime())/ (24 * 60 * 60 * 1000);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        diferencia = (fechaFin.getTime() - fechaIni.getTime())/ (24 * 60 * 60 * 1000);
     }
 }
 

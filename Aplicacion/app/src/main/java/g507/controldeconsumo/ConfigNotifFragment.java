@@ -161,7 +161,13 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
                 campoConError = txtLimiteAgua;
                 cancelar = true;
             } else {
-                limiteAgua = Integer.parseInt(txtLimiteAgua.getText().toString());
+                try{
+                    limiteAgua = Integer.parseInt(txtLimiteAgua.getText().toString());
+                } catch (NumberFormatException e) {
+                    txtLimiteAgua.setError(getString(R.string.error_campo_formato));
+                    campoConError = txtLimiteAgua;
+                    cancelar = true;
+                }
             }
         }
 
@@ -171,7 +177,13 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
                 campoConError = txtLimiteElec;
                 cancelar = true;
             } else {
-                limiteElec = Integer.parseInt(txtLimiteElec.getText().toString());
+                try {
+                    limiteElec = Integer.parseInt(txtLimiteElec.getText().toString());
+                } catch (NumberFormatException e) {
+                    txtLimiteElec.setError(getString(R.string.error_campo_formato));
+                    campoConError = txtLimiteElec;
+                    cancelar = true;
+                }
             }
         }
 
@@ -218,17 +230,17 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
         // Cancela si habia una alarma anterior para el mismo tipo de consumo
         if(alarmManager != null){
             alarmManager.cancel(pendingIntent);
-        }
 
-        // Si no se setea un limite, no setea alarma
-        if(limite != -1){
-            // Para que el primer control lo haga al minuto
-            long primerTrigger = Calendar.getInstance().getTimeInMillis() + 60 * 1000;
-            // Setea alarma que controla cada 5 min TODO poner otro intervalo
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, primerTrigger,
-                    5 * 60 * 1000, pendingIntent);
+            // Si no se setea un limite, no setea alarma
+            if(limite != -1){
+                // Para que el primer control lo haga al minuto
+                long primerTrigger = Calendar.getInstance().getTimeInMillis() + 60 * 1000;
+                // Setea alarma que controla cada 5 min TODO poner otro intervalo
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, primerTrigger,
+                        5 * 60 * 1000, pendingIntent);
 
-            Log.d("ConfigNotifFragment", "Se seteo la alarma " + tipoConsumo.toString() + " limite " + limite);
+                Log.d("ConfigNotifFragment", "Se seteo la alarma " + tipoConsumo.toString() + " limite " + limite);
+            }
         }
     }
 

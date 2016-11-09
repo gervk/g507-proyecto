@@ -23,7 +23,7 @@ public enum TipoConsumo {
 
     public static TipoConsumo getById(Integer id){
         for(TipoConsumo tipoConsumo : TipoConsumo.values()){
-            if(tipoConsumo.getId() == id){
+            if(tipoConsumo.getId().equals(id)){
                 return tipoConsumo;
             }
         }

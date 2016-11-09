@@ -171,7 +171,7 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         if(cl != -1){
             txtCl.setText(String.valueOf(cl));
         }
-        if(fecha != ""){
+        if(!fecha.equals("")){
             try {
                 // Convierte del formato de fecha separado con "-" a "/"
                 Date fechaGuardada = dateFormatGuardado.parse(fecha);
@@ -221,14 +221,7 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtFecUltFact;
             cancelar = true;
         } else {
-            try{
-                Date dateUltFact = dateFormatVista.parse(txtFecUltFact.getText().toString());
-                fecUltFact = new Timestamp(dateUltFact.getTime());
-            } catch (ParseException e){
-                txtFecUltFact.setError("Formato incorrecto");
-                campoConError = txtFecUltFact;
-                cancelar = true;
-            }
+            fecUltFact = Utils.timestampServer(calendar.getTime());
         }
 
         if(TextUtils.isEmpty(txtCl.getText())){
@@ -236,7 +229,13 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtCl;
             cancelar = true;
         } else {
-            cl = Integer.parseInt(txtCl.getText().toString());
+            try {
+                cl = Integer.parseInt(txtCl.getText().toString());
+            } catch (NumberFormatException e) {
+                txtCl.setError(getString(R.string.error_campo_formato));
+                campoConError = txtCl;
+                cancelar = true;
+            }
         }
 
         if(TextUtils.isEmpty(txtFs.getText())){
@@ -244,9 +243,15 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtFs;
             cancelar = true;
         } else {
-            fs = Integer.parseInt(txtFs.getText().toString());
-            if (fs != 1 && fs != 2) {
-                txtFs.setError("Solo 1 o 2");
+            try {
+                fs = Integer.parseInt(txtFs.getText().toString());
+                if (fs != 1 && fs != 2) {
+                    txtFs.setError("Solo 1 o 2");
+                    campoConError = txtFs;
+                    cancelar = true;
+                }
+            } catch (NumberFormatException e){
+                txtFs.setError(getString(R.string.error_campo_formato));
                 campoConError = txtFs;
                 cancelar = true;
             }
@@ -257,7 +262,13 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtAud;
             cancelar = true;
         } else {
-            aud = Double.parseDouble(txtAud.getText().toString());
+            try {
+                aud = Double.parseDouble(txtAud.getText().toString());
+            } catch (NumberFormatException e) {
+                txtAud.setError(getString(R.string.error_campo_formato));
+                campoConError = txtAud;
+                cancelar = true;
+            }
         }
 
         if(TextUtils.isEmpty(txtSt.getText())){
@@ -265,7 +276,13 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtSt;
             cancelar = true;
         } else {
-            st = Double.parseDouble(txtSt.getText().toString());
+            try {
+                st = Double.parseDouble(txtSt.getText().toString());
+            } catch (NumberFormatException e) {
+                txtSt.setError(getString(R.string.error_campo_formato));
+                campoConError = txtSt;
+                cancelar = true;
+            }
         }
 
         if(TextUtils.isEmpty(txtEf.getText())){
@@ -273,7 +290,13 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtEf;
             cancelar = true;
         } else {
-            ef = Double.parseDouble(txtEf.getText().toString());
+            try {
+                ef = Double.parseDouble(txtEf.getText().toString());
+            } catch (NumberFormatException e) {
+                txtEf.setError(getString(R.string.error_campo_formato));
+                campoConError = txtEf;
+                cancelar = true;
+            }
         }
 
         if(TextUtils.isEmpty(txtSc.getText())){
@@ -281,7 +304,13 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtSc;
             cancelar = true;
         } else {
-            sc = Double.parseDouble(txtSc.getText().toString());
+            try {
+                sc = Double.parseDouble(txtSc.getText().toString());
+            } catch (NumberFormatException e) {
+                txtSc.setError(getString(R.string.error_campo_formato));
+                campoConError = txtSc;
+                cancelar = true;
+            }
         }
 
         if(TextUtils.isEmpty(txtTgdf.getText())){
@@ -289,7 +318,13 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtTgdf;
             cancelar = true;
         } else {
-            tgdf = Double.parseDouble(txtTgdf.getText().toString());
+            try {
+                tgdf = Double.parseDouble(txtTgdf.getText().toString());
+            } catch (NumberFormatException e) {
+                txtTgdf.setError(getString(R.string.error_campo_formato));
+                campoConError = txtTgdf;
+                cancelar = true;
+            }
         }
 
         if(TextUtils.isEmpty(txtZf.getText())){
@@ -297,7 +332,13 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtZf;
             cancelar = true;
         } else {
-            zf = Double.parseDouble(txtZf.getText().toString());
+            try {
+                zf = Double.parseDouble(txtZf.getText().toString());
+            } catch (NumberFormatException e) {
+                txtZf.setError(getString(R.string.error_campo_formato));
+                campoConError = txtZf;
+                cancelar = true;
+            }
         }
 
         if(TextUtils.isEmpty(txtK.getText())){
@@ -305,14 +346,20 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtK;
             cancelar = true;
         } else {
-            k = Double.parseDouble(txtK.getText().toString());
+            try {
+                k = Double.parseDouble(txtK.getText().toString());
+            } catch (NumberFormatException e) {
+                txtK.setError(getString(R.string.error_campo_formato));
+                campoConError = txtK;
+                cancelar = true;
+            }
         }
 
         if(cancelar){
             campoConError.requestFocus();
         } else{
             ServicioAgua servicioAgua = new ServicioAgua(0, k, zf, tgdf, sc, ef, st, aud, fs, cl);
-            servicioAgua.setFecFact(txtFecUltFact.getText().toString());
+            servicioAgua.setFecFact(dateFormatGuardado.format(calendar.getTime()));
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             guardarEnConfigLocal(prefs, servicioAgua);

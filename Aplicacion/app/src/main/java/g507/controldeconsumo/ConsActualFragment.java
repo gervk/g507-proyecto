@@ -94,7 +94,7 @@ public class ConsActualFragment extends Fragment implements TaskListener{
             } else{
                 if(rbtnElect.isChecked()) {
                     tipoConsumo = TipoConsumo.ELECTRICIDAD;
-                    unidad = " KWh";
+                    unidad = " KWs";
                 }
                 else {
                     tipoConsumo = TipoConsumo.AGUA;
@@ -137,9 +137,12 @@ public class ConsActualFragment extends Fragment implements TaskListener{
         if(json != null){
             try {
                 if(json.getString("status").equals("ok")){
-                    txtVResulActual.setText(new DecimalFormat("0.##").format(json.getDouble("data"))+unidad);
+                    double consumoPorSeg = json.getDouble("data");
+                    txtVResulActual.setText(new DecimalFormat("0.####").format(consumoPorSeg)+unidad);
                 } else if(json.getString("status").equals("error")){
-                    Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
+                    //String msjError = json.getJSONArray("data").getString(0);
+                    //Toast.makeText(getActivity(), msjError , Toast.LENGTH_SHORT).show();
+                    txtVResulActual.setText(new DecimalFormat("0.####").format(0)+unidad);
                 }
             } catch (JSONException e) {
                 Toast.makeText(getActivity(), getString(R.string.error_traducc_datos) , Toast.LENGTH_SHORT).show();

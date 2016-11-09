@@ -140,17 +140,17 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
                 // no hace falta cambiar nada
                 break;
             case SEMANA:
-                //cal.add(Calendar.DATE, -7);
-                cal.set(Calendar.DAY_OF_WEEK, 2); // desde el dia lunes de la semana actual
+                cal.add(Calendar.DATE, -7);
+                //cal.set(Calendar.DAY_OF_WEEK, 2); // desde el dia lunes de la semana actual
                 break;
             case MES:
-                //cal.add(Calendar.MONTH, -1);
-                cal.set(Calendar.DAY_OF_MONTH, 1); // desde el primer dia del mes actual
+                cal.add(Calendar.MONTH, -1);
+                //cal.set(Calendar.DAY_OF_MONTH, 1); // desde el primer dia del mes actual
                 break;
             case BIMESTRE:
-                //cal.add(Calendar.MONTH, -2);
-                cal.add(Calendar.MONTH, -1);
-                cal.set(Calendar.DAY_OF_MONTH, 1); // desde el 1° dia del mes anterior
+                cal.add(Calendar.MONTH, -2);
+                //cal.add(Calendar.MONTH, -1);
+                //cal.set(Calendar.DAY_OF_MONTH, 1); // desde el 1° dia del mes anterior
                 break;
         }
 
@@ -190,7 +190,7 @@ public class ConsAcumFragment extends Fragment implements TaskListener{
             try {
                 if(json.getString("status").equals("ok")){
                     txtResultadoAcum = (TextView) view.findViewById(R.id.txtVResulAcu);
-                    txtResultadoAcum.setText(new DecimalFormat("0.##").format(json.getDouble("data"))+unidad);
+                    txtResultadoAcum.setText(new DecimalFormat("0.####").format(json.getDouble("data"))+unidad);
                 } else if(json.getString("status").equals("error")){
                     Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
                 }

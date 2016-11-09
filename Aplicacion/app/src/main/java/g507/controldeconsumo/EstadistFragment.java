@@ -29,7 +29,6 @@ import org.json.JSONObject;
 
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -56,6 +55,8 @@ public class EstadistFragment extends Fragment implements TaskListener{
     private TextView txtVValorMin;
     private TextView txtVFechaMin;
     private GraphView grafico;
+
+    private String labels;
 
     private ArrayList<String> etiquetasGraf;
 
@@ -111,6 +112,8 @@ public class EstadistFragment extends Fragment implements TaskListener{
             }
         });
 
+        grafico.getGridLabelRenderer().setHorizontalLabelsAngle(90);
+
         return view;
     }
 
@@ -138,9 +141,11 @@ public class EstadistFragment extends Fragment implements TaskListener{
 
         if(rbtnElect.isChecked()) {
             tipoServicio = TipoConsumo.ELECTRICIDAD;
+            labels = " KWh";
         }
         else {
             tipoServicio = TipoConsumo.AGUA;
+            labels = " m3";
         }
 
         cal = Calendar.getInstance();
@@ -154,8 +159,8 @@ public class EstadistFragment extends Fragment implements TaskListener{
                 Integer mes = cal.get(Calendar.MONTH);
                 Integer mesAux;
 
-                for (int i = 0; i < 6; i++) {    //lleno las etiquetas de los días
-                    mesAux = mes - 5 + (2 * i);
+                for (int i = 0; i < 13; i++) {    //lleno las etiquetas de los meses
+                    mesAux = mes - 12 + (2 * i);
                     if (mesAux >= 0) {
                         etiquetasGraf.add(i, posiblesEtiq[mesAux]);
                     } else {
@@ -189,7 +194,7 @@ public class EstadistFragment extends Fragment implements TaskListener{
                 Integer hora = cal.get(Calendar.HOUR_OF_DAY);
                 Integer horaAux;
 
-                for (int i = 0; i < 6; i++) {    //lleno las etiquetas de los días
+                for (int i = 0; i < 6; i++) {    //lleno las etiquetas de las horas
                     horaAux = hora - 5 + (2 * i);
                     if (horaAux >= 0) {
                         etiquetasGraf.add(i, posiblesEtiq[horaAux]);
@@ -266,12 +271,11 @@ public class EstadistFragment extends Fragment implements TaskListener{
             }
         }
         promedio = total / valores.size();
-
         // Completa txts max/min/prom
-        DecimalFormat redondeo2Dec = new DecimalFormat("0.##");
-        txtVValorMax.setText(redondeo2Dec.format(maximo) + " KWh");
-        txtVValorMin.setText(redondeo2Dec.format(minimo) + " KWh");
-        txtVValorProm.setText(redondeo2Dec.format(promedio) + " KWh");
+        DecimalFormat redondeo2Dec = new DecimalFormat("0.####");
+        txtVValorMax.setText(redondeo2Dec.format(maximo) + labels);
+        txtVValorMin.setText(redondeo2Dec.format(minimo) + labels);
+        txtVValorProm.setText(redondeo2Dec.format(promedio) + labels);
         txtVFechaMax.setText(etiquetasGraf.get(indiceMaximo));
         txtVFechaMin.setText(etiquetasGraf.get(indiceMinimo));
     }

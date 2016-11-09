@@ -14,12 +14,12 @@ import org.json.JSONObject;
 
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import g507.controldeconsumo.conexion.ConstructorUrls;
 import g507.controldeconsumo.conexion.TaskListener;
 import g507.controldeconsumo.conexion.TaskRequestUrl;
+import g507.controldeconsumo.conexion.Utils;
 import g507.controldeconsumo.modelo.TipoConsumo;
 
 public class ControlLimites extends BroadcastReceiver implements TaskListener{
@@ -58,15 +58,14 @@ public class ControlLimites extends BroadcastReceiver implements TaskListener{
         codArduino = intent.getIntExtra(ARG_COD_ARDUINO, -1);
 
         // Fecha inicio = primer dia del mes; Fecha fin = fecha actual
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar cal = Calendar.getInstance();
-        Timestamp fechaFin = Timestamp.valueOf(dateFormat.format(cal.getTime()));
+        Timestamp fechaFin = Utils.timestampServer(cal.getTime());
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.clear(Calendar.MINUTE);
         cal.clear(Calendar.SECOND);
         cal.clear(Calendar.MILLISECOND);
         cal.set(Calendar.DAY_OF_MONTH, 1);
-        Timestamp fechaIni = Timestamp.valueOf(dateFormat.format(cal.getTime()));
+        Timestamp fechaIni = Utils.timestampServer(cal.getTime());
 
         if(limite != -1){
             new TaskRequestUrl(this).execute(ConstructorUrls.consumoAcumulado(codArduino, tipoConsumo,
@@ -91,7 +90,7 @@ public class ControlLimites extends BroadcastReceiver implements TaskListener{
             unidad = " m3";
         }
 
-        String consumoRedondeado = new DecimalFormat("0.##").format(consumo) + unidad;
+        String consumoRedondeado = new DecimalFormat("0.####").format(consumo) + unidad;
 
         Notification notif = new Notification.Builder(context)
                 .setContentTitle("Alerta límite de consumo")
