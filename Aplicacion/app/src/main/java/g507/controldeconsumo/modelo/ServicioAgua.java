@@ -34,7 +34,7 @@ public class ServicioAgua {
     }
 
     public double calcularCosto(Long dias, Double consumoRegistrado){
-        Double cargoFijo = (k*(zf/1000)*(sc*ef+(st/10))+(aud*k*fs)*dias.intValue());
+        Double cargoFijo = (k*zf*(tgdf/1000)*(sc*ef+(st/10))+(aud*k*fs))*dias.intValue();
         Double precio;
         if(fs ==1){
             precio = 0.3288;
