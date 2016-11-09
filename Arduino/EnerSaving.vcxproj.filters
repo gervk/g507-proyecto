@@ -27,12 +27,21 @@
     <ClInclude Include="conexionRed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sensorAgua.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="__vm\.VS enersaving.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sensorCorriente.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="conexionRed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sensorAgua.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

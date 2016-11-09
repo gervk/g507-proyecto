@@ -67,22 +67,26 @@ void SensorCorrienteClass::setLogSerial(HardwareSerial *serial, unsigned long ve
 //------------------------------------------------------------------------//
 void SensorCorrienteClass::iniciarSensado()
 {
+	double tiempoSegundos = 0;
+
 	if(millis() - ttUltimaLectura >= retardo)
 	{
 		lectura = this->leerSensor(1) / 1.41;    // lectura (rms)   
 		vS = (lectura * 0.0048);				 // valor de C.A.D.
 		iA = (lectura * S_Ratio) / 1000;		 // Intensidad (A)
 
-		if (iA < 0.003)	//Elimina lecturas erroneas
-			iA = 0;
+		if (iA < 0.016)	//Elimina lecturas erroneas
+			iA = 0.0;
 
 		pKW = (vV * iA) / 1000;					 // Potencia (kW)
 
 		ttTranscurrido = millis() - ttUltimaLectura;	//Tiempo transacurrido entre lecturas
 		ttUltimaLectura = millis();						//Actualizamos tiempo de ultima lectura
 
+		tiempoSegundos = ttTranscurrido / 1000;
+
 		//pKWacum = pKWacum + (pKW * (1 / 3600) * (ttTranscurrido / 1000));		//Potencia en KW-hs acumulada. (1/3600) = una hora. (ttTranscurrido / 1000) = tiempo transcurrido en segundos
-		pKWacum = pKWacum + (pKW * (ttTranscurrido / 1000)); //Acumulamos en segundos
+		pKWacum = pKWacum + (pKW * tiempoSegundos); //Acumulamos en segundos
 		
 		if (showLog)
 			this->printLog();
@@ -137,7 +141,7 @@ void SensorCorrienteClass::enviarConsumo()
 		conexionRed->addParameter("consumo", pKWacum);
 
 		//Enviar datos al servidor por medio de la api "consumo"
-		if (conexionRed->sendHttpData("enersaving-laravel/public/api/v1/consumo"))
+		if (conexionRed->sendHttpData("api/v1/consumo"))
 		{
 			ttUltimoEnvio = millis();
 			pKWacum = 0;
