@@ -221,14 +221,7 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError = txtFecUltFact;
             cancelar = true;
         } else {
-            try{
-                Date dateUltFact = dateFormatVista.parse(txtFecUltFact.getText().toString());
-                fecUltFact = Utils.timestampServer(dateUltFact);
-            } catch (ParseException e){
-                txtFecUltFact.setError("Formato incorrecto");
-                campoConError = txtFecUltFact;
-                cancelar = true;
-            }
+            fecUltFact = Utils.timestampServer(calendar.getTime());
         }
 
         if(TextUtils.isEmpty(txtCl.getText())){
@@ -312,7 +305,7 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
             campoConError.requestFocus();
         } else{
             ServicioAgua servicioAgua = new ServicioAgua(0, k, zf, tgdf, sc, ef, st, aud, fs, cl);
-            servicioAgua.setFecFact(txtFecUltFact.getText().toString());
+            servicioAgua.setFecFact(dateFormatGuardado.format(calendar.getTime()));
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             guardarEnConfigLocal(prefs, servicioAgua);

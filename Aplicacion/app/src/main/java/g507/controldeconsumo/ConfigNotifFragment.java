@@ -161,7 +161,13 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
                 campoConError = txtLimiteAgua;
                 cancelar = true;
             } else {
-                limiteAgua = Integer.parseInt(txtLimiteAgua.getText().toString());
+                try{
+                    limiteAgua = Integer.parseInt(txtLimiteAgua.getText().toString());
+                } catch (NumberFormatException e) {
+                    txtLimiteAgua.setError(getString(R.string.error_campo_formato));
+                    campoConError = txtLimiteAgua;
+                    cancelar = true;
+                }
             }
         }
 
@@ -171,7 +177,13 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
                 campoConError = txtLimiteElec;
                 cancelar = true;
             } else {
-                limiteElec = Integer.parseInt(txtLimiteElec.getText().toString());
+                try {
+                    limiteElec = Integer.parseInt(txtLimiteElec.getText().toString());
+                } catch (NumberFormatException e) {
+                    txtLimiteElec.setError(getString(R.string.error_campo_formato));
+                    campoConError = txtLimiteElec;
+                    cancelar = true;
+                }
             }
         }
 

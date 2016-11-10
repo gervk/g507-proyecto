@@ -53,6 +53,8 @@
     <string name="msj_espere">Espere</string>
     <string name="msj_cargando">Cargando</string>
     <string name="msj_advertencia"> Los datos pueden variar en la realidad, dado que no se posee informacion del año pasado</string>
+    <string name="msj_ahorro_elect">El monto a pagar recibió una bonificación por ahorro de energía</string>
+    <string name="msj_penalizac_elect">El monto a pagar recibió una penalización por consumo excesivo</string>
 
 
     <!-- Claves para las SharedPrefferences -->

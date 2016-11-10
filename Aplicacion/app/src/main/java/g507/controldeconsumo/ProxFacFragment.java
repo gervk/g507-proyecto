@@ -331,6 +331,13 @@ public class ProxFacFragment extends Fragment implements TaskListener {
                         obtenerTarifas(consumo);
                         }else{
                             Double totalAPagar = servicioElectricidad.calcularCosto(consumoActual,consumo,dias);
+                            if (servicioElectricidad.isAhorro()){
+                                Toast.makeText(getActivity(), getString(R.string.msj_ahorro_elect), Toast.LENGTH_SHORT).show();
+                            }
+                            if (servicioElectricidad.isPenalizado()){
+                                Toast.makeText(getActivity(), getString(R.string.msj_penalizac_elect), Toast.LENGTH_SHORT).show();
+                            }
+
                             txtVConsumoMes.setText(new DecimalFormat("0.####").format(consumoActual)+" KWh");
                             txtVCostoProxFac.setText(new DecimalFormat("0.##").format(totalAPagar)+" $");
                         }
