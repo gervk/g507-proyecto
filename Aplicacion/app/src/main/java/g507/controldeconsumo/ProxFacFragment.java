@@ -249,11 +249,11 @@ public class ProxFacFragment extends Fragment implements TaskListener {
 
         Date fecUltBi = cal.getTime();
         cal.setTime(fecUltBi);
-        cal.add(Calendar.DATE, -dias);
-        Date fecUltBim = cal.getTime();
+        //cal.add(Calendar.DATE, -dias);
+        //Date fecUltBim = cal.getTime();
 
         try {
-            diferenciaDeDias(dateFormatHoraMinSeg.parse(servicioElectricidad.getFecPrimerConsumo()), fecUltBim);
+            diferenciaDeDias(dateFormatHoraMinSeg.parse(servicioElectricidad.getFecPrimerConsumo()), fecUltBi);
         } catch (ParseException e) {
             e.printStackTrace();
         }
