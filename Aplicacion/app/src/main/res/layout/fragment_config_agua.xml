@@ -68,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="TGDf( Tarifa general diaria para cargo fijo)"
+                    android:text="TGDf( Tarifa gral. diaria para cargo fijo)"
                     android:id="@+id/textView6" />
 
                 <EditText

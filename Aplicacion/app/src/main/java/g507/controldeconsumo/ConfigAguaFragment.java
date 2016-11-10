@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -45,6 +46,7 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
     private TextView txtAud;
     private TextView txtFs;
     private TextView txtCl;
+    private TextView lblFecUltFact;
     private TextView txtFecUltFact;
     private Button btnGuardar;
 
@@ -93,8 +95,9 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         txtCl = (TextView) view.findViewById(R.id.txtCl);
         txtFecUltFact = (TextView) view.findViewById(R.id.txtFecUltFact);
         btnGuardar = (Button) view.findViewById(R.id.btnGuardar);
+        lblFecUltFact = (TextView) view.findViewById(R.id.textView13);
 
-        txtFecUltFact.setOnClickListener(new View.OnClickListener() {
+        lblFecUltFact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 datePickerDialog.show();
