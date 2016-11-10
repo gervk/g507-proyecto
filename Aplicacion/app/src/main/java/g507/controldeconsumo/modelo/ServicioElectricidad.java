@@ -45,13 +45,15 @@ public class ServicioElectricidad {
                     totalAntesImpuestos =  this.getA_10_20_fijo() + this.getA_10_20_variable()*dias;
                     this.setAhorro(true);
                 }else{
-                    if(consumoActual< 300){
+                    if(consumoActual> 300){
                         if(consumoActual > consumoAnterior*1.9){
                             totalAntesImpuestos = this.getCargo_fijo()+this.getCargo_variable()*dias*(consumoActual - (consumoAnterior*1.9));
                             this.setPenalizado(true);
                         }else {
                             totalAntesImpuestos = this.getCargo_fijo()+this.getCargo_variable()*dias;
                         }
+                   }else{
+                        totalAntesImpuestos = this.getCargo_fijo()+this.getCargo_variable()*dias;
                     }
                 }
             }
