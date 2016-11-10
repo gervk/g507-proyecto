@@ -230,17 +230,17 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
         // Cancela si habia una alarma anterior para el mismo tipo de consumo
         if(alarmManager != null){
             alarmManager.cancel(pendingIntent);
-        }
 
-        // Si no se setea un limite, no setea alarma
-        if(limite != -1){
-            // Para que el primer control lo haga al minuto
-            long primerTrigger = Calendar.getInstance().getTimeInMillis() + 60 * 1000;
-            // Setea alarma que controla cada 5 min TODO poner otro intervalo
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, primerTrigger,
-                    5 * 60 * 1000, pendingIntent);
+            // Si no se setea un limite, no setea alarma
+            if(limite != -1){
+                // Para que el primer control lo haga al minuto
+                long primerTrigger = Calendar.getInstance().getTimeInMillis() + 60 * 1000;
+                // Setea alarma que controla cada 5 min TODO poner otro intervalo
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, primerTrigger,
+                        5 * 60 * 1000, pendingIntent);
 
-            Log.d("ConfigNotifFragment", "Se seteo la alarma " + tipoConsumo.toString() + " limite " + limite);
+                Log.d("ConfigNotifFragment", "Se seteo la alarma " + tipoConsumo.toString() + " limite " + limite);
+            }
         }
     }
 

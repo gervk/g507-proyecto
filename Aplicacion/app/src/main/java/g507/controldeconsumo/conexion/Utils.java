@@ -96,7 +96,7 @@ public class Utils {
         String linea;
         try {
             while ((linea = reader.readLine()) != null) {
-                buffer.append(linea + "\n");
+                buffer.append(linea).append("\n");
             }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error parseando el stream a string", e);
@@ -143,7 +143,7 @@ public class Utils {
         } else{
             // Si usa servidor local seta url base segun la ip configurada
             String ipServer = sharedPreferences.getString(keyPrefIpServer, "");
-            if(ipServer != ""){
+            if(!ipServer.equals("")){
                 ConstructorUrls.urlBase = ipServer;
             }
             Log.d("Settings", "Direccion server: " + ConstructorUrls.urlBase);
@@ -151,10 +151,6 @@ public class Utils {
     }
 
     public static boolean alfanumericoSinEspacios(String texto){
-        if(texto.matches("\\w*")){
-            return texto.matches("[A-Za-z0-9][^.]*");
-        } else {
-            return false;
-        }
+        return texto.matches("\\w*") && texto.matches("[A-Za-z0-9][^.]*");
     }
 }

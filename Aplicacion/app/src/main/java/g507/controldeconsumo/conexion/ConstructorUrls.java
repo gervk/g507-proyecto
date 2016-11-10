@@ -258,8 +258,8 @@ public class ConstructorUrls {
                 .appendQueryParameter("ef", String.valueOf(servAgua.getEf()))
                 .appendQueryParameter("st", String.valueOf(servAgua.getSt()))
                 .appendQueryParameter("aud", String.valueOf(servAgua.getAud()))
-                .appendQueryParameter("fs", String.valueOf((int) servAgua.getFs()))
-                .appendQueryParameter("cl", String.valueOf((int) servAgua.getCl()))
+                .appendQueryParameter("fs", String.valueOf(servAgua.getFs()))
+                .appendQueryParameter("cl", String.valueOf(servAgua.getCl()))
                 // por alguna razon se agregan 3 ceros de mas, por eso divido por 1000
                 .appendQueryParameter("ultimaFactura", String.valueOf(fechaUltimaFactura.getTime() / 1000));
 
