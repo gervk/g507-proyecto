@@ -1,0 +1,66 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    tools:context=".ConfigElectFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtVEmpresaElec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empresa de servicio eléctrico"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:id="@+id/spinEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            android:layout_below="@+id/txtVEmpresaElec"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha última factura"
+            android:id="@+id/textView17"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@+id/txtVEmpresaElec" />
+
+        <CalendarView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/datePickFechaFactElect"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/textView17"
+            android:layout_alignStart="@+id/textView17"
+            android:layout_marginTop="5dp" />
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/boton"
+            android:text="Guardar"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+</FrameLayout>
