@@ -186,8 +186,10 @@ public class RegistroFragment extends Fragment implements TaskListener {
     }
 
     public void guardarUsuarioLogueado(Integer idUsuario) {
+        String nombreUsuario = txtUsername.getText().toString();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         prefs.edit().putInt(getString(R.string.pref_sesion_inic), idUsuario).apply();
+        prefs.edit().putString(getString(R.string.pref_nombre_usuario), nombreUsuario).apply();
     }
 
     private void cargarMainActivity() {
