@@ -28,6 +28,7 @@
         android:shadowColor="#111010"
         android:textStyle="bold"
         android:textColorHint="@color/abc_search_url_text_selected"
-        android:textColor="#010101" />
+        android:textColor="#010101"
+        android:id="@+id/txtMenuUsuario" />
 
 </LinearLayout>

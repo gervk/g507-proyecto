@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import g507.controldeconsumo.conexion.Utils;
@@ -63,6 +64,12 @@ public class MainActivity extends AppCompatActivity
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String nombreUsuario = preferences.getString(getString(R.string.pref_nombre_usuario), "");
+            View headerMenu = navigationView.getHeaderView(0);
+            TextView txtUsuarioMenu = (TextView) headerMenu.findViewById(R.id.txtMenuUsuario);
+            txtUsuarioMenu.setText("Menú - " + nombreUsuario);
 
             imagen = (ImageView) this.findViewById(R.id.imgFondo);
             fondoInicio = (ImageView) this.findViewById(R.id.fondoInicio);

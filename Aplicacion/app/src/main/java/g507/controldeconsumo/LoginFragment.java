@@ -198,10 +198,10 @@ public class LoginFragment extends Fragment implements TaskListener{
      * @param idUsuario
      * @param codigoArduino
      */
-    private void guardarDatosUsuario(Integer idUsuario, Integer codigoArduino,
+    private void guardarDatosUsuario(String nombreUsuario, Integer idUsuario, Integer codigoArduino,
                                      Integer limiteAgua, Integer limiteElect) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
+        prefs.edit().putString(getString(R.string.pref_nombre_usuario), nombreUsuario).apply();
         prefs.edit().putInt(getString(R.string.pref_sesion_inic), idUsuario).apply();
         prefs.edit().putInt(getString(R.string.pref_id_arduino), codigoArduino).apply();
         prefs.edit().putInt(getString(R.string.pref_limite_agua), limiteAgua).apply();
@@ -282,6 +282,7 @@ public class LoginFragment extends Fragment implements TaskListener{
                         JSONObject data = json.getJSONObject("data");
                         JSONObject user = data.getJSONObject("user");
 
+                        String nombreUsuario = user.getString("username");
                         Integer idUsuario = user.getInt("id");
                         // optInt devuelve un valor dado en caso que sea null
                         Integer codArduino = user.optInt("codigo_arduino", -1);
@@ -304,7 +305,7 @@ public class LoginFragment extends Fragment implements TaskListener{
                             guardarDatosConfigAgua(servicioAgua);
                         }
 
-                        guardarDatosUsuario(idUsuario, codArduino, limiteAgua, limiteElect);
+                        guardarDatosUsuario(nombreUsuario, idUsuario, codArduino, limiteAgua, limiteElect);
                         cargarMainActivity();
                     } else if(json.getString("status").equals("error")){
                         Toast.makeText(getActivity(), "Datos incorrectos" , Toast.LENGTH_SHORT).show();
