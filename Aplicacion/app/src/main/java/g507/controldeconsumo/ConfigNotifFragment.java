@@ -60,8 +60,6 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
-        setRetainInstance(true);
     }
 
     @Override
@@ -281,6 +279,9 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
 
     @Override
     public void inicioRequest() {
+        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
+        setRetainInstance(true);
+
         // Como se hace 2 request a la vez, el if evita que se creen dos progressDialog
         if(progressDialog == null){
             progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
@@ -297,6 +298,8 @@ public class ConfigNotifFragment extends Fragment implements TaskListener{
             limitesActualizados = 0;
             progressDialog.dismiss();
             progressDialog = null;
+
+            setRetainInstance(false);
         }
 
         if(json != null){

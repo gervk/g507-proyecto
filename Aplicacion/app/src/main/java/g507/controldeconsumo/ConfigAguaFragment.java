@@ -66,8 +66,6 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
-        setRetainInstance(true);
     }
 
     @Override
@@ -391,6 +389,9 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
 
     @Override
     public void inicioRequest() {
+        // Para que mantenga la instancia del fragment ante una recreacion del activity (rotacion)
+        setRetainInstance(true);
+
         conectando = true;
         progressDialog = ProgressDialog.show(getActivity(), getString(R.string.msj_espere), getString(R.string.msj_cargando), true);
     }
@@ -400,6 +401,8 @@ public class ConfigAguaFragment extends Fragment implements TaskListener {
         conectando = false;
         if(progressDialog != null){
             progressDialog.dismiss();
+
+            setRetainInstance(false);
         }
 
         if(json != null){
